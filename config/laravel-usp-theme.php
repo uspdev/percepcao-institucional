@@ -3,7 +3,7 @@
 $admin = [
     [
         'text' => 'Percepção',
-        'url' => '/percepcao-institucional/gestao-sistema/percepcao',
+        'url' => 'percepcao-institucional/gestao-sistema/percepcao',
         'can' => 'admin',
     ],
 ];
@@ -11,7 +11,7 @@ $admin = [
 $submenu2 = [
     [
         'text' => 'Avaliar',
-        'url' => '/percepcao-institucional/avaliar',
+        'url' => 'percepcao-institucional/avaliar',
     ],
 ];
 
