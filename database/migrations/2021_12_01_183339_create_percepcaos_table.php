@@ -13,16 +13,16 @@ class CreatePercepcaosTable extends Migration
      */
     public function up()
     {
-        Schema::create('percepcao', function (Blueprint $table) {
+        Schema::create('percepcaos', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('dataAbertura')->nullable();
-            $table->timestamp('dataFechamento')->nullable();
+            $table->timestamp('dataDeAbertura')->nullable();
+            $table->timestamp('dataDeFechamento')->nullable();
             $table->integer('ano');
             $table->integer('semestre');
-            $table->integer('totalAlunosMatriculados')->nullable();
-            $table->enum('liberaConsultaMembrosEspeciais', ['Sim', 'Não'])->default('Não');
-            $table->enum('liberaConsultaDocente', ['Sim', 'Não'])->default('Não');
-            $table->enum('liberaConsultaAluno', ['Sim', 'Não'])->default('Não');
+            $table->integer('totalDeAlunosMatriculados');
+            $table->boolean('liberaConsultaMembrosEspeciais')->default(0);
+            $table->boolean('liberaConsultaDocente')->default(0);
+            $table->boolean('liberaConsultaAluno')->default(0);
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ class CreatePercepcaosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('percepcao');
+        Schema::dropIfExists('percepcaos');
     }
 }

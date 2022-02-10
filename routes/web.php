@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IndexController;
-use App\Http\Controllers\PercepcaoController;
+use App\Http\Livewire\Percepcao\PercepcaoShow;
+use App\Http\Livewire\Percepcao\PercepcaoCreate;
+use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoCreate;
+use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +17,8 @@ use App\Http\Controllers\PercepcaoController;
 |
 */
 
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/percepcao-institucional', [IndexController::class, 'index']);
-
-Route::resource('/percepcao-institucional/gestao-sistema/percepcao', PercepcaoController::class);
+Route::get('/', PercepcaoAvaliacaoShow::class);
+Route::get('/percepcao-institucional', PercepcaoAvaliacaoShow::class)->middleware('auth');
+Route::get('/percepcao-institucional/avaliar', PercepcaoAvaliacaoCreate::class)->middleware('auth');
+Route::get('/percepcao-institucional/gestao-sistema/percepcao', PercepcaoShow::class)->middleware('auth');
+Route::get('/percepcao-institucional/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class)->middleware('auth');

@@ -4,6 +4,12 @@
 Percepção Institucional
 @endsection
 
+@section('styles')
+  @parent
+  @livewireStyles
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+@endsection
+
 @section('flash')
   @if($errors->any())
     <div class="alert alert-danger">
@@ -24,4 +30,17 @@ Percepção Institucional
       @endif
     @endforeach
   </div>
+@endsection
+
+@section('javascripts_bottom')
+  @livewireScripts
+  <script>
+    window.addEventListener('closeModal', event => {
+      $('#percepcaoModal').modal('hide');
+    });
+
+    window.addEventListener('openModal', event => {
+      $('#percepcaoModal').modal('show');
+    })
+  </script>
 @endsection

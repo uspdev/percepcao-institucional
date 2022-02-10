@@ -12,13 +12,13 @@ class Percepcao extends Model
 
     protected $guarded = ['id'];
 
-    protected $table = 'percepcao';
+    protected $table = 'percepcaos';
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'dataAbertura',
-        'dataFechamento'
+        'dataDeAbertura',
+        'dataDeFechamento'
     ];
 
     public static function simNao() {
@@ -28,11 +28,27 @@ class Percepcao extends Model
       ];
     }
 
-    public function setDataAberturaAttribute($dataAbertura) {
-      $this->attributes['dataAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataAbertura)->toDateTimeString();
+    public function setDataDeAberturaAttribute($dataDeAbertura) {
+      $this->attributes['dataDeAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeAbertura)->toDateTimeString();
     }
 
-    public function setDataFechamentoAttribute($dataFechamento) {
-      $this->attributes['dataFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataFechamento)->toDateTimeString();
+    public function setDataDeFechamentoAttribute($dataDeFechamento) {
+      $this->attributes['dataDeFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeFechamento)->toDateTimeString();
+    }
+
+    /**
+     * Relacionamento com as avaliações
+     */
+    public function percepcao_avaliacaos()
+    {
+        return $this->hasMany(PercepcaoAvaliacao::class);
+    }
+
+    /**
+     * Relacionamento com as avaliações
+     */
+    public function percepcao_avaliacao_comentarios()
+    {
+        return $this->hasMany(PercepcaoAvaliacaoComentario::class);
     }
 }
