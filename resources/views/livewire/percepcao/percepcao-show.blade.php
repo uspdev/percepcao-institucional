@@ -1,6 +1,5 @@
 @section('styles')
   @parent
-  @livewireStyles
   <style>
     .btn-icon {
       background-color: transparent;
