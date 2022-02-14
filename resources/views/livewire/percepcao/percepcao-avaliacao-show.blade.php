@@ -13,7 +13,7 @@
       @if($percepcaoEnvio)
         <span class='text-success'>Obrigado pela sua participação no processo de avaliação de disciplinas deste semestre.</span>
       @else
-        <a href='percepcao-institucional/avaliar'>CLIQUE AQUI PARA INICIAR O PROCESSO DE AVALIAÇÃO DE DISCIPLINAS</a>
+        <a href='avaliar'>CLIQUE AQUI PARA INICIAR O PROCESSO DE AVALIAÇÃO DE DISCIPLINAS</a>
       @endif
     </p>
   @else

@@ -144,7 +144,7 @@ class PercepcaoAvaliacaoCreate extends Component
 
         $this->reset();
 
-        return redirect()->to('/percepcao-institucional');
+        return redirect()->to('/');
     }
 
     public function render()
