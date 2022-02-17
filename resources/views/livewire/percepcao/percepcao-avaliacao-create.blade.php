@@ -127,7 +127,9 @@
 
         @enderror
       @endif
-      <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
+      @if (request()->is('avaliar'))
+        <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
+      @endif
     @else
       <div class="font-weight-bold text-center mt-5">
         {!! $this->statusPercepcao !!}
