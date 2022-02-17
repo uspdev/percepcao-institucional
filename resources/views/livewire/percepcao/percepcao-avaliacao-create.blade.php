@@ -34,7 +34,7 @@
             <div class="h6">
               Ministrante:
               <span class="bold">
-                {{ $pessoa::obterNome($valorAvaliacaoQuesito['ministranteDaDisciplina']) }}
+                {{ $valorAvaliacaoQuesito['ministranteDaDisciplina'] }}
               </span>
             </div>
 
