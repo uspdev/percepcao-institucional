@@ -27,7 +27,7 @@ class PercepcaoAvaliacaoCreate extends Component
     protected $rules = [];
     protected $messages = [];
 
-    public function mount()
+    public function mount(Request $request)
     {
         $ano = date('Y');
         $semestre = (date('m') <= '06') ? 1 : 2;
@@ -46,7 +46,7 @@ class PercepcaoAvaliacaoCreate extends Component
             if ($request->is('avaliar/preview')) {
                 $this->disciplinas = $this->montaDisciplinasFake();        
             } else {
-                $this->disciplinas = Graduacao::listarDisciplinas(10407152, 20212);
+                $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(10407152, 20212);
             }
 
             $this->pessoa = Pessoa::class;
@@ -103,17 +103,7 @@ class PercepcaoAvaliacaoCreate extends Component
             ];
         }
 
-        dd($disciplinasFake);
-    }
-
-    public function exibeNome($nome) 
-    {
-        if (is_numeric($nome)) {
-            return $pessoa::obterNome($nome);
-        }
-        else {
-            return $nome;
-        }
+        return $disciplinasFake;
     }
 
     protected function rules()
