@@ -129,6 +129,8 @@
       @endif
       @if (request()->is('avaliar'))
         <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
+      @else
+        <a href="gestao-sistema/percepcao"><button class="btn btn-primary">Voltar</button></a>
       @endif
     @else
       <div class="font-weight-bold text-center mt-5">
