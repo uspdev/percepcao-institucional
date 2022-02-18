@@ -44,7 +44,7 @@ class PercepcaoAvaliacaoCreate extends Component
             }
             
             if ($request->is('avaliar/preview')) {
-                $this->disciplinas = $this->montaDisciplinasFake();        
+                $this->disciplinas = config('percepcao.disciplinas_fake');
             } else {
                 $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(10407152, 20212);
             }
@@ -88,22 +88,6 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->avaliacaoQuesitos[$key]['user_id'] = Auth::id();
             }
         }
-    }
-
-    public function montaDisciplinasFake()
-    {
-        for ($a = 0; $a < 2; $a++) {
-            $disciplinasFake[$a] = [
-                'codpes' => 'Docente Fulano de Tal ' . ($a + 1),
-                'coddis' => 'DPT000' . ($a + 1),
-                'nomdis' => 'Disciplina Tal ' . ($a + 1),
-                'verdis' => '1',
-                'codtur' => date('Y') . ($a + 1) . 'A1',
-                'tiptur' => 'Teórica',
-            ];
-        }
-
-        return $disciplinasFake;
     }
 
     protected function rules()
