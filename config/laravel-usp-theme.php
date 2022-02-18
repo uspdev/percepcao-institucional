@@ -13,6 +13,11 @@ $submenu2 = [
         'text' => 'Avaliar',
         'url' => 'avaliar',
     ],
+    [
+        'text' => 'Avaliar - Preview',
+        'url' => 'avaliar/preview',
+        'can' => 'gerente'
+    ],
 ];
 
 $menu = [
