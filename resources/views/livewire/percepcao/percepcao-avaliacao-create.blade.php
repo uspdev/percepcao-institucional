@@ -1,7 +1,7 @@
 <div class="container" style="max-width: 1000px">
 
   <h3 class="text-center font-weight-bold">
-    Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}</span>
+    Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}@if(request()->is("avaliar/preview/$percepcao->id")) - PREVIEW<small class="align-top"> (<a href="gestao-sistema/percepcao">sair</a>)</small> @endif</span>
   </h3>
   <hr>
   @if ($this->percepcao)
