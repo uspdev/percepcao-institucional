@@ -14,25 +14,30 @@ use Uspdev\Replicado\Pessoa;
 
 class PercepcaoAvaliacaoCreate extends Component
 {
-    public $percepcao;
+    public $percepcao;    
+    public $disciplinas;
+    public $pessoa;
+    public $idPercepcao;
     public $disciplinaQuesitos = [];
     public $alunoQuesitos = [];
     public $avaliacaoQuesitos = [];
-    public $comentariosESugestoesGerais;
-    public $disciplinas;
-    public $pessoa;
+    public $comentariosESugestoesGerais;    
     public $statusPercepcao = null;
     public $limiteComentariosDisciplina = 100;
     public $limiteComentarioGeral = 400;
     protected $rules = [];
     protected $messages = [];
 
-    public function mount(Request $request)
+    public function mount(Request $request, $idPercepcao = null)
     {
         $ano = date('Y');
         $semestre = (date('m') <= '06') ? 1 : 2;
 
-        $this->percepcao = Percepcao::where('ano', $ano)->where('semestre', $semestre)->first();
+        $this->percepcao = null;
+
+        if (is_numeric($idPercepcao)) {
+            $this->percepcao = Percepcao::find($idPercepcao);
+        }        
 
         if ($this->percepcao) {
             if ($this->percepcao->dataDeAbertura > date('Y-m-d H:i:s')) {
@@ -43,8 +48,9 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
             
-            if ($request->is('avaliar/preview')) {
+            if ($request->is("avaliar/preview/$idPercepcao")) {
                 $this->disciplinas = config('percepcao.disciplinas_fake');
+                $this->statusPercepcao = null;
             } else {
                 $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(10407152, 20212);
             }
