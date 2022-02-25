@@ -1,11 +1,10 @@
-<div class="container" style="max-width: 1000px">
-
-  <h3 class="text-center font-weight-bold">
-    Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}@if(request()->is("avaliar/preview/$percepcao->id")) - PREVIEW<small class="align-top"> (<a href="gestao-sistema/percepcao">sair</a>)</small> @endif</span>
-  </h3>
-  <hr>
+<div class="container" style="max-width: 1000px">  
   @if ($this->percepcao)
     @if (!$this->statusPercepcao)
+      <h3 class="text-center font-weight-bold">
+        Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}@if(request()->is("avaliar/preview/$percepcao->id")) - PREVIEW<small class="align-top"> (<a href="gestao-sistema/percepcao">sair</a>)</small> @endif</span>
+      </h3>
+      <hr>
       <div class="text-danger font-weight-bold mb-3">
         O presente questionário será utilizado na EEL-USP para melhoria da qualidade de ensino. As identidades serão
         preservadas com total sigilo. (mudar para texto configurável)
