@@ -15,7 +15,7 @@ class PercepcaoSeeder extends Seeder
     {
         \App\Models\Percepcao::create([
             'dataDeAbertura' => now()->format('d/m/Y H:i:s'),
-            'dataDeFechamento' => now()->addDays(3)->format('d/m/Y H:i:s'),
+            'dataDeFechamento' => now()->addDays(mt_rand(1,10))->format('d/m/Y H:i:s'),
             'ano' => date('Y'),
             'semestre' => 2,
             'totalDeAlunosMatriculados' => mt_rand(100,1000),
