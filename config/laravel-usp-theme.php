@@ -12,14 +12,14 @@ $submenu2 = [
     [
         'text' => 'Avaliar',
         'url' => 'avaliar',
-    ],
+    ],    
 ];
 
 $menu = [
-    [
-        'text' => '<i class="fas fa-home"></i> Home',
-        'url' => '/',
-    ],
+    // [
+    //     'text' => '<i class="fas fa-home"></i> Home',
+    //     'url' => '/',
+    // ],
     [
         # este item de menu será substituido no momento da renderização
         'key' => 'menu_dinamico',

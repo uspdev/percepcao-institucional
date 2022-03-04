@@ -28,6 +28,11 @@ class Percepcao extends Model
       ];
     }
 
+    public static function obterAberto() {
+      $now = date('Y-m-d H:i:s');
+      return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
+    }
+
     public function setDataDeAberturaAttribute($dataDeAbertura) {
       $this->attributes['dataDeAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeAbertura)->toDateTimeString();
     }

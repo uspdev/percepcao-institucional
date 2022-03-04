@@ -19,5 +19,6 @@ use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 
 Route::get('/', PercepcaoAvaliacaoShow::class);
 Route::get('/avaliar', PercepcaoAvaliacaoCreate::class)->middleware('auth');
+Route::get('/avaliar/preview/{idPercepcao}', PercepcaoAvaliacaoCreate::class)->middleware('auth');
 Route::get('/gestao-sistema/percepcao', PercepcaoShow::class)->middleware('auth');
 Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class)->middleware('auth');
