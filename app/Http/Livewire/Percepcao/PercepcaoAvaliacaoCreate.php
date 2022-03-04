@@ -52,7 +52,10 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->disciplinas = config('percepcao.disciplinas_fake');
                 $this->statusPercepcao = null;
             } else {
-                $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(10407152, 20212);
+                $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(
+                    Auth::user()->codpes, 
+                    $this->percepcao->ano . $this->percepcao->semestre
+                );
             }
 
             $this->pessoa = Pessoa::class;
