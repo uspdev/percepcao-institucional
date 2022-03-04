@@ -25,6 +25,7 @@ class PercepcaoAvaliacaoCreate extends Component
     public $statusPercepcao = null;
     public $limiteComentariosDisciplina = 100;
     public $limiteComentarioGeral = 400;
+    public $preview = false;
     protected $rules = [];
     protected $messages = [];
 
@@ -32,6 +33,7 @@ class PercepcaoAvaliacaoCreate extends Component
     {
 
         if (is_numeric($idPercepcao)) {
+            $this->preview = true;
             $this->percepcao = Percepcao::find($idPercepcao);
         } else {
             $this->percepcao = Percepcao::obterAberto();
@@ -46,7 +48,7 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
             
-            if ($request->is("avaliar/preview/$idPercepcao")) {
+            if ($this->preview) {
                 $this->disciplinas = config('percepcao.disciplinas_fake');
                 $this->statusPercepcao = null;
             } else {

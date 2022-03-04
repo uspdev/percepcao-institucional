@@ -126,10 +126,10 @@
 
         @enderror
       @endif
-      @if (request()->is('avaliar'))
-        <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
+      @if ($this->preview)
+        <a href="gestao-sistema/percepcao" class="btn btn-primary">Voltar</a>
       @else
-        <a href="gestao-sistema/percepcao"><button class="btn btn-primary">Voltar</button></a>
+        <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
       @endif
     @else
       <div class="font-weight-bold text-center mt-5">
