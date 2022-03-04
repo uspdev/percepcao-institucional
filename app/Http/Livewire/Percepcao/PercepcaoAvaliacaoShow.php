@@ -14,11 +14,8 @@ class PercepcaoAvaliacaoShow extends Component
     public $statusPercepcao = null;
 
     public function mount() {
-        $ano = date('Y');
-        $semestre = (date('m') <= '06') ? 1 : 2;
-        $this->percepcao = Percepcao::where('ano', $ano)->where('semestre', $semestre)->first();
 
-        if($this->percepcao) {
+        if($this->percepcao = Percepcao::obterAberto()) {
             if($this->percepcao->dataDeAbertura > date('Y-m-d H:i:s')) {
                 $this->statusPercepcao = "A Percepção Institucional estará disponível a partir de: " . $this->percepcao->dataDeAbertura->format('d/m/Y \à\s H:i:s') . ".";
             }

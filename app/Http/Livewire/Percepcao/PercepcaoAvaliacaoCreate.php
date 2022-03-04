@@ -3,14 +3,14 @@
 namespace App\Http\Livewire\Percepcao;
 
 use Livewire\Component;
-use Illuminate\Validation\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Percepcao;
-use App\Models\PercepcaoAvaliacao;
-use App\Models\PercepcaoAvaliacaoComentario;
-use Uspdev\Replicado\Graduacao;
+use Illuminate\Http\Request;
 use Uspdev\Replicado\Pessoa;
+use Uspdev\Replicado\Graduacao;
+use App\Models\PercepcaoAvaliacao;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
+use App\Models\PercepcaoAvaliacaoComentario;
 
 class PercepcaoAvaliacaoCreate extends Component
 {
@@ -34,9 +34,7 @@ class PercepcaoAvaliacaoCreate extends Component
         if (is_numeric($idPercepcao)) {
             $this->percepcao = Percepcao::find($idPercepcao);
         } else {
-            $ano = date('Y');
-            $semestre = (date('m') <= '06') ? 1 : 2;
-            $this->percepcao = Percepcao::where('ano', $ano)->where('semestre', $semestre)->first();
+            $this->percepcao = Percepcao::obterAberto();
         }
 
         if ($this->percepcao) {
