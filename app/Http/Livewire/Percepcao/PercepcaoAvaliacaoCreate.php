@@ -30,14 +30,14 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function mount(Request $request, $idPercepcao = null)
     {
-        $ano = date('Y');
-        $semestre = (date('m') <= '06') ? 1 : 2;
-
-        $this->percepcao = null;
 
         if (is_numeric($idPercepcao)) {
             $this->percepcao = Percepcao::find($idPercepcao);
-        }        
+        } else {
+            $ano = date('Y');
+            $semestre = (date('m') <= '06') ? 1 : 2;
+            $this->percepcao = Percepcao::where('ano', $ano)->where('semestre', $semestre)->first();
+        }
 
         if ($this->percepcao) {
             if ($this->percepcao->dataDeAbertura > date('Y-m-d H:i:s')) {
