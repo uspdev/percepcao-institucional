@@ -10,4 +10,9 @@ class Grupo extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function percepcaos()
+    {
+        return $this->belongsToMany(Percepcao::class);
+    }
 }

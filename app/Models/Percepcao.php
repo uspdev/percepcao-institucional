@@ -56,4 +56,14 @@ class Percepcao extends Model
     {
         return $this->hasMany(PercepcaoAvaliacaoComentario::class);
     }
+
+    /**
+     * Relacionamento com os grupos
+     */
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class)
+                        ->as('grupo')
+                        ->withPivot('ordem');
+    }
 }
