@@ -1,0 +1,24 @@
+/* css para o sortable, usado em grupo-show.blade */
+.list-group-item+.list-group-item {
+  border-top-width: 1px;
+}
+
+.nested-sortable, .nested-1, .nested-2, .nested-3, .nested-4 {
+	margin-top: 5px;
+}
+
+.nested-1 {
+  background-color: #f9f9f9;
+}
+
+.nested-2 {
+  background-color: #e9e9e9;
+}
+
+.nested-3 {
+	background-color: #d9d9d9;
+}
+
+.nested-4 {
+	background-color: #c9c9c9;
+}
