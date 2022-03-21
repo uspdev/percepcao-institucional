@@ -5,6 +5,7 @@ use App\Http\Livewire\Percepcao\PercepcaoShow;
 use App\Http\Livewire\Percepcao\PercepcaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
+use App\Http\Livewire\Percepcao\GrupoCreate;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,4 @@ Route::get('/avaliar', PercepcaoAvaliacaoCreate::class)->middleware('auth');
 Route::get('/avaliar/preview/{idPercepcao}', PercepcaoAvaliacaoCreate::class)->middleware('auth');
 Route::get('/gestao-sistema/percepcao', PercepcaoShow::class)->middleware('auth');
 Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class)->middleware('auth');
+Route::get('/gestao-sistema/percepcao/create-grupo', GrupoCreate::class)->middleware('auth');
