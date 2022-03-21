@@ -10,6 +10,7 @@ class WireButton extends Component
     public $label;
     public $click;
     public $wireModifier;
+    public $action;
 
     /**
      * Create a new component instance.
@@ -20,13 +21,15 @@ class WireButton extends Component
                                 $class = '',
                                 $label = '',
                                 $click = '',
-                                $wireModifier = ''
+                                $wireModifier = '',
+                                $action = ''
                             )
     {
         $this->class = $class;
         $this->label = $label;
         $this->click = $click;
         $this->wireModifier = $wireModifier;
+        $this->action = $action;
     }
 
     /**
