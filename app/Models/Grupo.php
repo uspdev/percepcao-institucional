@@ -11,6 +11,16 @@ class Grupo extends Model
 
     protected $guarded = ['id'];
 
+    public function grupos()
+    {
+        return $this->hasMany(Grupo::class, 'parent_id');
+    }
+
+    public function childGrupos()
+    {
+        return $this->hasMany(Grupo::class, 'parent_id')->with('grupos');
+    }
+
     public function percepcaos()
     {
         return $this->belongsToMany(Percepcao::class);
