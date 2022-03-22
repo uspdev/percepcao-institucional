@@ -1,76 +1,15 @@
-@php
-/**
- @endphp
-<div wire:sortable="updateGroupOrder" wire:sortable-group="updateSubgroupOrder" tabindex="0">    
-    @if (count($grupos) > 0)
-        <div>
-            @foreach ($grupos as $grupo)
-                <ul wire:sortable-group.item-group="{{ $grupo->id }}">                    
-                @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => false], key(now() . $grupo->id))
-                </ul>
-            @endforeach
+@if (count($grupos) > 0)        
+    @foreach ($grupos as $grupo)
+        <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">{{ $grupo->texto }}
+            @if (count($grupo->grupos) > 0)                                                                                        
+                @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => 1, 'principal' => true], key($grupo->id . time()))                    
+                
+            @else
+            <div class="list-group nested-sortable"></div>
+            @endif                
         </div>
-    @endif        
-</div>
-@php
-*/
- @endphp
-
- @php
-/**
- @endphp
-<div wire:sortable="updateGroupOrder" wire:sortable-group="updateSubgroupOrder" tabindex="0">    
-    @if (count($grupos) > 0)        
-            @foreach ($grupos as $grupo)
-                <div wire:sortable.item="{{ $grupo->id }}" wire:key="grupo-{{ $grupo->id }}">
-                    <span wire:sortable.handle>{{ $grupo->texto }}</span>
-                    <ul wire:sortable-group.item-group="{{ $grupo->id }}">
-                    @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => false], key(now() . $grupo->id))
-                    </ul>
-                </div>
-            @endforeach        
-    @endif        
-</div>
-@php
-*/
- @endphp
-
- @php
-/**
- @endphp
-<div wire:sortable="updateGroupOrder" wire:sortable-group="updateSubgroupOrder" tabindex="0">    
-    @if (count($grupos) > 0)        
-            @foreach ($grupos as $grupo)
-                <div wire:sortable.item="{{ $grupo->id }}" wire:key="grupo-{{ $grupo->id }}">
-                    <ul>
-                    <li wire:sortable.handle>{{ $grupo->texto }}</li>
-                    </ul>
-                    
-                    <ul wire:sortable-group.item-group="{{ $grupo->id }}">                    
-                    @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => false], key(now() . $grupo->id))
-                    </ul>
-                </div>
-            @endforeach        
-    @endif        
-</div>
-@php
-*/
- @endphp
-
- 
-    @if (count($grupos) > 0)        
-        @foreach ($grupos as $grupo)
-            <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">{{ $grupo->texto }}
-                @if (count($grupo->grupos) > 0)                                                                                        
-                    @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => 1, 'principal' => true], key($grupo->id . time()))                    
-                    
-                @else
-                <div class="list-group nested-sortable"></div>
-                @endif                
-            </div>
-        @endforeach        
-    @endif
-
+    @endforeach        
+@endif
 
 @once
     @section('javascripts_bottom')
