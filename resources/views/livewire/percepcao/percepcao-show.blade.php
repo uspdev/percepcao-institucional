@@ -1,38 +1,3 @@
-@section('styles')
-  @parent
-  <style>
-    a.btn-acao:hover {
-      text-decoration: none;
-    }
-    .btn-icon {
-      background-color: transparent;
-      background-image: none;
-      border: 0;
-    }
-    .btn-icon:hover {
-      color: #fff !important;
-    }
-    .btn-icon:focus {
-      background-color: transparent;
-      background-image: none;
-      border: 0;
-      box-shadow: none;
-    }
-    .div-rounded {
-      border-radius: 0.3rem !important;
-      border-width: 4px;
-      background-color: #f5f5f5;
-      padding: 5px;
-    }
-    .table-bordered {
-      background-color: #fff;
-    }
-    .table thead th {
-      vertical-align: middle;
-    }
-  </style>
-@endsection
-
 <div>
     <button wire:click="selectedId('', 'create')"  class="btn btn-primary" data-toggle="modal">
         Cadastrar Percepção Institucional
