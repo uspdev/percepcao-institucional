@@ -13,16 +13,22 @@ class GrupoCreate extends Component
     public $ativo;
     public $subGrupos;
     public $optionGrupos;
+    public $selectedId;
+    public $action;
+
+    protected $listeners = [
+        'getSelectedId'
+    ];
 
     public function mount()
     {
         $this->subGrupos = Grupo::with('childGrupos')
             ->get();
 
-        $this->optionGrupos[''] = 'Nenhum';        
-        foreach ($this->subGrupos as $grupos) {            
-            $this->optionGrupos[$grupos->id] = $grupos->texto;            
-        }      
+        $this->optionGrupos[''] = 'Nenhum';
+        foreach ($this->subGrupos as $grupos) {
+            $this->optionGrupos[$grupos->id] = $grupos->texto;
+        }
         
         $this->parent_id = '';
         $this->texto = '';
@@ -34,18 +40,30 @@ class GrupoCreate extends Component
     ];
 
     public function save()
-    {                
+    {
         $this->validate();
 
-        $parent_id = (is_numeric($this->parent_id)) ? $this->parent_id : null;  
+        $parent_id = (is_numeric($this->parent_id)) ? $this->parent_id : null;
 
         $created = Grupo::create([
             'parent_id' => $parent_id,
             'texto' => $this->texto,
             'ativo' => $this->ativo,
-        ]);        
+        ]);
+        
+        $this->texto = '';
+        $this->parent_id = '';
+    }
 
-        return redirect(request()->header('Referer'));
+    public function getSelectedId($id, $action)
+    {
+        $this->selectedId = $id;
+        $this->action = $action;        
+    }
+
+    public function delete()
+    {
+        Grupo::destroy($this->selectedId);
     }
 
     public function render()

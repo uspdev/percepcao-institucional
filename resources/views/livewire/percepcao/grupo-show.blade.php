@@ -1,65 +1,47 @@
-@if (count($grupos) > 0)        
-    @foreach ($grupos as $grupo)
-        <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">{{ $grupo->texto }}
-            @if (count($grupo->grupos) > 0)                                                                                        
-                @livewire('percepcao.grupo-sub-grupo-show', ['childGrupos' => $grupo, 'subgrupo' => 1, 'principal' => true], key($grupo->id . time()))                    
-                
-            @else
-            <div class="list-group nested-sortable"></div>
-            @endif                
-        </div>
-    @endforeach        
-@endif
-
-@once
-    @section('javascripts_bottom')
-    <script>
-        $(function () {
-            const nestedQuery = '.nested-sortable';
-            const identifier = 'sortableId';
-            const root = document.getElementById('nestedDemo');
-
-            var nestedSortables = [].slice.call(document.querySelectorAll(nestedQuery));
-            
-            function sort(sortables) {
-                // Loop through each nested sortable element
-                for (var i = 0; i < sortables.length; i++) {
-                    new Sortable(sortables[i], {
-                        group: 'nested',
-                        animation: 150,
-                        fallbackOnBody: true,
-                        swapThreshold: 0.65,
-                        onSort: function (e) {
-                            @this.updateOrder(serialize(root));
-                        }
-                    });
-                }
-            }
-
-            sort(nestedSortables);
-            
+<div id="sortableAlpine" class="list-group nested-sortable"
+    x-data="{}"
+    x-init="Sortable.create($el, {
+        group: 'nested',
+        animation: 150,
+        onSort: function (e) {
             function serialize(sortable) {
                 var serialized = [];
                 var children = [].slice.call(sortable.children);
                 for (var i in children) {                    
-                    var nested = children[i].querySelector(nestedQuery);
-                    var closest = children[i].closest(".list-group");
-                    var parent_id = (closest.closest(".list-group-item") === null) ? null : closest.closest(".list-group-item").dataset[identifier];
+                    var nested = children[i].querySelector('.nested-sortable');
+                    var closest = children[i].closest('.list-group');
+                    var parent_id = (closest.closest('.list-group-item') === null) ? null : closest.closest('.list-group-item').dataset['sortableId'];
                     serialized.push({
-                        id: children[i].dataset[identifier],
+                        id: children[i].dataset['sortableId'],
                         parent: parent_id,
                         children: nested ? serialize(nested) : []
                     });
                 }
                 return serialized
             }
-
-            window.addEventListener('contentChanged', event => {
-                var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
-                sort(nestedSortables);
-            });
-        });
-    </script>
-    @endsection
-@endonce
-				
+            const root = document.getElementById('sortableAlpine');                
+            @this.updateOrder(serialize(root));
+        }
+    })"
+>
+    @if (count($grupos) > 0)        
+        @foreach ($grupos as $grupo)
+            <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">
+                <span class="texto-sortable">{{ $grupo->texto }}</span>
+                @if (!$grupo->grupos->count())
+                    <span class="acoes-sortable">
+                        <x-form.wire-button
+                            class="btn btn-danger text-danger btn-icon"                    
+                            click="getSelectedId({{ $grupo->id }}, 'delete')"
+                            action="delete"
+                            data-toggle="modal"
+                            data-target="#excluirModal"
+                            />
+                    </span>
+                @endif
+                <div class="clear"></div>                
+                <x-subgrupo :childGrupos="$grupo" :principal="true" :subgrupo="1" />
+            </div>
+        @endforeach
+    @endif
+</div>
