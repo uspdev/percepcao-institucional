@@ -1,3 +1,41 @@
+/* css para configurações da tabela */
+.div-rounded {
+  border-radius: 0.3rem !important;
+  border-width: 4px;
+  background-color: #f5f5f5;
+  padding: 5px;
+}
+
+.table-bordered {
+  background-color: #fff;
+}
+
+.table thead th {
+  vertical-align: middle;
+}
+
+/* css para configuração dos botões de ação */
+a.btn-acao:hover {
+  text-decoration: none;
+}
+
+.btn-icon {
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+}
+
+.btn-icon:hover {
+  color: #fff !important;
+}
+
+.btn-icon:focus {
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+}
+
 /* css para o sortable, usado em grupo-show.blade */
 .list-group-item+.list-group-item {
   border-top-width: 1px;
@@ -21,4 +59,17 @@
 
 .nested-4 {
 	background-color: #c9c9c9;
+}
+
+/* css para a exibição dos botões de ação na lista sortable */
+.texto-sortable {
+  float: left;
+}
+
+.acoes-sortable {
+  float: right;
+}
+
+.clear {
+  clear: both;
 }
