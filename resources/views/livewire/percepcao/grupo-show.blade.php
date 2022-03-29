@@ -19,19 +19,19 @@
                 }
                 return serialized
             }
-            const root = document.getElementById('sortableAlpine');                
+            const root = document.getElementById('sortableAlpine');
             @this.updateOrder(serialize(root));
         }
     })"
 >
-    @if (count($grupos) > 0)        
+    @if (count($grupos) > 0)
         @foreach ($grupos as $grupo)
             <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">
                 <span class="texto-sortable">{{ $grupo->texto }}</span>
                 @if (!$grupo->grupos->count())
                     <span class="acoes-sortable">
                         <x-form.wire-button
-                            class="btn btn-danger text-danger btn-icon"                    
+                            class="btn btn-danger text-danger btn-icon"
                             click="getSelectedId({{ $grupo->id }}, 'delete')"
                             action="delete"
                             data-toggle="modal"
@@ -39,7 +39,7 @@
                             />
                     </span>
                 @endif
-                <div class="clear"></div>                
+                <div class="clear"></div>
                 <x-subgrupo :childGrupos="$grupo" :principal="true" :subgrupo="1" />
             </div>
         @endforeach
