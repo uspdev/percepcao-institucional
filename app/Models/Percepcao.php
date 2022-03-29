@@ -21,23 +21,27 @@ class Percepcao extends Model
         'dataDeFechamento'
     ];
 
-    public static function simNao() {
+    public static function simNao()
+    {
       return [
         'Sim',
         'Não'
       ];
     }
 
-    public static function obterAberto() {
+    public static function obterAberto()
+    {
       $now = date('Y-m-d H:i:s');
       return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
     }
 
-    public function setDataDeAberturaAttribute($dataDeAbertura) {
+    public function setDataDeAberturaAttribute($dataDeAbertura)
+    {
       $this->attributes['dataDeAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeAbertura)->toDateTimeString();
     }
 
-    public function setDataDeFechamentoAttribute($dataDeFechamento) {
+    public function setDataDeFechamentoAttribute($dataDeFechamento)
+    {
       $this->attributes['dataDeFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeFechamento)->toDateTimeString();
     }
 
