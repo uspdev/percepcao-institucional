@@ -3,6 +3,7 @@
     x-init="Sortable.create($el, {
         group: 'nested',
         animation: 150,
+        handle: '.handler',
         onSort: function (e) {
             function serialize(sortable) {
                 var serialized = [];
@@ -27,7 +28,20 @@
     @if (count($grupos) > 0)
         @foreach ($grupos as $grupo)
             <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">
-                <span class="texto-sortable">{{ $grupo->texto }}</span>
+                <span>
+                    <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />                    
+                </span>
+                <span class="texto-sortable">
+                    <div x-data="{ edit: false }">
+                        <span @click="edit = true" x-show="! edit">{{ $grupo->texto }}</span>
+                        <input
+                            type="text"
+                            value="{{ $grupo->texto }}"
+                            x-show="edit"
+                            @click.away="edit = false"
+                            />
+                    </div>                    
+                </span>
                 @if (!$grupo->grupos->count())
                     <span class="acoes-sortable">
                         <x-form.wire-button
