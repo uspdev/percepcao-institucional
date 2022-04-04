@@ -8,7 +8,7 @@
             function serialize(sortable) {
                 var serialized = [];
                 var children = [].slice.call(sortable.children);
-                for (var i in children) {                    
+                for (var i in children) {
                     var nested = children[i].querySelector('.nested-sortable');
                     var closest = children[i].closest('.list-group');
                     var parent_id = (closest.closest('.list-group-item') === null) ? null : closest.closest('.list-group-item').dataset['sortableId'];
@@ -27,20 +27,12 @@
 >
     @if (count($grupos) > 0)
         @foreach ($grupos as $grupo)
-            <div data-sortable-id="{{ $grupo->id }}" class="list-group-item nested-1">
+            <div data-sortable-id="{{ $grupo->id }}" id="grupo-{{ $grupo->id }}" class="list-group-item nested-1">
                 <span>
-                    <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />                    
+                    <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />
                 </span>
                 <span class="texto-sortable">
-                    <div x-data="{ edit: false }">
-                        <span @click="edit = true" x-show="! edit">{{ $grupo->texto }}</span>
-                        <input
-                            type="text"
-                            value="{{ $grupo->texto }}"
-                            x-show="edit"
-                            @click.away="edit = false"
-                            />
-                    </div>                    
+                    <x-alpine.text-inline-edit :value="$grupo->texto" :id="$grupo->id" />
                 </span>
                 @if (!$grupo->grupos->count())
                     <span class="acoes-sortable">

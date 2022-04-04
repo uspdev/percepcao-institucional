@@ -1,4 +1,8 @@
 /* css geral */
+.bold {
+  font-weight: bold
+}
+
 .w-4 {
   width: 1rem; /* 16px */
 }
@@ -21,6 +25,10 @@
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+[x-cloak] { 
+  display: none !important; 
 }
 /* css para configurações da tabela */
 .div-rounded {
@@ -88,6 +96,7 @@ a.btn-acao:hover {
 /* css para a exibição dos botões de ação na lista sortable */
 .texto-sortable {
   float: left;
+  width: 90%;
 }
 
 .acoes-sortable {

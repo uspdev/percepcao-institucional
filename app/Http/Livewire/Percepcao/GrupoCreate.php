@@ -17,11 +17,13 @@ class GrupoCreate extends Component
     public $action;
 
     protected $listeners = [
-        'getSelectedId'
+        'getSelectedId',
+        'refreshParent' => 'mount',
     ];
 
     public function mount()
     {
+        $this->optionGrupos = [];
         $this->subGrupos = Grupo::with('childGrupos')
             ->get();
 
@@ -53,17 +55,21 @@ class GrupoCreate extends Component
         
         $this->texto = '';
         $this->parent_id = '';
+
+        $this->mount();
     }
 
     public function getSelectedId($id, $action)
     {
         $this->selectedId = $id;
-        $this->action = $action;        
+        $this->action = $action;
     }
 
     public function delete()
     {
         Grupo::destroy($this->selectedId);
+        
+        $this->mount();
     }
 
     public function render()

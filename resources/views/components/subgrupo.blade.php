@@ -1,6 +1,11 @@
 @if ($principal === false)
-    <div data-sortable-id="{{ $childGrupos->id }}" class="list-group-item nested-{{ $subgrupo }}">
-        <span class="texto-sortable">{{ $childGrupos->texto }}</span>
+    <div data-sortable-id="{{ $childGrupos->id }}" id="grupo-{{ $childGrupos->id }}" class="list-group-item nested-{{ $subgrupo }}">
+        <span>
+            <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />
+        </span>
+        <span class="texto-sortable">
+            <x-alpine.text-inline-edit :value="$childGrupos->texto" :id="$childGrupos->id" />
+        </span>
         @if (!$childGrupos->grupos->count())
             <span class="acoes-sortable">
                 <x-form.wire-button
@@ -20,6 +25,7 @@
             x-init="Sortable.create($el, {
                 group: 'nested',
                 animation: 150,
+                handle: '.handler',
                 fallbackOnBody: true,
                 swapThreshold: 0.65,
                 onSort: function (e) {

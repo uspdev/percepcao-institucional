@@ -11,8 +11,6 @@ class GrupoShow extends Component
     public $texto;
     public $selectedId;
     public $action;
-    public $isEditing;
-    public $editTextId;
 
     protected $listeners = [
         'updateOrder'
@@ -29,7 +27,7 @@ class GrupoShow extends Component
     }
 
     public function updateOrder($list)
-    {            
+    {
         foreach ($list as $key => $value) {
             if ($value['parent'] === null) {
                 Grupo::find($value['id'])->update(['parent_id' => $value['parent']]);
@@ -45,17 +43,19 @@ class GrupoShow extends Component
         $this->mount();
     }
 
+    public function updateTexto($id, $texto)
+    {        
+        Grupo::find($id)->update(['texto' => $texto]);
+
+        $this->mount();
+        $this->emit('refreshParent');
+    }
+
     public function getSelectedId($id, $action)
     {
         $this->emit('getSelectedId', $id, $action);
     }
 
-    public function editText($id, $value)
-    {
-        $this->isEditing = true;
-        $this->editTextId = $id;
-        $this->texto = $value;
-    }
 
     public function render()
     {
