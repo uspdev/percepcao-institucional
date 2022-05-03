@@ -59,21 +59,31 @@
                             </td>
                             <td width=''>
                                 <div>
+                                    <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao">
+                                        <x-form.wire-button
+                                            class="btn btn-dark text-dark btn-icon"
+                                            class-icon="w-6 h-6"
+                                            action="question"
+                                          />
+                                    </a>
                                     <a href="avaliar/preview/{{ $percepcao->id }}" class="btn-acao">
                                         <x-form.wire-button
                                             class="btn btn-dark text-dark btn-icon"
+                                            class-icon="w-6 h-6"
                                             action="preview"
                                           />
                                     </a>
                                     <x-form.wire-button
-                                        class="btn btn-primary text-primary btn-icon"                    
+                                        class="btn btn-primary text-primary btn-icon"
+                                        class-icon="w-6 h-6"
                                         click="selectedId({{ $percepcao->id }}, 'update')"
                                         action="update"
-                                        data-toggle="modal" 
+                                        data-toggle="modal"
                                         data-target="#percepcaoModal"
                                       />
                                     <x-form.wire-button
-                                        class="btn btn-danger text-danger btn-icon"                    
+                                        class="btn btn-danger text-danger btn-icon"
+                                        class-icon="w-6 h-6"
                                         click="selectedId({{ $percepcao->id }}, 'delete')"
                                         action="delete"
                                         data-toggle="modal"
@@ -87,25 +97,7 @@
             </table>
         </div>
         <!-- Modal para exclusão -->
-        <div wire:ignore.self class="modal fade" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                            <span aria-hidden="true close-btn">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Tem certeza que deseja excluir?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cancelar</button>
-                        <button type="button" wire:click.prevent="delete()" class="btn btn-danger close-modal" data-dismiss="modal">Sim, excluir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <x-modal.delete />
     @else
         <br><br>
         <div class="content text-center font-weight-bold">Nenhuma percepção foi cadastrada ainda!</div>
