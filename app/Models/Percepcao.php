@@ -67,7 +67,10 @@ class Percepcao extends Model
     public function grupos()
     {
         return $this->belongsToMany(Grupo::class)
-                        ->as('grupo')
-                        ->withPivot('ordem');
+            ->as('grupo')
+            ->withTimestamps()
+            ->withPivot('ordem')
+            ->with('childGrupos')
+            ->orderBy('ordem');
     }
 }
