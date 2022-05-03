@@ -19,6 +19,22 @@
   height: 1.5rem; /* 24px */
 }
 
+.w-8 {
+  width: 2rem; /* 24px */
+}
+
+.h-8 {
+  height: 2rem; /* 24px */
+}
+
+.pl-5 {
+  padding-left: 2rem !important;
+}
+
+.pl-8 {
+  padding-left: 4rem !important;
+}
+
 .cursor-move {
   cursor: move;
 }
@@ -110,4 +126,13 @@ a.btn-acao:hover {
 
 .clear {
   clear: both;
+}
+
+/* css para a adição de grupo à percepção */
+.card-body > div > .form-group {
+  margin-bottom: 0;
+}
+
+.card-text .card .card-body:hover {
+  background-color: #ececf6;
 }
