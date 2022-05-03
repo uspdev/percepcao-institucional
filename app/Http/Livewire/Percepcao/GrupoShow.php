@@ -10,10 +10,10 @@ class GrupoShow extends Component
     public $grupos;
     public $texto;
     public $selectedId;
-    public $action;
+    public $action;    
 
     protected $listeners = [
-        'updateOrder'
+        'updateOrdem'
     ];
 
     public function mount()
@@ -21,13 +21,10 @@ class GrupoShow extends Component
         $this->grupos = Grupo::whereNull('parent_id')
             ->with('childGrupos')
             ->get();
-        
-        $this->isEditing = false;
-        $this->editTextId = null;
     }
 
-    public function updateOrder($list)
-    {
+    public function updateOrdem($list)
+    {                
         foreach ($list as $key => $value) {
             if ($value['parent'] === null) {
                 Grupo::find($value['id'])->update(['parent_id' => $value['parent']]);
@@ -36,11 +33,11 @@ class GrupoShow extends Component
                 foreach ($value['children'] as $keyItem => $valueItem) {
                     Grupo::find($valueItem['id'])->update(['parent_id' => $value['id']]);
                 }
-                $this->updateOrder($value['children'], true);
+                $this->updateOrdem($value['children'], true);
             }
         }
 
-        $this->mount();
+        $this->mount();        
     }
 
     public function updateTexto($id, $texto)
@@ -56,6 +53,10 @@ class GrupoShow extends Component
         $this->emit('getSelectedId', $id, $action);
     }
 
+    public function canDelete($grupoId)
+    {
+        return (Grupo::find($grupoId)->percepcaos->count()) ? false : true;
+    }
 
     public function render()
     {
