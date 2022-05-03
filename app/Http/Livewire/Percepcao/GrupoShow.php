@@ -10,7 +10,7 @@ class GrupoShow extends Component
     public $grupos;
     public $texto;
     public $selectedId;
-    public $action;    
+    public $action;
 
     protected $listeners = [
         'updateOrdem'
@@ -37,11 +37,11 @@ class GrupoShow extends Component
             }
         }
 
-        $this->mount();        
+        $this->mount();
     }
 
     public function updateTexto($id, $texto)
-    {        
+    {
         Grupo::find($id)->update(['texto' => $texto]);
 
         $this->mount();
