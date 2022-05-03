@@ -11,6 +11,7 @@ class WireRadio extends Component
     public $arrValue;
     public $arrText;
     public $id;
+    public $disabled;
     public $wireModifier;
     public $showError;
 
@@ -25,6 +26,7 @@ class WireRadio extends Component
                                 $arrValue = [],
                                 $arrText = [],
                                 $id = '',
+                                $disabled = false,
                                 $wireModifier = '',
                                 $showError = true
                             )
@@ -34,6 +36,7 @@ class WireRadio extends Component
         $this->arrValue = $arrValue;
         $this->arrText = $arrText;
         $this->id = $id;
+        $this->disabled = $disabled;
         $this->wireModifier = $wireModifier;
         $this->showError = $showError;
     }
