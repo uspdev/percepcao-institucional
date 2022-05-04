@@ -37,7 +37,7 @@
                                                 classInput="grupoCheckbox"
                                                 data-grupo-id="{{ $grupo->id }}"
                                                 x-model="checkedGrupo{{ $grupo->id }}"
-                                                wireModifier=""
+                                                wireModifier=".defer"
                                                 />
                                             <x-list-subgrupo :childGrupos="$grupo" :principal="true" :subgrupo="5" />
                                         </div>
