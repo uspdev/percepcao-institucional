@@ -11,6 +11,7 @@ class PercepcaoAddQuestao extends Component
 {
     public $percepcao;
     public $grupo;
+    public $grupoCheck;
     public $idPercepcao;
     public $selectedId;
     public $tipoModel;

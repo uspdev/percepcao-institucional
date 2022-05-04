@@ -32,12 +32,12 @@
                                     <div x-data="{ checkedGrupo{{ $grupo->id }}: '' }" id="grupo-{{ $grupo->id }}-{{ $loop->index }}" class="card shadow-sm mb-2">
                                         <div class="card-body" x-bind:style="checkedGrupo{{ $grupo->id }} ? `background-color: #ececf6` : ''">
                                             <x-form.wire-checkbox
-                                                model="{{ $grupo->id }}"
+                                                model="grupoCheck.{{ $grupo->id }}"
                                                 label="{{ $grupo->texto }}"
                                                 classInput="grupoCheckbox"
                                                 data-grupo-id="{{ $grupo->id }}"
                                                 x-model="checkedGrupo{{ $grupo->id }}"
-                                                wireModifier=".defer"
+                                                wireModifier=""
                                                 />
                                             <x-list-subgrupo :childGrupos="$grupo" :principal="true" :subgrupo="5" />
                                         </div>
