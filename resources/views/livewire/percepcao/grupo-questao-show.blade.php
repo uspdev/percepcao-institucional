@@ -58,8 +58,8 @@
                                         <div>
                                             <x-form.wire-radio
                                                 model="{{ $questao->id }}"
-                                                :arrValue="$this->getCamposQuestao($questao->id)['keys']"
-                                                :arrText="$this->getCamposQuestao($questao->id)['values']"
+                                                :arrValue="$this->questaoClass->getCamposQuestao($questao->id)['keys']"
+                                                :arrText="$this->questaoClass->getCamposQuestao($questao->id)['values']"
                                                 style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;"
                                                 wireModifier=".defer"
                                                 disabled="true"
@@ -75,7 +75,7 @@
                                             />
                                         @break
                                     @default
-                                        
+
                                 @endswitch
                             </div>
                         </div>

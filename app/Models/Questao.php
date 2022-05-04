@@ -13,6 +13,23 @@ class Questao extends Model
 
     protected $casts = ['campo' => 'array'];
 
+    public function getCamposQuestao($id)
+    {
+        $questao = $this::where('id', $id)->get();
+
+        $plucked = $questao->pluck('campo.options')->toArray();
+
+        $keys = array_column($plucked[0], 'key');
+        $values = array_column($plucked[0], 'value');
+
+        $optionValues = [
+            'keys' => $keys,
+            'values' => $values,
+        ];
+
+        return $optionValues;
+    }
+
     /**
      * Relacionamento com os grupos
      */

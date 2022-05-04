@@ -11,14 +11,17 @@ class GrupoQuestaoShow extends Component
 {
     public $questaos;
     public $questao = [];
+    public $questaoClass;
     public $grupoQuestaos;
     public $grupo;
     public $percepcaoId;
 
-    public function mount()
+    public function mount(Questao $questaoClass)
     {
+        $this->questaoClass = $questaoClass;
+
         $this->grupoQuestaos = $this->grupo->questaos()->get();
-        
+
         $this->questaos = Questao::whereNotIn('id', $this->grupo->questaos()->pluck('id')->toArray())->get();
     }
 
@@ -36,25 +39,8 @@ class GrupoQuestaoShow extends Component
         }
 
         $titulo .=  ')';
-        
+
         return $titulo;
-    }
-
-    public function getCamposQuestao($id)
-    {
-        $questao = Questao::where('id', $id)->get();
-
-        $plucked = $questao->pluck('campo.options')->toArray();
-
-        $keys = array_column($plucked[0], 'key');
-        $values = array_column($plucked[0], 'value');
-
-        $optionValues = [
-            'keys' => $keys,
-            'values' => $values,
-        ];
-
-        return $optionValues;
     }
 
     public function getSelectedId($id, $tipoModel, $modelId)
@@ -65,7 +51,7 @@ class GrupoQuestaoShow extends Component
     public function saveSelectedQuestoes($questoes, $grupoId)
     {
         $grupo = Grupo::find($grupoId);
-        
+
         foreach ($questoes as $key => $questao) {
             if (!$grupo->questaos->count()) {
                 $ordem = 0;
