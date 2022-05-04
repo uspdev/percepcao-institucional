@@ -16,7 +16,7 @@ class GrupoQuestaoShow extends Component
     public $grupo;
     public $percepcaoId;
 
-    public function mount(Questao $questaoClass)
+    public function mount(Questao $questaoClass = null)
     {
         $this->questaoClass = $questaoClass;
 
@@ -62,7 +62,7 @@ class GrupoQuestaoShow extends Component
             $grupo->questaos()->attach($questao, ['ordem' => $ordem]);
         }
 
-        $this->mount($grupoId);
+        $this->mount();
     }
 
     public function updateOrdemQuestao($list, $grupoId)
