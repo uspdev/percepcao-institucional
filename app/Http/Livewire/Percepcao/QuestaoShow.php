@@ -31,6 +31,11 @@ class QuestaoShow extends Component
         return Questao::find($id)->grupos->count();
     }
 
+    public function copyQuestao($id)
+    {
+        $this->emit('getUpdatedId', $id, true);
+    }
+
     public function delete()
     {
         Questao::destroy($this->selectedId);

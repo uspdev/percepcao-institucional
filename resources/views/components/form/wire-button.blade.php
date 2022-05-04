@@ -27,5 +27,8 @@
     @if ($action === 'save')
         <x-icon.save class="{{ $classIcon }}" />
     @endif
+    @if ($action === 'copy')
+        <x-icon.copy class="{{ $classIcon }}" />
+    @endif
     {{ $label }}
 </button>

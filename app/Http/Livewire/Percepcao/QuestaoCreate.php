@@ -60,7 +60,7 @@ class QuestaoCreate extends Component
         unset($this->campos['options'][$key]);
     }
 
-    public function getUpdatedId($id)
+    public function getUpdatedId($id, $isCopying = false)
     {
         $this->resetErrorBag();
         $this->updateId = $id;
@@ -101,7 +101,11 @@ class QuestaoCreate extends Component
 
             $this->ativo = $questao->ativo;
 
-            $this->updating = true;
+            if (!$isCopying) {
+                $this->updating = true;
+            } else {
+                $this->updating = false;
+            }
 
             $this->emit('gotoUpdate', 'cadastro-questao');
         }
@@ -111,7 +115,7 @@ class QuestaoCreate extends Component
     {
         $validated = $this->validate();
 
-        if (is_numeric($this->updateId)) {
+        if ($this->updating) {
             if ($this->campos['type'] !== 'radio') {
                 unset($this->campos['options']);
                 $this->campos['options'][] = '';

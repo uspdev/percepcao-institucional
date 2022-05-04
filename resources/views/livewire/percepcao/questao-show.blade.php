@@ -17,6 +17,12 @@
                             click="getUpdateId({{ $questao->id }})"
                             action="update"
                             />
+                        <x-form.wire-button
+                            class="btn btn-info text-info btn-icon"
+                            class-icon="w-6 h-6"
+                            click="copyQuestao({{ $questao->id }})"
+                            action="copy"
+                            />
                         @if (!$this->hasGrupo($questao->id))
                             <x-form.wire-button
                                 class="btn btn-danger text-danger btn-icon"
@@ -34,24 +40,24 @@
                         <label for="" class="bold">Tipo:</label>
                         {{ $questao->campo['type'] }}
                     </div>
-                    @isset($questao->campo['rows'])
+                    @if(!empty($questao->campo['rows']))
                         <div>
                             <label for="" class="bold">Linhas(rows):</label>
                             {{ $questao->campo['rows'] }}
                         </div>
-                    @endisset
-                    @isset($questao->campo['cols'])
+                    @endif
+                    @if(!empty($questao->campo['cols']))
                         <div>
                             <label for="" class="bold">Colunas(cols):</label>
                             {{ $questao->campo['cols'] }}
                         </div>
-                    @endisset
-                    @isset($questao->campo['maxlength'])
+                    @endif
+                    @if(!empty($questao->campo['maxlength']))
                         <div>
                             <label for="" class="bold">Máximo de caracteres(maxlength):</label>
                             {{ $questao->campo['maxlength'] }}
                         </div>
-                    @endisset
+                    @endif
                     @if($questao->campo['options'] != "")
                         @foreach ($questao->campo['options'] as $key => $option)
                             <div class="d-flex flex-row justify-content-start align-items-start">
@@ -70,12 +76,12 @@
                             </div>
                         @endforeach
                     @endif
-                    @isset ($questao->campo['class'])
+                    @if (!empty($questao->campo['class']))
                         <div>
                             <label for="" class="bold">Classes:</label>
                             {{ $questao->campo['class'] }}
                         </div>
-                    @endisset
+                    @endif
                 </div>
             </div>
         </div>

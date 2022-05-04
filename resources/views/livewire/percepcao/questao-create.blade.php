@@ -63,7 +63,7 @@
                         label="Chave"
                         type="text"
                         class="p-1 my-0"
-                        placeholder="Ex.: 0"
+                        placeholder="Ex.: 1"
                         wireModifier=".defer"
                         />
                     <x-form.wire-button
@@ -123,16 +123,16 @@
     <div>
         @livewire('percepcao.questao-show', key(time()))
     </div>
-    
+
     @section('javascripts_bottom')
         @parent
         <script>
             function handler() {
                 return {
                     openAddQuestao: false,
-                    selectedField: @entangle('selectedField'),                    
+                    selectedField: @entangle('selectedField'),
                     fields: [],
-    
+
                     addNewOption() {
                         this.fields.push({id: new Date().getTime() + this.fields.length});
                     },
