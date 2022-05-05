@@ -76,6 +76,22 @@
                             </div>
                         @endforeach
                     @endif
+                    @if (!empty($questao->campo['model']))
+                        <div>
+                            <label for="" class="bold">Modelo:</label>
+                            {{ $questao->campo['model'] }}
+                        </div>
+                    @endif
+                    @if ($questao->campo['type'] === 'hidden')
+                        <div>
+                            <label for="" class="bold">Exibir texto?</label>
+                            @if (isset($questao->campo['exibirTexto']) && $questao->campo['exibirTexto'])
+                                Sim
+                            @else
+                                Não
+                            @endif
+                        </div>
+                    @endif
                     @if (!empty($questao->campo['class']))
                         <div>
                             <label for="" class="bold">Classes:</label>

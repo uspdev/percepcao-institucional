@@ -10,7 +10,13 @@
             />
         <x-form.wire-select
             model="campos.type"
-            :options="['' => 'Selecione o tipo de campo...', 'text' => 'Texto', 'textarea' => 'Textarea', 'radio' => 'Radio']"
+            :options="[
+                '' => 'Selecione o tipo de campo...',
+                'text' => 'Texto',
+                'textarea' => 'Textarea',
+                'radio' => 'Radio',
+                'hidden' => 'Hidden'
+            ]"
             label="Tipo de campo:"
             wireModifier=".defer"
             x-on:change="
@@ -85,6 +91,32 @@
                 x-show="selectedField === 'radio'"
                 />
         </div>
+        <div x-show="selectedField === 'hidden'">
+            <div class="d-flex flex-row justify-content-center">
+                <x-form.wire-select
+                    model="campos.model"
+                    :options="[
+                        '' => 'Selecione o modelo...',
+                        'codpes' => 'Ministrante da Disciplina',
+                        'coddis' => 'Código da Disciplina',
+                        'nomdis' => 'Nome da Disciplina',
+                        'verdis' => 'Versão da Disciplina',
+                        'codtur' => 'Código da Turma',
+                        'tiptur' => 'Tipo da Turma',
+                    ]"
+                    label="Modelo:"
+                    wireModifier=".defer"
+                    class="pr-4"
+                    />
+                <div class="form-group">
+                    <label>Exibir texto?</label>
+                    <x-form.wire-switch
+                        model="campos.exibirTexto"
+                        wireModifier=".defer"
+                        />
+                </div>
+            </div>
+        </div>
         <x-form.wire-input
             model="campos.class"
             label="Classes:"
@@ -143,8 +175,14 @@
             }
 
             Livewire.on('gotoUpdate', section => {
+                var addTop;
+                if (section == 'cadastro-questao') {
+                    addTop = 0;
+                } else {
+                    addTop = 300;
+                }
                 $('html, body').animate({
-                    scrollTop: $('#' + section).offset().top
+                    scrollTop: $('#' + section).offset().top +addTop
                 }, 500, 'swing');
             });
         </script>

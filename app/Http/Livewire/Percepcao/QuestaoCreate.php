@@ -67,9 +67,13 @@ class QuestaoCreate extends Component
 
         $questao = Questao::find($id);
         if ($questao->count()) {
-            $this->campos['text'] = $questao->campo['text'];
-
-            $this->campos['type'] = $questao->campo['type'];
+            foreach ($questao->campo as $key => $campo) {
+                if ($key !== 'options') {
+                    if (isset($questao->campo[$key])) {
+                        $this->campos[$key] = $questao->campo[$key];
+                    }
+                }
+            }
 
             if (!empty($questao->campo['options'][0])) {
                 foreach ($questao->campo['options'] as $key => $value) {
@@ -83,23 +87,9 @@ class QuestaoCreate extends Component
                 $this->campos['options'][] = '';
             }
 
-            if (isset($questao->campo['cols'])) {
-                $this->campos['cols'] = $questao->campo['cols'];
-            }
-            if (isset($questao->campo['rows'])) {
-                $this->campos['rows'] = $questao->campo['rows'];
-            }
-            if (isset($questao->campo['maxlength'])) {
-                $this->campos['maxlength'] = $questao->campo['maxlength'];
-            }
+            $this->ativo = $questao->ativo;
 
             $this->selectedField = $questao->campo['type'];
-
-            if (isset($questao->campo['class'])) {
-                $this->campos['class'] = $questao->campo['class'];
-            }
-
-            $this->ativo = $questao->ativo;
 
             if (!$isCopying) {
                 $this->updating = true;
@@ -115,12 +105,23 @@ class QuestaoCreate extends Component
     {
         $validated = $this->validate();
 
-        if ($this->updating) {
-            if ($this->campos['type'] !== 'radio') {
-                unset($this->campos['options']);
-                $this->campos['options'][] = '';
-            }
+        if ($this->campos['type'] !== 'radio') {
+            unset($this->campos['options']);
+            $this->campos['options'][] = '';
+        }
 
+        if ($this->campos['type'] !== 'textarea') {
+            unset($this->campos['rows']);
+            unset($this->campos['cols']);
+            unset($this->campos['maxlength']);
+        }
+
+        if ($this->campos['type'] !== 'hidden') {
+            unset($this->campos['model']);
+            unset($this->campos['exibirTexto']);
+        }
+
+        if ($this->updating) {
             Questao::find($this->updateId)->update([
                 'campo' => $this->campos,
                 'ativo' => $this->ativo,
