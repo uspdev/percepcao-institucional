@@ -16,9 +16,9 @@ class GrupoQuestaoShow extends Component
     public $grupo;
     public $percepcaoId;
 
-    public function mount(Questao $questaoClass = null)
+    public function mount()
     {
-        $this->questaoClass = $questaoClass;
+        $this->questaoClass = new Questao;
 
         $this->grupoQuestaos = $this->grupo->questaos()->get();
 
