@@ -7,9 +7,11 @@ use Illuminate\View\Component;
 class WireButton extends Component
 {
     public $class;
+    public $classIcon;
     public $label;
     public $click;
     public $wireModifier;
+    public $action;
 
     /**
      * Create a new component instance.
@@ -18,15 +20,19 @@ class WireButton extends Component
      */
     public function __construct(
                                 $class = '',
+                                $classIcon = '',
                                 $label = '',
                                 $click = '',
-                                $wireModifier = ''
+                                $wireModifier = '',
+                                $action = ''
                             )
     {
         $this->class = $class;
+        $this->classIcon = $classIcon;
         $this->label = $label;
         $this->click = $click;
         $this->wireModifier = $wireModifier;
+        $this->action = $action;
     }
 
     /**

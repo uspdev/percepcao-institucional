@@ -21,23 +21,27 @@ class Percepcao extends Model
         'dataDeFechamento'
     ];
 
-    public static function simNao() {
+    public static function simNao()
+    {
       return [
         'Sim',
         'Não'
       ];
     }
 
-    public static function obterAberto() {
+    public static function obterAberto()
+    {
       $now = date('Y-m-d H:i:s');
       return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
     }
 
-    public function setDataDeAberturaAttribute($dataDeAbertura) {
+    public function setDataDeAberturaAttribute($dataDeAbertura)
+    {
       $this->attributes['dataDeAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeAbertura)->toDateTimeString();
     }
 
-    public function setDataDeFechamentoAttribute($dataDeFechamento) {
+    public function setDataDeFechamentoAttribute($dataDeFechamento)
+    {
       $this->attributes['dataDeFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeFechamento)->toDateTimeString();
     }
 
@@ -55,5 +59,18 @@ class Percepcao extends Model
     public function percepcao_avaliacao_comentarios()
     {
         return $this->hasMany(PercepcaoAvaliacaoComentario::class);
+    }
+
+    /**
+     * Relacionamento com os grupos
+     */
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class)
+            ->as('grupo')
+            ->withTimestamps()
+            ->withPivot('ordem')
+            ->with('childGrupos')
+            ->orderBy('ordem');
     }
 }

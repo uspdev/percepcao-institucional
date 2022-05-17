@@ -21,6 +21,6 @@
         {{ $attributes }} />
   </div>
   @error($model)
-    <span class="small text-danger">{{ $message }}</span>
+    <span class="small text-danger">{!! $message !!}</span>
   @enderror
 </div>

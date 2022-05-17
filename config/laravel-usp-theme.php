@@ -4,7 +4,17 @@ $admin = [
     [
         'text' => 'Percepção',
         'url' => 'gestao-sistema/percepcao',
-        'can' => 'admin',
+        'can' => 'admin',        
+    ],
+    [
+        'text' => 'Grupos',
+        'url' => 'gestao-sistema/percepcao/create-grupo',
+        'can' => 'admin',        
+    ],
+    [
+        'text' => 'Questões',
+        'url' => 'gestao-sistema/percepcao/create-questao',
+        'can' => 'admin',        
     ],
 ];
 
