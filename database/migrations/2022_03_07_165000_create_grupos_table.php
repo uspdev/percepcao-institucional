@@ -18,6 +18,8 @@ class CreateGruposTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('grupos');
             $table->string('texto');
+            $table->boolean('repeticao')->default(false);
+            $table->string('modelo_repeticao')->nullable();
             $table->boolean('ativo')->default(false);
             $table->timestamps();
         });
