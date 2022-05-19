@@ -46,22 +46,6 @@ class Percepcao extends Model
     }
 
     /**
-     * Relacionamento com as avaliações
-     */
-    public function percepcao_avaliacaos()
-    {
-        return $this->hasMany(PercepcaoAvaliacao::class);
-    }
-
-    /**
-     * Relacionamento com as avaliações
-     */
-    public function percepcao_avaliacao_comentarios()
-    {
-        return $this->hasMany(PercepcaoAvaliacaoComentario::class);
-    }
-
-    /**
      * Relacionamento com os grupos
      */
     public function grupos()

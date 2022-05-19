@@ -45,14 +45,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Relacionamento com as avaliações
-     */
-    public function percepcao_avaliacaos()
-    {
-        return $this->hasMany(PercepcaoAvaliacao::class);
-    }
-
-    /**
      * Relacionamento com as respostas
      */
     public function respostas()
