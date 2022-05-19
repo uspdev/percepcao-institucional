@@ -51,4 +51,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(PercepcaoAvaliacao::class);
     }
+
+    /**
+     * Relacionamento com as respostas
+     */
+    public function respostas()
+    {
+        return $this->hasMany(Resposta::class);
+    }
 }

@@ -42,4 +42,12 @@ class Questao extends Model
             ->with('childGrupos')
             ->orderBy('ordem');
     }
+
+    /**
+     * Relacionamento com as respostas
+     */
+    public function respostas()
+    {
+        return $this->hasMany(Resposta::class);
+    }
 }
