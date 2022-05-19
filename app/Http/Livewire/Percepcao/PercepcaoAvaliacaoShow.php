@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Percepcao;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Percepcao;
-use App\Models\PercepcaoAvaliacao;
+use App\Models\Resposta;
 
 class PercepcaoAvaliacaoShow extends Component
 {
@@ -24,7 +24,7 @@ class PercepcaoAvaliacaoShow extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
 
-            $this->percepcaoEnvio = PercepcaoAvaliacao::where('percepcao_id', $this->percepcao->id)->where('user_id', Auth::id())->first();
+            $this->percepcaoEnvio = Resposta::where('percepcao_id', $this->percepcao->id)->where('user_id', Auth::id())->first();
         }
         else {
             $this->statusPercepcao = "Nenhuma existe nenhuma Percepção Institucional cadastrada no momento!";
