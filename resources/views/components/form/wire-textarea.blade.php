@@ -24,7 +24,7 @@
   @endif
   @if($showError)
     @error($model)
-      <div class="small text-danger">{{ $message }}</div>
+      <div class="small text-danger">{!! $message !!}</div>
     @enderror
   @endif
 </div>

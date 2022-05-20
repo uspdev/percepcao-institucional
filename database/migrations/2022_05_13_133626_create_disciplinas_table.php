@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePercepcaoAvaliacaoComentariosTable extends Migration
+class CreateDisciplinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreatePercepcaoAvaliacaoComentariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('percepcao_avaliacao_comentarios', function (Blueprint $table) {
+        Schema::create('disciplinas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('percepcao_id')->constrained()->onDelete('restrict');
-            $table->text('comentariosESugestoesGerais')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->integer('codpes');
+            $table->string('nompes');
+            $table->string('coddis');
+            $table->string('nomdis');
+            $table->integer('verdis');
+            $table->string('codtur');
+            $table->string('tiptur');
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ class CreatePercepcaoAvaliacaoComentariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('percepcao_avaliacao_comentarios');
+        Schema::dropIfExists('disciplinas');
     }
 }

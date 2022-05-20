@@ -12,6 +12,7 @@ class WireInput extends Component
     public $class;
     public $type;
     public $id;
+    public $help;
     public $wireModifier;
 
     /**
@@ -26,6 +27,7 @@ class WireInput extends Component
                                 $class = '',
                                 $type = 'text',
                                 $id = '',
+                                $help = '',
                                 $wireModifier = ''
                             )
     {
@@ -35,6 +37,7 @@ class WireInput extends Component
         $this->class = $class;
         $this->type = $type;
         $this->id = mt_rand(1000000, 9999999);
+        $this->help = $help;
         $this->wireModifier = $wireModifier;
     }
 

@@ -116,11 +116,6 @@ class QuestaoCreate extends Component
             unset($this->campos['maxlength']);
         }
 
-        if ($this->campos['type'] !== 'hidden') {
-            unset($this->campos['model']);
-            unset($this->campos['exibirTexto']);
-        }
-
         if ($this->updating) {
             Questao::find($this->updateId)->update([
                 'campo' => $this->campos,

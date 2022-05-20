@@ -60,6 +60,8 @@ class PercepcaoAddQuestao extends Component
     {
         switch ($this->tipoModel) {
             case 'grupo':
+                $grupo = Grupo::find($this->selectedId);
+                $grupo->questaos()->detach();
                 $this->percepcao->grupos()->detach($this->selectedId);
                 break;
             case 'questao':
