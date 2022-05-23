@@ -18,8 +18,8 @@ use Illuminate\Validation\Validator;
 class PercepcaoAvaliacaoCreate extends Component
 {
     public $percepcao;
-    public $disciplinas;
-    public $coordenadores;
+    public $disciplinas = [];
+    public $coordenadores = [];
     public $pessoa;
     public $idPercepcao;
     public $questaoClass;
@@ -64,18 +64,26 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->disciplinas = config('percepcao.disciplinas_fake');
                 $this->coordenadores = config('percepcao.coordenadores_fake');
                 $this->statusPercepcao = null;
+
+                $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->grupos);
             } else {
                 $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(
                     Auth::user()->codpes,
                     $this->percepcao->ano . $this->percepcao->semestre
                 );
 
-                $curso = Graduacao::curso(Auth::user()->codpes, env('REPLICADO_CODUNDCLG'));
+                if (count($this->disciplinas) === 0) {
+                    $this->statusPercepcao = "Você não cursou nenhuma disciplina neste ano/semestre. <br/ >Contamos com você na próxima percepção.";
+                } else {
+                    $curso = Graduacao::curso(Auth::user()->codpes, env('REPLICADO_CODUNDCLG'));
 
-                $this->coordenadores = PessoaReplicado::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
+                    if ($curso) {
+                        $this->coordenadores = PessoaReplicado::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
+                    }
+
+                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->grupos);
+                }
             }
-
-            $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->grupos);
         }
     }
 
