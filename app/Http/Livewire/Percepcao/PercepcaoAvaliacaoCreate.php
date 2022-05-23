@@ -104,7 +104,7 @@ class PercepcaoAvaliacaoCreate extends Component
                                     'text' => $valueQuestao->campo['text'],
                                     'value' => '',
                                     'type' => $valueQuestao->campo['type'],
-                                    'rules' => $valueQuestao->campo['rules'],
+                                    'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
                                 ];
                             }
                         }
@@ -127,7 +127,7 @@ class PercepcaoAvaliacaoCreate extends Component
                                     'text' => $valueQuestao->campo['text'],
                                     'value' => '',
                                     'type' => $valueQuestao->campo['type'],
-                                    'rules' => $valueQuestao->campo['rules'],
+                                    'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
                                 ];
                             }
                         }
@@ -139,7 +139,7 @@ class PercepcaoAvaliacaoCreate extends Component
                         'text' => $valueQuestao->campo['text'],
                         'value' => '',
                         'type' => $valueQuestao->campo['type'],
-                        'rules' => $valueQuestao->campo['rules'],
+                        'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
                     ];
                 }
             }
