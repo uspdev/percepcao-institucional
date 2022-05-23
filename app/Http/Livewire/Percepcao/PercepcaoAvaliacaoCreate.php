@@ -54,7 +54,7 @@ class PercepcaoAvaliacaoCreate extends Component
             }
 
             $verificaEnvio = Resposta::where('percepcao_id', $this->percepcao->id)->where('user_id', Auth::id())->first();
-            if ($verificaEnvio->id) {
+            if (!is_null($verificaEnvio)) {
                 $this->statusPercepcao = "Você já enviou uma Percepção Institucional para este ano/semestre. <br/ >Obrigado, e contamos com você na próxima percepção.";
             }
 
