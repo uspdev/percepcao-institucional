@@ -23,8 +23,8 @@ use App\Http\Livewire\Percepcao\QuestaoCreate;
 Route::get('/', PercepcaoAvaliacaoShow::class);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/avaliar', PercepcaoAvaliacaoCreate::class);
     Route::middleware('can:gerente')->group(function () {
-        Route::get('/avaliar', PercepcaoAvaliacaoCreate::class);
         Route::get('/avaliar/preview/{idPercepcao}', PercepcaoAvaliacaoCreate::class);
         Route::get('/gestao-sistema/percepcao', PercepcaoShow::class);
         Route::get('/gestao-sistema/percepcao/{idPercepcao}/add-questao', PercepcaoAddQuestao::class);
