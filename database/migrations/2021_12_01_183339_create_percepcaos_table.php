@@ -23,6 +23,7 @@ class CreatePercepcaosTable extends Migration
             $table->boolean('liberaConsultaMembrosEspeciais')->default(0);
             $table->boolean('liberaConsultaDocente')->default(0);
             $table->boolean('liberaConsultaAluno')->default(0);
+            $table->json('questao_settings')->nullable();
             $table->timestamps();
         });
     }
