@@ -22,7 +22,9 @@
                 @endif
                 <div class="clear"></div>
 
-                @livewire('percepcao.grupo-questao-show', ['grupo' => $grupo, 'percepcaoId' => $percepcaoId], key(time()))
+                <div>
+                    @livewire('percepcao.grupo-questao-show', ['grupo' => $grupo, 'percepcaoId' => $percepcaoId], key(time()))
+                </div>
 
                 <x-grupo-percepcao-subgrupo :childGrupos="$grupo" :principal="true" :subgrupo="1" :percepcaoId="$percepcaoId" />
             </div>

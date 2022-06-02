@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Percepcao;
 
 use Livewire\Component;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\Percepcao;
 use App\Models\Grupo;
 
@@ -11,11 +10,13 @@ class PercepcaoAddQuestao extends Component
 {
     public $percepcao;
     public $grupo;
+    public $grupoPercepcao;
     public $grupoCheck;
     public $idPercepcao;
     public $selectedId;
     public $tipoModel;
     public $modelId;
+    public $parentId;
 
     protected $listeners = [
         'getSelectedId',
@@ -27,46 +28,78 @@ class PercepcaoAddQuestao extends Component
             $this->percepcao = Percepcao::find($idPercepcao);
 
             if ($this->percepcao->count()) {
+                $ids = $this->percepcao->settings()->has('grupos') 
+                    ? array_keys($this->percepcao->settings()->get('grupos')) 
+                    : [];
+                    
                 $this->grupo = Grupo::whereNull('parent_id')
-                    ->whereNotIn('id', $this->percepcao->grupos->pluck('id')->toArray())
+                    ->whereNotIn('id', $ids)
                     ->with('childGrupos')
                     ->get();
+                
+                $this->grupoPercepcao = Grupo::whereNull('parent_id')
+                    ->whereIn('id', $ids)
+                    ->with('childGrupos')
+                    ->get()
+                    ->keyBy('id');
+                $this->grupoPercepcao = $this->grupoPercepcao->sortKeysUsing(function($key1, $key2) use ($ids) {
+                    return ((array_search($key1, $ids) > array_search($key2, $ids)) ? 1 : -1);
+                });    
             }
         }
     }
 
     public function saveSelectedGrupos($grupos)
     {
+        $ordem = $this->percepcao->settings()->has('grupos')
+            ? collect($this->percepcao->settings()->get('grupos'))->max('ordem') + 1
+            : 1;
+
         foreach ($grupos as $key => $value) {
-            if (!$this->percepcao->grupos->count()) {
-                $ordem = 0;
-            } else {
-                $ordem = $this->percepcao->grupos()->max('ordem') + 1;
+            $grupoDetalhe = Grupo::find($value['id']);
+
+            $this->percepcao->settings()->update("grupos.{$grupoDetalhe->id}", [
+                'id' => $grupoDetalhe->id,
+                'ordem' => $ordem,
+                'texto' => $grupoDetalhe->texto,
+                'repeticao' => $grupoDetalhe->repeticao,
+                'modelo_repeticao' => $grupoDetalhe->modelo_repeticao,
+            ]);
+
+            if ($grupoDetalhe->grupos->count()) {
+                foreach ($grupoDetalhe->grupos as $keyGrupoDetalhe => $grupo) {
+                    $this->percepcao->settings()->update("grupos.{$grupoDetalhe->id}.grupos.{$grupo->id}", [
+                        'id' => $grupo->id,
+                        'ordem' => $keyGrupoDetalhe,
+                        'texto' => $grupo->texto,
+                        'repeticao' => $grupo->repeticao,
+                        'modelo_repeticao' => $grupo->modelo_repeticao,
+                    ]);
+                }
             }
-            $this->percepcao->grupos()->attach($value, ['ordem' => $ordem]);
         }
 
         $this->mount($this->percepcao->id);
     }
 
-    public function getSelectedId($id, $tipoModel, $modelId = null)
+    public function getSelectedId($id, $tipoModel, $modelId = null, $parentId = null)
     {
         $this->selectedId = $id;
         $this->tipoModel = $tipoModel;
         $this->modelId = $modelId;
+        $this->parentId = $parentId;
     }
 
     public function delete()
     {
         switch ($this->tipoModel) {
             case 'grupo':
-                $grupo = Grupo::find($this->selectedId);
-                $grupo->questaos()->detach();
-                $this->percepcao->grupos()->detach($this->selectedId);
+                $this->percepcao->settings()->delete("grupos.{$this->selectedId}");
                 break;
             case 'questao':
-                $grupo = Grupo::find($this->modelId);
-                $grupo->questaos()->detach($this->selectedId);
+                !is_null($this->parentId)
+                    ? $this->percepcao->settings()->delete("grupos.{$this->parentId}.grupos.{$this->modelId}.questoes.{$this->selectedId}")
+                    : $this->percepcao->settings()->delete('grupos.' . $this->modelId . '.questoes.' . $this->selectedId);
                 break;
         }
 
