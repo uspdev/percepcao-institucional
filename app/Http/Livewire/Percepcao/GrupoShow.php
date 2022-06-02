@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Percepcao;
 
 use Livewire\Component;
 use App\Models\Grupo;
+use App\Models\Percepcao;
+use Illuminate\Support\Facades\DB;
 
 class GrupoShow extends Component
 {
@@ -55,7 +57,19 @@ class GrupoShow extends Component
 
     public function canDelete($grupoId)
     {
-        return (Grupo::find($grupoId)->percepcaos->count()) ? false : true;
+        $percepcoes = Percepcao::get();
+
+        $canDelete = true;
+
+        foreach ($percepcoes as $percepcao) {
+            if ($percepcao->settings()->has("grupos.$grupoId")) {
+                $canDelete = false;
+                break;
+            } else {
+                $canDelete = true;
+            }
+        }
+        return $canDelete;
     }
 
     public function render()
