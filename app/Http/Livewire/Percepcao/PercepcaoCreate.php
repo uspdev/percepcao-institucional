@@ -15,6 +15,7 @@ class PercepcaoCreate extends Component
     public $dataDeAbertura;
     public $dataDeFechamento;
     public $totalDeAlunosMatriculados;
+    public $settings = [];
     public $liberaConsultaMembrosEspeciais;
     public $liberaConsultaDocente;
     public $liberaConsultaAluno;
@@ -29,6 +30,7 @@ class PercepcaoCreate extends Component
     {
         $this->semestre = '';
         $this->totalDeAlunosMatriculados = count(Graduacao::listarAtivos());
+        $this->settings = [];
     }
 
     public function getUpdateId($updateId, $action)
@@ -46,6 +48,8 @@ class PercepcaoCreate extends Component
         else {
             $update = Percepcao::find($this->updateId);
 
+            //dd($update->settings);
+
             $this->ano = $update->ano;
             $this->semestre = $update->semestre;
             $this->dataDeAbertura = Carbon::parse($update->dataDeAbertura)->format('d/m/Y H:i:s');
@@ -54,6 +58,10 @@ class PercepcaoCreate extends Component
             $this->liberaConsultaMembrosEspeciais = $update->liberaConsultaMembrosEspeciais;
             $this->liberaConsultaDocente = $update->liberaConsultaDocente;
             $this->liberaConsultaAluno = $update->liberaConsultaAluno;
+
+            foreach ($update->settings as $key => $value) {
+                $this->settings[$key] = $update->settings[$key];
+            }
         }
     }
 
@@ -65,6 +73,7 @@ class PercepcaoCreate extends Component
             'dataDeAbertura'                    => 'required',
             'dataDeFechamento'                  => 'required',
             'totalDeAlunosMatriculados'         => 'nullable',
+            'settings'                          => 'nullable',
         ];
 
         if($this->action == "update") {
