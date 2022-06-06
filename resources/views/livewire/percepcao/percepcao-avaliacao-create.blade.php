@@ -5,10 +5,11 @@
                 Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}@if($path === "avaliar/preview/$percepcao->id") - PREVIEW<small class="align-top"> (<a href="gestao-sistema/percepcao">sair</a>)</small> @endif</span>
             </h3>
             <hr>
-            <div class="text-danger font-weight-bold mb-3">
-                O presente questionário será utilizado na EEL-USP para melhoria da qualidade de ensino. As identidades serão
-                preservadas com total sigilo. (mudar para texto configurável)
-            </div>
+            @if (isset($percepcao->settings['textoFormularioAvaliacao']) && !empty($percepcao->settings['textoFormularioAvaliacao']))
+                <div class="text-danger font-weight-bold mb-3">
+                    {{ $percepcao->settings['textoFormularioAvaliacao'] }}
+                </div>
+            @endif
             @if ($percepcao->settings()->has('grupos'))
                 @foreach ($percepcao->settings()->get('grupos') as $idGrupo => $grupo)
                     <div class="text-center my-3 bold">
