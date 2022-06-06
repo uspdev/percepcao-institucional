@@ -35,7 +35,7 @@
         />
 
     <x-form.wire-textarea
-        model="settings.textoFormulario"
+        model="settings.textoFormularioAvaliacao"
         label="Texto do formulário de avaliação:"
         wireModifier=".defer"
         rows="4"
