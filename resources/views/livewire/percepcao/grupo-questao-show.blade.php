@@ -42,7 +42,7 @@
                                         <x-form.wire-button
                                             class="btn btn-danger text-danger btn-icon"
                                             class-icon="w-6 h-6"
-                                            click="getSelectedId({{ $questao->id }}, 'questao', {{ $grupo->id }})"
+                                            click="getSelectedId({{ $questao->id }}, 'questao', {{ $grupo->id }}, {{ $grupo->parent_id }})"
                                             action="delete"
                                             data-toggle="modal"
                                             data-target="#excluirModal"

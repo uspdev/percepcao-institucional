@@ -9,13 +9,13 @@
                 O presente questionário será utilizado na EEL-USP para melhoria da qualidade de ensino. As identidades serão
                 preservadas com total sigilo. (mudar para texto configurável)
             </div>
-            @if ($percepcao->grupos->count())
-                @foreach ($percepcao->grupos as $key => $grupo)
+            @if ($percepcao->settings()->has('grupos'))
+                @foreach ($percepcao->settings()->get('grupos') as $idGrupo => $grupo)
                     <div class="text-center my-3 bold">
-                        {{ $key + 1 }}. {{ $grupo->texto }}
+                        {{ $grupo['ordem'] }}. {{ $grupo['texto'] }}
                     </div>
-                    @if ($grupo->repeticao)
-                        @if ($grupo->modelo_repeticao === 'disciplinas')
+                    @if ($grupo['repeticao'])
+                        @if ($grupo['modelo_repeticao'] === 'disciplinas')
                             @foreach ($dadosDisciplina as $keyDisciplina => $disciplina)
                                 <fieldset class="border p-2"
                                     id="{{ $disciplina['coddis'] }}-{{ $keyDisciplina }}">
@@ -45,10 +45,12 @@
                                             </span>
                                         </div>
 
-                                        <x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyDisciplina" />
+                                        @if (isset($grupo['questoes']))
+                                            <x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyDisciplina" />
+                                        @endif
 
                                         <br />
-                                        @if ($grupo->grupos->count())
+                                        @if (isset($grupo['grupos']))
                                             <x-percepcao-avaliacao-create-subgrupo :childGrupos="$grupo" :key="$keyDisciplina" :dadosModelo="$disciplina" />
                                         @endif
 
@@ -60,7 +62,7 @@
                                 <br />
                             @endforeach
                         @endif
-                        @if ($grupo->modelo_repeticao === 'coordenadores')
+                        @if ($grupo['modelo_repeticao'] === 'coordenadores')
                             @foreach ($dadosCoordenador as $keyCoordenador => $coordenador)
                                 <fieldset class="border p-2"
                                     id="{{ $coordenador['codcur'] }}-{{ $coordenador['codhab'] }}-{{ $keyCoordenador }}">
@@ -85,7 +87,7 @@
                                         <x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyCoordenador" />
 
                                         <br />
-                                        @if ($grupo->grupos->count())
+                                        @if (isset($grupo['grupos']))
                                             <x-percepcao-avaliacao-create-subgrupo :childGrupos="$grupo" :key="$keyCoordenador" :dadosRepeticao="$coordenador" />
                                         @endif
 
@@ -98,47 +100,49 @@
                             @endforeach
                         @endif
                     @else
-                        @foreach ($grupo->questaos as $keyQuestao => $questao)
-                            <div class="h6">
-                                {{ $questao->campo['text'] }}:
-                            </div>
-                            @switch($questao->campo['type'])
-                                @case('radio')
-                                    <x-form.wire-radio
-                                        :model="'avaliacaoQuesitos.' . $grupo->id . '.' . $questao->id . '.value'"
-                                        :arrValue="$this->questaoClass->getCamposQuestao($questao->id)['keys']"
-                                        :arrText="$this->questaoClass->getCamposQuestao($questao->id)['values']"
-                                        style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;"
-                                        />
-                                    @break
-                                @case('textarea')
-                                    @if (!empty($questao->campo['maxlength']))
-                                        <x-form.wire-textarea
-                                            :model="'avaliacaoQuesitos.' . $grupo->id . '.' . $questao->id . '.value'"
-                                            wireModifier=".defer"
-                                            xData='{
-                                                    content: "",
-                                                    limit: $el.dataset.limit,
-                                                    get remaining() {
-                                                        return this.limit - this.content.length
-                                                    }
-                                                }'
-                                            dataLimit="{{ $questao->campo['maxlength'] }}"
-                                            append="<p id='remaining'>
-                                                        <span class='small'>Conteúdo limitado a <span x-text='limit'></span> caracteres, restando: <span class='font-weight-bold' x-text='remaining'></span><span>
-                                                    </p>"
-                                            rows="{{ $questao->campo['rows'] }}" maxlength="{{ $questao->campo['maxlength'] }}" id="content" x-model="content"
+                        @if (isset($grupo['questoes']))
+                            @foreach ($grupo['questoes'] as $idQuestao => $questao)
+                                <div class="h6">
+                                    {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}:
+                                </div>
+                                @switch($this->getDetalheQuestao($idQuestao)['campo']['type'])
+                                    @case('radio')
+                                        <x-form.wire-radio
+                                            :model="'avaliacaoQuesitos.' . $idGrupo . '.' . $idQuestao . '.value'"
+                                            :arrValue="$this->questaoClass->getCamposQuestao($idQuestao)['keys']"
+                                            :arrText="$this->questaoClass->getCamposQuestao($idQuestao)['values']"
+                                            style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;"
                                             />
-                                    @else
-                                        <x-form.wire-textarea
-                                            :model="'avaliacaoQuesitos.' . $grupo->id . '.' . $questao->id . '.value'"
-                                            wireModifier=".defer"
-                                            rows="{{ $questao->campo['rows'] }}"
-                                            />
-                                    @endif
-                                    @break
-                            @endswitch
-                        @endforeach
+                                        @break
+                                    @case('textarea')
+                                        @if (!empty($this->getDetalheQuestao($idQuestao)['campo']['maxlength']))
+                                            <x-form.wire-textarea
+                                                :model="'avaliacaoQuesitos.' . $idGrupo . '.' . $idQuestao . '.value'"
+                                                wireModifier=".defer"
+                                                xData='{
+                                                        content: "",
+                                                        limit: $el.dataset.limit,
+                                                        get remaining() {
+                                                            return this.limit - this.content.length
+                                                        }
+                                                    }'
+                                                dataLimit="{{ $this->getDetalheQuestao($idQuestao)['campo']['maxlength'] }}"
+                                                append="<p id='remaining'>
+                                                            <span class='small'>Conteúdo limitado a <span x-text='limit'></span> caracteres, restando: <span class='font-weight-bold' x-text='remaining'></span><span>
+                                                        </p>"
+                                                rows="{{ $this->getDetalheQuestao($idQuestao)['campo']['rows'] }}" maxlength="{{ $this->getDetalheQuestao($idQuestao)['campo']['maxlength'] }}" id="content" x-model="content"
+                                                />
+                                        @else
+                                            <x-form.wire-textarea
+                                                :model="'avaliacaoQuesitos.' . $idGrupo . '.' . $idQuestao . '.value'"
+                                                wireModifier=".defer"
+                                                rows="{{ $this->getDetalheQuestao($idQuestao)['campo']['rows'] }}"
+                                                />
+                                        @endif
+                                        @break
+                                @endswitch
+                            @endforeach
+                        @endif
                     @endif
                     <br />
                 @endforeach

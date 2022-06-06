@@ -5,14 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Glorand\Model\Settings\Traits\HasSettingsField;
 
 class Percepcao extends Model
 {
     use HasFactory;
 
+    use HasSettingsField;
+
     protected $guarded = ['id'];
 
     protected $table = 'percepcaos';
+
+    protected $casts = [
+        'questao_settings' => 'array',
+        'settings' => 'array'
+    ];
 
     protected $dates = [
         'created_at',
@@ -20,6 +28,8 @@ class Percepcao extends Model
         'dataDeAbertura',
         'dataDeFechamento'
     ];
+
+    public $settingsFieldName = 'questao_settings';
 
     public static function simNao()
     {
@@ -43,18 +53,5 @@ class Percepcao extends Model
     public function setDataDeFechamentoAttribute($dataDeFechamento)
     {
         $this->attributes['dataDeFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeFechamento)->toDateTimeString();
-    }
-
-    /**
-     * Relacionamento com os grupos
-     */
-    public function grupos()
-    {
-        return $this->belongsToMany(Grupo::class)
-            ->as('grupo')
-            ->withTimestamps()
-            ->withPivot('ordem')
-            ->with('childGrupos')
-            ->orderBy('ordem');
     }
 }

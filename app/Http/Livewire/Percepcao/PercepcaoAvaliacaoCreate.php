@@ -12,7 +12,6 @@ use App\Replicado\PessoaReplicado;
 use Uspdev\Replicado\Graduacao;
 use Uspdev\Replicado\Pessoa;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
 
 class PercepcaoAvaliacaoCreate extends Component
@@ -53,6 +52,10 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
 
+            if (!$this->percepcao->settings()->has('grupos')) {
+                $this->statusPercepcao = "Nenhum grupo/questão foi criado ainda para esta percepção.";
+            }
+
             $verificaEnvio = Resposta::where('percepcao_id', $this->percepcao->id)->where('user_id', Auth::id())->first();
             if (!is_null($verificaEnvio)) {
                 $this->statusPercepcao = "Você já enviou uma Percepção Institucional para este ano/semestre. <br/ >Obrigado, e contamos com você na próxima percepção.";
@@ -62,10 +65,14 @@ class PercepcaoAvaliacaoCreate extends Component
 
             if ($this->preview) {
                 $this->disciplinas = config('percepcao.disciplinas_fake');
-                $this->coordenadores = config('percepcao.coordenadores_fake');
-                $this->statusPercepcao = null;
 
-                $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->grupos);
+                $this->coordenadores = config('percepcao.coordenadores_fake');
+
+                if ($this->percepcao->settings()->has('grupos')) {
+                    $this->statusPercepcao = null;
+
+                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->settings()->get('grupos'));
+                }
             } else {
                 $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(
                     Auth::user()->codpes,
@@ -81,7 +88,7 @@ class PercepcaoAvaliacaoCreate extends Component
                         $this->coordenadores = PessoaReplicado::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
                     }
 
-                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->grupos);
+                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->settings()->get('grupos'));
                 }
             }
         }
@@ -89,9 +96,9 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function montaAvaliacaoQuesitoSubgrupo($grupos)
     {
-        foreach ($grupos as $key => $grupo) {
-            if ($grupo->repeticao) {
-                switch ($grupo->modelo_repeticao) {
+        foreach ($grupos as $idGrupo => $grupo) {
+            if (isset($grupo['repeticao']) && $grupo['repeticao']) {
+                switch ($grupo['modelo_repeticao']) {
                     case 'disciplinas':
                         foreach ($this->disciplinas as $keyDisciplina => $disciplina) {
                             $this->dadosDisciplina[$keyDisciplina] = [
@@ -103,17 +110,22 @@ class PercepcaoAvaliacaoCreate extends Component
                                 'codtur' => $disciplina['codtur'],
                                 'tiptur' => $disciplina['tiptur'],
                             ];
-                            $this->avaliacaoQuesitos[$grupo->id]['disciplinas'][$keyDisciplina] = [
+
+                            $this->avaliacaoQuesitos[$idGrupo]['disciplinas'][$keyDisciplina] = [
                                 'dadosDisciplina' => $this->dadosDisciplina[$keyDisciplina]
                             ];
 
-                            foreach ($grupo->questaos as $keyQuestao => $valueQuestao) {
-                                $this->avaliacaoQuesitos[$grupo->id]['disciplinas'][$keyDisciplina][$valueQuestao->id] = [
-                                    'text' => $valueQuestao->campo['text'],
-                                    'value' => '',
-                                    'type' => $valueQuestao->campo['type'],
-                                    'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
-                                ];
+                            if (isset($grupo['questoes'])) {
+                                foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                                    $questao = Questao::find($idQuestao);
+
+                                    $this->avaliacaoQuesitos[$idGrupo]['disciplinas'][$keyDisciplina][$idQuestao] = [
+                                        'text' => $questao->campo['text'],
+                                        'value' => '',
+                                        'type' => $questao->campo['type'],
+                                        'rules' => isset($questao->campo['rules']) ? $questao->campo['rules'] : '',
+                                    ];
+                                }
                             }
                         }
                         break;
@@ -126,36 +138,48 @@ class PercepcaoAvaliacaoCreate extends Component
                                 'nomcur' => $coordenador['nomcur'],
                                 'codhab' => $coordenador['codhab'],
                             ];
-                            $this->avaliacaoQuesitos[$grupo->id]['coordenadores'][$keyCoordenador] = [
+
+                            $this->avaliacaoQuesitos[$idGrupo]['coordenadores'][$keyCoordenador] = [
                                 'dadosCoordenador' => $this->dadosCoordenador[$keyCoordenador]
                             ];
 
-                            foreach ($grupo->questaos as $keyQuestao => $valueQuestao) {
-                                $this->avaliacaoQuesitos[$grupo->id]['coordenadores'][$keyCoordenador][$valueQuestao->id] = [
-                                    'text' => $valueQuestao->campo['text'],
+                            foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                                $questao = Questao::find($idQuestao);
+
+                                $this->avaliacaoQuesitos[$idGrupo]['coordenadores'][$keyCoordenador][$idQuestao] = [
+                                    'text' => $questao->campo['text'],
                                     'value' => '',
-                                    'type' => $valueQuestao->campo['type'],
-                                    'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
+                                    'type' => $questao->campo['type'],
+                                    'rules' => isset($questao->campo['rules']) ? $questao->campo['rules'] : '',
                                 ];
                             }
                         }
                         break;
                 }
             } else {
-                foreach ($grupo->questaos as $keyQuestao => $valueQuestao) {
-                    $this->avaliacaoQuesitos[$grupo->id][$valueQuestao->id] = [
-                        'text' => $valueQuestao->campo['text'],
-                        'value' => '',
-                        'type' => $valueQuestao->campo['type'],
-                        'rules' => isset($valueQuestao->campo['rules']) ? $valueQuestao->campo['rules'] : '',
-                    ];
+                if (isset($grupo['questoes'])) {
+                    foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                        $questao = Questao::find($idQuestao);
+
+                        $this->avaliacaoQuesitos[$idGrupo][$idQuestao] = [
+                            'text' => $questao->campo['text'],
+                            'value' => '',
+                            'type' => $questao->campo['type'],
+                            'rules' => isset($questao->campo['rules']) ? $questao->campo['rules'] : '',
+                        ];
+                    }
                 }
             }
 
-            if ($grupo->grupos->count()) {
-                $this->montaAvaliacaoQuesitoSubgrupo($grupo->grupos);
+            if (isset($grupo['grupos'])) {
+                $this->montaAvaliacaoQuesitoSubgrupo($grupo['grupos']);
             }
         }
+    }
+
+    public function getDetalheQuestao($questaoId)
+    {
+        return Questao::find($questaoId)->toArray();
     }
 
     protected function rules()
@@ -169,13 +193,14 @@ class PercepcaoAvaliacaoCreate extends Component
                                 $this->rules = array_merge($this->rules, [
                                     "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina.$keyValueDisciplina.value" => $valueDisciplina['rules'],
                                 ]);
+
+                                $this->messages = array_merge($this->messages, [
+                                    "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.required' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> precisa ser preenchido.',
+                                    "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.integer' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> precisa ser preenchido.',
+                                    "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.min' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> não pode ter um valor inferior a :min.',
+                                    "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.max' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> não pode ter um valor superior a :max.',
+                                ]);
                             }
-                            $this->messages = array_merge($this->messages, [
-                                "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.required' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> precisa ser preenchido.',
-                                "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.integer' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> precisa ser preenchido.',
-                                "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.min' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> não pode ter um valor inferior a :min.',
-                                "avaliacaoQuesitos.$keyQuesito.disciplinas.$keyDisciplina." . $keyValueDisciplina . '.value.max' => 'O campo <strong>' . $valueDisciplina['text'] . '</strong> da disciplina <strong>'. $disciplina['dadosDisciplina']['nomdis'] . '</strong> não pode ter um valor superior a :max.',
-                            ]);
                         }
                     }
                 }
@@ -187,13 +212,14 @@ class PercepcaoAvaliacaoCreate extends Component
                                 $this->rules = array_merge($this->rules, [
                                     "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador.$keyValueCoordenador.value" => $valueCoordenador['rules'],
                                 ]);
+
+                                $this->messages = array_merge($this->messages, [
+                                    "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.required' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> precisa ser preenchido.',
+                                    "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.integer' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> precisa ser preenchido.',
+                                    "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.min' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> não pode ter um valor inferior a :min.',
+                                    "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.max' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> não pode ter um valor superior a :max.',
+                                ]);
                             }
-                            $this->messages = array_merge($this->messages, [
-                                "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.required' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> precisa ser preenchido.',
-                                "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.integer' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> precisa ser preenchido.',
-                                "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.min' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> não pode ter um valor inferior a :min.',
-                                "avaliacaoQuesitos.$keyQuesito.coordenadores.$keyCoordenador." . $keyValueCoordenador . '.value.max' => 'O campo <strong>' . $valueCoordenador['text'] . '</strong> do coordenador <strong>'. $coordenador['dadosCoordenador']['nompes'] . '</strong> não pode ter um valor superior a :max.',
-                            ]);
                         }
                     }
                 }
@@ -202,13 +228,14 @@ class PercepcaoAvaliacaoCreate extends Component
                     $this->rules = array_merge($this->rules, [
                         "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . ".value" => $valueQuesito[key($valueQuesito)]['rules'],
                     ]);
+
+                    $this->messages = array_merge($this->messages, [
+                        "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.required' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> precisa ser preenchido.',
+                        "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.integer' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> precisa ser preenchido.',
+                        "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.min' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> não pode ter um valor inferior a :min.',
+                        "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.max' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> não pode ter um valor superior a :max.',
+                    ]);
                 }
-                $this->messages = array_merge($this->messages, [
-                    "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.required' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> precisa ser preenchido.',
-                    "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.integer' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> precisa ser preenchido.',
-                    "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.min' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> não pode ter um valor inferior a :min.',
-                    "avaliacaoQuesitos.$keyQuesito." . key($valueQuesito) . '.value.max' => 'O campo <strong>' . $valueQuesito[key($valueQuesito)]['text'] . '</strong> não pode ter um valor superior a :max.',
-                ]);
             }
         }
 
@@ -217,7 +244,9 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function updated($propertyName)
     {
-        $validated = $this->validateOnly($propertyName, $this->rules());
+        if (!empty($this->rules())) {
+            $validated = $this->validateOnly($propertyName, $this->rules());
+        }
     }
 
     public function save()

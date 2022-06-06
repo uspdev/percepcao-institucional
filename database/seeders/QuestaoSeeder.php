@@ -32,6 +32,19 @@ class QuestaoSeeder extends Seeder
             'Coerência entre conteúdo ministrado e avaliações aplicadas',
             'Interesse em esclarecer as dúvidas dos alunos',
             'Relacionamento com os alunos',
+
+            'Iluminação, circulação de ar e acústica das salas de aula',
+            'Espaço físico/número de alunos das salas de aula',
+            'Acervo da Biblioteca (qualidade e quantidade de livros disponíveis para estudo e empréstimo)',
+            'Disponibilidade de equipamento de informática',
+            'Espaço da Biblioteca destinado ao estudo individual e salas para estudo coletivo',
+            'Laboratórios utilizados para complementar os ensinos teóricos, apresentados em sala de aula',
+            'Limpeza e higiene dos ambientes: banheiros, salas de aula, biblioteca e áreas externas',
+            'Restaurante universitário',
+
+            'Disponibilidade/Horários do coordenador',
+            'Qualidade no atendimento do Coordenador',
+            'Encaminhamento/Solução da Comissão',
         ];
 
         foreach ($textos as $texto) {

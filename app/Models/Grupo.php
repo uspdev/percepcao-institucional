@@ -20,18 +20,4 @@ class Grupo extends Model
     {
         return $this->hasMany(Grupo::class, 'parent_id')->with('grupos');
     }
-
-    public function percepcaos()
-    {
-        return $this->belongsToMany(Percepcao::class);
-    }
-
-    public function questaos()
-    {
-        return $this->belongsToMany(Questao::class)
-            ->as('questao')
-            ->withTimestamps()
-            ->withPivot('ordem')
-            ->orderBy('ordem');
-    }
 }

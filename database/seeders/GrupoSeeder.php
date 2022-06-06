@@ -15,13 +15,26 @@ class GrupoSeeder extends Seeder
     public function run()
     {
         \App\Models\Grupo::create([
-            'texto' => 'Grupo disciplinas',
+            'texto' => 'Disciplinas',
             'ativo' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         \App\Models\Grupo::create([
-            'texto' => 'Grupo auto avaliação',
+            'texto' => 'Auto avaliação',
+            'ativo' => 1,
+            'parent_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        \App\Models\Grupo::create([
+            'texto' => 'Infraestrutura, condições de ensino e da instituição',
+            'ativo' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        \App\Models\Grupo::create([
+            'texto' => 'Coordenação',
             'ativo' => 1,
             'created_at' => now(),
             'updated_at' => now(),

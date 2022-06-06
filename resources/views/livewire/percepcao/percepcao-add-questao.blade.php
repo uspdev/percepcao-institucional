@@ -12,8 +12,10 @@
             <label class="bold">Data de Fechamento: </label><span> {{ $percepcao->dataDeFechamento->format('d/m/Y H:i') }}</span>
         </div>
     </div>
-    @if ($percepcao->grupos->count())
-        @livewire('percepcao.grupo-percepcao-show', ['grupos' => $percepcao->grupos, 'percepcaoId' => $percepcao->id], key(time()))
+    @if ($grupoPercepcao->count())
+        <div>
+            @livewire('percepcao.grupo-percepcao-show', ['grupos' => $grupoPercepcao, 'percepcaoId' => $percepcao->id], key(time()))
+        </div>
     @endif
     <div class="d-flex flex-column justify-content-center align-items-center pt-2" x-data="handler()" x-cloak>
         <div x-show="openAddGrupo" class="col-sm-9">

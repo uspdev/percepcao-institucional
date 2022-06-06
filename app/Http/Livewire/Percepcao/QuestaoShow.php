@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Percepcao;
 
 use Livewire\Component;
 use App\Models\Questao;
+use App\Models\Percepcao;
 
 class QuestaoShow extends Component
 {
@@ -26,9 +27,49 @@ class QuestaoShow extends Component
         $this->emit('getUpdatedId', $id);
     }
 
-    public function hasGrupo($id)
+    public function canDelete($questaoId)
     {
-        return Questao::find($id)->grupos->count();
+        $percepcoes = Percepcao::get();
+
+        foreach ($percepcoes as $percepcao) {
+            if ($percepcao->settings()->has("grupos")) {
+                $canDelete = $this->verificaQuestaoSettings($percepcao->settings()->get("grupos"), $questaoId);
+                if (!$canDelete) {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    public function verificaQuestaoSettings($settings, $questaoId, $bla = null)
+    {
+        $canDelete = true;
+
+        foreach ($settings as $key => $value) {
+            if (isset($value["questoes"][$questaoId])) {
+                $canDelete = false;
+                break;
+            } else {  
+                if (isset($value["grupos"])) {
+                    foreach ($value["grupos"] as $key2 => $value2) {
+                        if (isset($value2["questoes"][$questaoId])) {
+                            $canDelete = false;
+                            break;
+                        } else {
+                            $canDelete = true;
+                        }
+                    }
+                } else {
+                    $canDelete = true;
+                }
+            }
+        }
+
+        return $canDelete;
     }
 
     public function copyQuestao($id)

@@ -14,15 +14,33 @@ class GrupoQuestaoShow extends Component
     public $questaoClass;
     public $grupoQuestaos;
     public $grupo;
+    public $percepcao;
     public $percepcaoId;
 
     public function mount()
     {
         $this->questaoClass = new Questao;
+        
+        $this->percepcao = Percepcao::find($this->percepcaoId);
+        
+        if (isset($this->grupo->parent_id)) {
+            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes') 
+            ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes')) 
+            : [];
+        } else {
+            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->id . '.questoes') 
+                ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->id . '.questoes')) 
+                : [];
+        }
 
-        $this->grupoQuestaos = $this->grupo->questaos()->get();
+        $this->grupoQuestaos = Questao::whereIn('id', $ids)
+            ->get()
+            ->keyBy('id');
+        $this->grupoQuestaos = $this->grupoQuestaos->sortKeysUsing(function($key1, $key2) use ($ids) {
+            return ((array_search($key1, $ids) > array_search($key2, $ids)) ? 1 : -1);
+        });
 
-        $this->questaos = Questao::whereNotIn('id', $this->grupo->questaos()->pluck('id')->toArray())->get();
+        $this->questaos = Questao::whereNotIn('id', $ids)->get();
     }
 
     public function getTituloQuestao($id)
@@ -43,23 +61,28 @@ class GrupoQuestaoShow extends Component
         return $titulo;
     }
 
-    public function getSelectedId($id, $tipoModel, $modelId)
+    public function getSelectedId($id, $tipoModel, $modelId, $parentId = null)
     {
-        $this->emit('getSelectedId', $id, $tipoModel, $modelId);
+        $this->emit('getSelectedId', $id, $tipoModel, $modelId, $parentId);
     }
 
     public function saveSelectedQuestoes($questoes, $grupoId)
     {
-        $grupo = Grupo::find($grupoId);
+        foreach ($questoes as $key => $value) {
+            $grupoDetalhe = Grupo::find($grupoId);
 
-        foreach ($questoes as $key => $questao) {
-            if (!$grupo->questaos->count()) {
-                $ordem = 0;
+            $questaoDetalhe = Questao::find($value['id']);
+            if (!is_null($grupoDetalhe->parent_id)) {
+                $this->percepcao->settings()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
+                    'id' => $questaoDetalhe->id,
+                    'campo' => $questaoDetalhe['campo'],
+                ]);
             } else {
-                $ordem = $grupo->questaos()->max('ordem') + 1;
+                $this->percepcao->settings()->update("grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
+                    'id' => $questaoDetalhe->id,
+                    'campo' => $questaoDetalhe['campo'],
+                ]);
             }
-
-            $grupo->questaos()->attach($questao, ['ordem' => $ordem]);
         }
 
         $this->mount();
@@ -67,11 +90,22 @@ class GrupoQuestaoShow extends Component
 
     public function updateOrdemQuestao($list, $grupoId)
     {
-        $grupo = Grupo::find($grupoId);
+        $grupoDetalhe = Grupo::find($grupoId);
+
+        !is_null($grupoDetalhe->parent_id)
+            ? $this->percepcao->settings()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes", '')
+            : $this->percepcao->settings()->update("grupos.$grupoId.questoes", '');
 
         foreach ($list as $key => $value) {
-            $grupo->questaos()->updateExistingPivot($value['id'], [
-                'ordem' => $key,
+            $questaoDetalhe = Questao::find($value['id']);
+
+            $caminhoGrupo = !is_null($grupoDetalhe->parent_id)
+                ? "grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$value['id']}"
+                : "grupos.$grupoId.questoes.{$value['id']}";
+            
+            $this->percepcao->settings()->update($caminhoGrupo, [
+                'id' => $questaoDetalhe->id,
+                'campo' => $questaoDetalhe['campo'],
             ]);
         }
 

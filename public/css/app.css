@@ -136,3 +136,11 @@ a.btn-acao:hover {
 .card-text .card .card-body:hover {
   background-color: #ececf6;
 }
+
+.flex-title {
+  width: 95%;
+}
+
+.flex-actions {
+  width: 24%;
+}
