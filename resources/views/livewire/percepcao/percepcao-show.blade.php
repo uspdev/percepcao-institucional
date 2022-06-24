@@ -32,7 +32,7 @@
                             <td>{{ $percepcao->dataDeFechamento->format('d/m/Y H:i') ?? '' }}</td>
                             <td>{{ $percepcao->ano ?? '' }}</td>
                             <td>{{ $percepcao->semestre ?? '' }}</td>
-                            <td>{{ $percepcao->totalDeAlunosMatriculados ?? '' }}</td>
+                            <td>{{ $percepcao->totalDeAlunosMatriculados ?? '' }} <a href="" title="ver lista de alunos"><i class="fas fa-eye"></i></a></td>
                             <td>
                                 @livewire('percepcao.toggle-button', [
                                     'model' => $percepcao,
@@ -59,14 +59,14 @@
                             </td>
                             <td width=''>
                                 <div>
-                                    <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao">
+                                    <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
                                         <x-form.wire-button
                                             class="btn btn-dark text-dark btn-icon"
                                             class-icon="w-6 h-6"
                                             action="question"
                                           />
                                     </a>
-                                    <a href="avaliar/preview/{{ $percepcao->id }}" class="btn-acao">
+                                    <a href="avaliar/preview/{{ $percepcao->id }}" class="btn-acao" title="Visualização prévia">
                                         <x-form.wire-button
                                             class="btn btn-dark text-dark btn-icon"
                                             class-icon="w-6 h-6"
