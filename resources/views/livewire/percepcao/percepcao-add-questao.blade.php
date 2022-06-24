@@ -1,5 +1,7 @@
 <div class="container">
-    <h2 class="text-center font-weight-bold">Percepção Institucional - Adicionar Questões</h2>
+    <h2 class="text-center font-weight-bold">Percepção Institucional - Adicionar Questões
+        <a class="btn btn-sm btn-secondary" href="gestao-sistema/percepcao"> Voltar à parcepção</a>
+    </h2>
     <hr>
     <div class="d-flex justify-content-center align-items-center flex-column">
     <div>
