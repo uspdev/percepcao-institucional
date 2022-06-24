@@ -4,17 +4,17 @@ $admin = [
     [
         'text' => 'Percepção',
         'url' => 'gestao-sistema/percepcao',
-        'can' => 'admin',        
+        'can' => 'gerente',        
     ],
     [
         'text' => 'Grupos',
         'url' => 'gestao-sistema/percepcao/create-grupo',
-        'can' => 'admin',        
+        'can' => 'gerente',        
     ],
     [
         'text' => 'Questões',
         'url' => 'gestao-sistema/percepcao/create-questao',
-        'can' => 'admin',        
+        'can' => 'gerente',        
     ],
 ];
 
@@ -42,7 +42,7 @@ $menu = [
     [
         'text' => 'Gestão do sistema',
         'submenu' => $admin,
-        'can' => 'admin',
+        'can' => 'gerente',
     ],
 ];
 
