@@ -47,7 +47,7 @@ class Percepcao extends Model
      */
     public function getSettingsAttribute($value)
     {
-        return array_merge($this->settingsDefaults, json_decode($value, true));
+        return array_merge($this->settingsDefaults, json_decode($value ?? '{}', true));
     }
 
     public static function simNao()
