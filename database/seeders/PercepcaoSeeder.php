@@ -15,12 +15,18 @@ class PercepcaoSeeder extends Seeder
      */
     public function run()
     {
+        $textoApresentacao = 'O presente questionário será utilizado na EESC-USP para melhoria da qualidade de ensino. As identidades serão preservadas com total sigilo.';
+        $textoFormularioAvaliacao = 'Responda com responsabilidade !';
         $p = Percepcao::create([
             'dataDeAbertura' => now()->format('d/m/Y H:i:s'),
             'dataDeFechamento' => now()->addDays(mt_rand(1, 10))->format('d/m/Y H:i:s'),
             'ano' => date('Y'),
             'semestre' => 2,
             'totalDeAlunosMatriculados' => mt_rand(100, 1000),
+            'settings' => [
+                'textoFormularioAvaliacao' => $textoFormularioAvaliacao,
+                'textoApresentacao' => $textoApresentacao
+            ]
         ]);
 
         // $grupo = Grupo::find(1);
