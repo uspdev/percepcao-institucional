@@ -29,7 +29,26 @@ class Percepcao extends Model
         'dataDeFechamento'
     ];
 
+    // a ser usado ainda
+    public $settingsDefaults = [
+        'textoAgradecimentoEnvioAvaliacao' => '',
+        'textoApresentacao' => '',
+        'textoFormularioAvaliacao' => '',
+    ];
+
     public $settingsFieldName = 'questao_settings';
+
+
+    /**
+     * Retorna valor de settings com defaults
+     *
+     * @param  String $value
+     * @return Array
+     */
+    public function getSettingsAttribute($value)
+    {
+        return array_merge($this->settingsDefaults, json_decode($value, true));
+    }
 
     public static function simNao()
     {
