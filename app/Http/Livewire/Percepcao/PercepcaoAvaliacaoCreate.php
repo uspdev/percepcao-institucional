@@ -251,15 +251,17 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function save()
     {
-        $validated = $this->withValidator(function (Validator $validator) {
-            $validator->after(function ($validator) {
-                if ($this->rules()) {
-                    if ($validator->errors()->any()) {
-                        $validator->errors()->add('disciplina', 'Todos os quesitos precisam ser respondidos');
+        if (!empty($this->rules())) {
+            $validated = $this->withValidator(function (Validator $validator) {
+                $validator->after(function ($validator) {
+                    if ($this->rules()) {
+                        if ($validator->errors()->any()) {
+                            $validator->errors()->add('disciplina', 'Todos os quesitos precisam ser respondidos');
+                        }
                     }
-                }
-            });
-        })->validate();
+                });
+            })->validate();
+        }
 
         foreach ($this->avaliacaoQuesitos as $keyQuesito => $valueQuesito) {
             if (isset($valueQuesito['disciplinas'])) {
