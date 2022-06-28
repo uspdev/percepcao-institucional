@@ -15,3 +15,7 @@ Instalação padrão do Laravel
 * A percepção estará disponível no período indicado pelas datas de abertura e fechamento
 * Pode haver somente uma percepção ativa simultâneamente.
   
+
+* Caso uma disciplina possua mais de um professor, o aluno avaliará cada um deles separadamente.
+* Disciplinas tipo Estagio TCC não serão avaliadas.
+* 

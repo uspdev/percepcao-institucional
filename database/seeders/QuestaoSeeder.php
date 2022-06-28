@@ -57,5 +57,15 @@ class QuestaoSeeder extends Seeder
                 'ativo' => 1,
             ]);
         }
+        \App\Models\Questao::create([
+            'campo' => [
+                'type' => 'textarea',
+                'text' => 'Comentários e sugestões',
+                'maxlength' => 500,
+                'rows' => 3,
+                'options' => '',
+            ],
+            'ativo' => 1,
+        ]);
     }
 }

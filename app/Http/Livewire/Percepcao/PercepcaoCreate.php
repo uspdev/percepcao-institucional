@@ -105,11 +105,11 @@ class PercepcaoCreate extends Component
     public function render()
     {
         $percepcao = new Percepcao;
-        $graduacao = Graduacao::listarAtivos();
+        // $graduacao = Graduacao::listarAtivos();
 
         return view('livewire.percepcao.percepcao-create', [
           'percepcao' => $percepcao,
-          'graduacao' => $graduacao
+        //   'graduacao' => $graduacao
         ])->extends('layouts.app')->section('content');
     }
 }

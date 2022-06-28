@@ -34,7 +34,7 @@
                                 <div>
                                     <x-icon.menu class="w-4 h-4 opacity-50 cursor-move handler-questao" />
                                 </div>
-                                <div class="h6 mt-2">
+                                <div class="h6">
                                     {{ $questao->campo['text'] }}
                                 </div>
                                 @if ($this->canDelete())
@@ -52,7 +52,7 @@
                                     <div>&nbsp;</div>
                                 @endif
                             </div>
-                            <div class="d-flex flex-row justify-content-center align-items-center">
+                            {{-- <div class="d-flex flex-row justify-content-center align-items-center">
                                 @switch($questao->campo['type'])
                                     @case('radio')
                                         <div>
@@ -80,7 +80,7 @@
                                     @default
 
                                 @endswitch
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 @endforeach

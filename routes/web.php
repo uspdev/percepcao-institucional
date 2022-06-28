@@ -9,6 +9,8 @@ use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 use App\Http\Livewire\Percepcao\GrupoCreate;
 use App\Http\Livewire\Percepcao\QuestaoCreate;
 
+use App\Http\Controllers\percepcaoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,5 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class);
         Route::get('/gestao-sistema/percepcao/create-grupo', GrupoCreate::class);
         Route::get('/gestao-sistema/percepcao/create-questao', QuestaoCreate::class);
+        Route::get('/gestao-sistema/percepcao/{id}/alunos', [PercepcaoController::class, 'alunos'])->name('percepcao.alunos');
+        Route::get('/gestao-sistema/percepcao/{id_percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
     });
 });
