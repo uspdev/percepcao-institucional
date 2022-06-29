@@ -15,8 +15,10 @@ class GrupoSeeder extends Seeder
     public function run()
     {
         \App\Models\Grupo::create([
-            'texto' => 'Disciplinas',
+            'texto' => 'Percepção em cada disciplinas',
             'ativo' => 1,
+            'repeticao' => 1,
+            'modelo_repeticao' => 'disciplinas',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
