@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Percepcao;
 use Livewire\Component;
 use App\Models\Coordenador;
 use App\Models\Disciplina;
+use App\Models\Grupo;
 use App\Models\Percepcao;
 use App\Models\Questao;
 use App\Models\Resposta;
@@ -96,9 +97,11 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function montaAvaliacaoQuesitoSubgrupo($grupos)
     {
-        foreach ($grupos as $idGrupo => $grupo) {
-            if (isset($grupo['repeticao']) && $grupo['repeticao']) {
-                switch ($grupo['modelo_repeticao']) {
+        foreach ($grupos as $idGrupo => $valueGrupo) {
+            $grupo = Grupo::find($idGrupo);
+
+            if (isset($grupo->repeticao) && $grupo->repeticao) {
+                switch ($grupo->modelo_repeticao) {
                     case 'disciplinas':
                         foreach ($this->disciplinas as $keyDisciplina => $disciplina) {
                             $this->dadosDisciplina[$keyDisciplina] = [
@@ -115,8 +118,8 @@ class PercepcaoAvaliacaoCreate extends Component
                                 'dadosDisciplina' => $this->dadosDisciplina[$keyDisciplina]
                             ];
 
-                            if (isset($grupo['questoes'])) {
-                                foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                            if (isset($valueGrupo['questoes'])) {
+                                foreach ($valueGrupo['questoes'] as $idQuestao => $valueQuestao) {
                                     $questao = Questao::find($idQuestao);
 
                                     $this->avaliacaoQuesitos[$idGrupo]['disciplinas'][$keyDisciplina][$idQuestao] = [
@@ -143,7 +146,7 @@ class PercepcaoAvaliacaoCreate extends Component
                                 'dadosCoordenador' => $this->dadosCoordenador[$keyCoordenador]
                             ];
 
-                            foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                            foreach ($valueGrupo['questoes'] as $idQuestao => $valueQuestao) {
                                 $questao = Questao::find($idQuestao);
 
                                 $this->avaliacaoQuesitos[$idGrupo]['coordenadores'][$keyCoordenador][$idQuestao] = [
@@ -157,8 +160,8 @@ class PercepcaoAvaliacaoCreate extends Component
                         break;
                 }
             } else {
-                if (isset($grupo['questoes'])) {
-                    foreach ($grupo['questoes'] as $idQuestao => $valueQuestao) {
+                if (isset($valueGrupo['questoes'])) {
+                    foreach ($valueGrupo['questoes'] as $idQuestao => $valueQuestao) {
                         $questao = Questao::find($idQuestao);
 
                         $this->avaliacaoQuesitos[$idGrupo][$idQuestao] = [
@@ -171,10 +174,15 @@ class PercepcaoAvaliacaoCreate extends Component
                 }
             }
 
-            if (isset($grupo['grupos'])) {
-                $this->montaAvaliacaoQuesitoSubgrupo($grupo['grupos']);
+            if (isset($valueGrupo['grupos'])) {
+                $this->montaAvaliacaoQuesitoSubgrupo($valueGrupo['grupos']);
             }
         }
+    }
+
+    public function getDetalheGrupo($grupoId)
+    {
+        return Grupo::find($grupoId)->toArray();
     }
 
     public function getDetalheQuestao($questaoId)

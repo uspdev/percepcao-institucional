@@ -15,8 +15,8 @@
                     <div class="text-center my-3 bold">
                         {{ $grupo['ordem'] }}. {{ $grupo['texto'] }}
                     </div>
-                    @if ($grupo['repeticao'])
-                        @if ($grupo['modelo_repeticao'] === 'disciplinas')
+                    @if ($this->getDetalheGrupo($idGrupo)['repeticao'])
+                        @if ($this->getDetalheGrupo($idGrupo)['modelo_repeticao'] === 'disciplinas')
                             @foreach ($dadosDisciplina as $keyDisciplina => $disciplina)
                                 <fieldset class="border p-2"
                                     id="{{ $disciplina['coddis'] }}-{{ $keyDisciplina }}">
@@ -63,7 +63,7 @@
                                 <br />
                             @endforeach
                         @endif
-                        @if ($grupo['modelo_repeticao'] === 'coordenadores')
+                        @if ($this->getDetalheGrupo($idGrupo)['modelo_repeticao'] === 'coordenadores')
                             @foreach ($dadosCoordenador as $keyCoordenador => $coordenador)
                                 <fieldset class="border p-2"
                                     id="{{ $coordenador['codcur'] }}-{{ $coordenador['codhab'] }}-{{ $keyCoordenador }}">
