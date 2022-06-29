@@ -33,6 +33,7 @@ class Percepcao extends Model
         'textoAgradecimentoEnvioAvaliacao' => 'Obrigado pela sua participação no processo de avaliação de disciplinas deste semestre.',
         'textoApresentacao' => '',
         'textoFormularioAvaliacao' => '',
+        'comentario' => 'Nova percepção',
     ];
 
     // glorand/laravel-model-settings

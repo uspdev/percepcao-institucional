@@ -39,7 +39,7 @@ class PercepcaoShow extends Component
         return [
             [
                 'name' => 'id',
-                'text' => 'Número',
+                'text' => 'No.',
                 'sortable' => true,
             ],
             [
@@ -80,6 +80,11 @@ class PercepcaoShow extends Component
             [
                 'name' => 'liberaConsultaAluno',
                 'text' => 'Libera alunos?',
+                'sortable' => false,
+            ],
+            [
+                'name' => 'comentario',
+                'text' => 'Comentário',
                 'sortable' => false,
             ],
         ];

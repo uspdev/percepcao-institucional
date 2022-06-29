@@ -25,14 +25,14 @@ return [
             'codpes' => 'Coordenador Fulano de Tal 1',
             'nompes' => 'Coordenador Fulano de Tal 1',
             'codcur' => env('REPLICADO_CODUNDCLG') . '001',
-            'nomcur' => 'ENGENHARIA DA EEL',
+            'nomcur' => 'Engenharia da EEL',
             'codhab' => '1',
         ],
         1 => [
             'codpes' => '000000',
             'nompes' => 'Armando Toshio Natsumi',
             'codcur' => env('REPLICADO_CODUNDCLG') . '002',
-            'nomcur' => 'ENGENHARIA DA EESC',
+            'nomcur' => 'Engenharia da EESC',
             'codhab' => '2',
         ]
     ],

@@ -60,6 +60,9 @@
                                   key('liberaConsultaAluno-' . $percepcao->id)
                                 )
                             </td>
+                            <td>
+                                {{ $percepcao->settings['comentario'] }}
+                            </td>
                             <td width=''>
                                 <div>
                                     <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
@@ -83,7 +86,11 @@
                                         action="update"
                                         data-toggle="modal"
                                         data-target="#percepcaoModal"
-                                      />
+                                     />
+
+                                      {{-- tem de colocar um botão no padrão rsrsrs e implementar a funcionalidade --}}
+                                    <button title="Fazer uma cópia" class="btn btn-outline-primary"><i class="far fa-clone"></i></button>
+                                    
                                     <x-form.wire-button
                                         class="btn btn-danger text-danger btn-icon"
                                         class-icon="w-6 h-6"
