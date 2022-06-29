@@ -26,6 +26,7 @@ Route::get('/', PercepcaoAvaliacaoShow::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/avaliar', PercepcaoAvaliacaoCreate::class);
+    
     Route::middleware('can:gerente')->group(function () {
         Route::get('/avaliar/preview/{idPercepcao}', PercepcaoAvaliacaoCreate::class);
         Route::get('/gestao-sistema/percepcao', PercepcaoShow::class);
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class);
         Route::get('/gestao-sistema/percepcao/create-grupo', GrupoCreate::class);
         Route::get('/gestao-sistema/percepcao/create-questao', QuestaoCreate::class);
+
         Route::get('/gestao-sistema/percepcao/{id}/alunos', [PercepcaoController::class, 'alunos'])->name('percepcao.alunos');
         Route::get('/gestao-sistema/percepcao/{id_percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
     });
