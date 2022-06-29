@@ -1,6 +1,7 @@
 <div class="container" style="max-width: 1000px">
     @if ($this->percepcao)
         @if (!$this->statusPercepcao)
+
             @if($this->preview)
                 <h2 class="">
                     <a class="" href="gestao-sistema/percepcao">Percepções</a> 
@@ -8,6 +9,7 @@
                 </h2>
                 <hr />
             @endif
+            
             <h3 class="text-center font-weight-bold">
                 Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}</span>
             </h3>
