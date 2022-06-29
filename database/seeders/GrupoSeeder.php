@@ -15,7 +15,7 @@ class GrupoSeeder extends Seeder
     public function run()
     {
         \App\Models\Grupo::create([
-            'texto' => 'Percepção em cada disciplinas',
+            'texto' => 'PERCEPÇÃO DO ALUNO EM CADA DISCIPLINA',
             'ativo' => 1,
             'repeticao' => 1,
             'modelo_repeticao' => 'disciplinas',
@@ -23,9 +23,26 @@ class GrupoSeeder extends Seeder
             'updated_at' => now(),
         ]);
         \App\Models\Grupo::create([
-            'texto' => 'Auto avaliação',
+            'texto' => 'AUTO AVALIAÇÃO DO ALUNO NA DISCIPLINA',
             'ativo' => 1,
+            'repeticao' => 1,
+            'modelo_repeticao' => 'disciplinas',
             'parent_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        \App\Models\Grupo::create([
+            'texto' => 'COMENTÁRIOS E SUGESTÕES DO ALUNO NA DISCIPLINA',
+            'ativo' => 1,
+            'repeticao' => 1,
+            'modelo_repeticao' => 'disciplinas',
+            'parent_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        \App\Models\Grupo::create([
+            'texto' => 'COMENTÁRIOS E SUGESTÕES GERAIS',
+            'ativo' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -36,8 +53,10 @@ class GrupoSeeder extends Seeder
             'updated_at' => now(),
         ]);
         \App\Models\Grupo::create([
-            'texto' => 'Coordenação',
+            'texto' => 'PERCEPÇÃO DA COORDENAÇÃO',
             'ativo' => 1,
+            'repeticao' => 1,
+            'modelo_repeticao' => 'coordenadores',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
