@@ -1,8 +1,15 @@
 <div class="container" style="max-width: 1000px">
     @if ($this->percepcao)
         @if (!$this->statusPercepcao)
+            @if($this->preview)
+                <h2 class="">
+                    <a class="" href="gestao-sistema/percepcao">Percepções</a> 
+                    <i class="fas fa-angle-right"></i> Percepção Institucional <i class="fas fa-angle-right"></i> Preview
+                </h2>
+                <hr />
+            @endif
             <h3 class="text-center font-weight-bold">
-                Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}@if($path === "avaliar/preview/$percepcao->id") - PREVIEW<small class="align-top"> (<a href="gestao-sistema/percepcao">sair</a>)</small> @endif</span>
+                Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}</span>
             </h3>
             <hr>
             @if (isset($percepcao->settings['textoFormularioAvaliacao']) && !empty($percepcao->settings['textoFormularioAvaliacao']))
@@ -156,7 +163,7 @@
                     @enderror
                 @endif
                 @if ($this->preview)
-                    <a href="gestao-sistema/percepcao" class="btn btn-primary">Voltar</a>
+                    <a href="gestao-sistema/percepcao" class="btn btn-primary">Voltar para percepções</a>
                 @else
                     <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
                 @endif

@@ -2,10 +2,11 @@
 
 @section('content')
   <h2>
-    <a href="gestao-sistema/percepcao">Percepções</a> > Alunos
-    <span class="badge badge-primary badge-pill">{{ count($alunos) }}</span> {{ $percepcao->ano }}-{{ $percepcao->semestre }}
+    <a href="gestao-sistema/percepcao">Percepções</a>
+    <i class="fas fa-angle-right"></i> Alunos {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+    <span class="badge badge-primary badge-pill">{{ count($alunos) }}</span>
   </h2>
-  <table class="table table-sm table-bordered ">
+  <table class="table table-sm table-bordered">
     <thead>
       <tr>
         <th>Unidade</th>
@@ -19,7 +20,7 @@
     <tbody>
       @foreach ($alunos as $aluno)
         <tr>
-            <td>{{ $aluno['sglund'] }}</td>
+          <td>{{ $aluno['sglund'] }}</td>
           <td class="text-center">
             {{ \Carbon\Carbon::Create($aluno['dtainivin'])->format('Y') }}
           </td>

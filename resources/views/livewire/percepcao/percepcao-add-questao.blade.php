@@ -1,10 +1,18 @@
 <div class="container">
-    <h2 class="text-center font-weight-bold">Percepção Institucional - Adicionar Questões
-        <a class="btn btn-sm btn-secondary" href="gestao-sistema/percepcao"> Voltar à percepção</a>
+    <h2 class="">
+        <a class="" href="gestao-sistema/percepcao">Percepções</a> 
+        <i class="fas fa-angle-right"></i> Percepção Institucional - Adicionar Questões
     </h2>
+    @can('admin')
+        <hr>
+        <div class="badge badge-danger"><i class="fas fa-lock"></i> Admin</div>
+        <div>Campo questao_settings</div>
+        <pre>{!! $percepcao->questao_settings !!}</pre>
+    @endcan
     <hr>
+
     <div class="d-flex justify-content-center align-items-center flex-column">
-    <div>
+        <div>
             <label class="bold">Percepção Ano/Semestre:</label><span> {{ $percepcao->ano }}/{{ $percepcao->semestre }}</span>
         </div>
         <div>
@@ -81,7 +89,7 @@
                 class-icon="w-8 h-8"
                 click=""
                 label="Voltar"
-                />
+            />
         </a>
     </div>
 

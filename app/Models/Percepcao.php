@@ -28,7 +28,7 @@ class Percepcao extends Model
         'dataDeFechamento'
     ];
 
-    // a ser usado ainda
+    // Valores default da coluna settings
     public $settingsDefaults = [
         'textoAgradecimentoEnvioAvaliacao' => 'Obrigado pela sua participação no processo de avaliação de disciplinas deste semestre.',
         'textoApresentacao' => '',
@@ -37,6 +37,7 @@ class Percepcao extends Model
 
     // glorand/laravel-model-settings
     public $settingsFieldName = 'questao_settings';
+    public $defaultSettings = [];
 
 
     /**
