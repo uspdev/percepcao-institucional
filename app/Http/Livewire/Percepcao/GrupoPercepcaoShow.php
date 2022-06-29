@@ -22,8 +22,8 @@ class GrupoPercepcaoShow extends Component
         } else {
             $percepcao = Percepcao::find($this->percepcaoId);
 
-            $ids = $percepcao->settings()->has('grupos') 
-                ? array_keys($percepcao->settings()->get('grupos')) 
+            $ids = $percepcao->settings()->has('grupos')
+                ? array_keys($percepcao->settings()->get('grupos'))
                 : [];
 
             $this->grupos = Grupo::whereNull('parent_id')
@@ -42,14 +42,14 @@ class GrupoPercepcaoShow extends Component
         $percepcao = Percepcao::find($this->percepcaoId);
 
         $grupos = $percepcao->settings()->get('grupos');
-        
+
         $percepcao->settings()->delete('grupos');
 
         foreach ($list as $key => $value) {
             $percepcao->settings()->set("grupos.{$value['id']}", $grupos[$value['id']]);
             $percepcao->settings()->set("grupos.{$value['id']}.ordem", $key + 1);
         }
-        
+
         $this->mount();
     }
 
@@ -59,7 +59,7 @@ class GrupoPercepcaoShow extends Component
     }
 
     public function canDelete() {
-        $dataDeAbertura = Percepcao::find($this->percepcaoId)->first()->dataDeAbertura->format('Y-m-d H:i:s');
+        $dataDeAbertura = Percepcao::find($this->percepcaoId)->dataDeAbertura->format('Y-m-d H:i:s');
 
         return ($dataDeAbertura >= date(now())) ? true : false;
     }

@@ -20,16 +20,16 @@ class GrupoQuestaoShow extends Component
     public function mount()
     {
         $this->questaoClass = new Questao;
-        
+
         $this->percepcao = Percepcao::find($this->percepcaoId);
-        
+
         if (isset($this->grupo->parent_id)) {
-            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes') 
-            ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes')) 
+            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes')
+            ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes'))
             : [];
         } else {
-            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->id . '.questoes') 
-                ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->id . '.questoes')) 
+            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->id . '.questoes')
+                ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->id . '.questoes'))
                 : [];
         }
 
@@ -102,7 +102,7 @@ class GrupoQuestaoShow extends Component
             $caminhoGrupo = !is_null($grupoDetalhe->parent_id)
                 ? "grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$value['id']}"
                 : "grupos.$grupoId.questoes.{$value['id']}";
-            
+
             $this->percepcao->settings()->update($caminhoGrupo, [
                 'id' => $questaoDetalhe->id,
                 'campo' => $questaoDetalhe['campo'],
@@ -114,7 +114,7 @@ class GrupoQuestaoShow extends Component
 
     public function canDelete()
     {
-        $dataDeAbertura = Percepcao::find($this->percepcaoId)->first()->dataDeAbertura->format('Y-m-d H:i:s');
+        $dataDeAbertura = Percepcao::find($this->percepcaoId)->dataDeAbertura->format('Y-m-d H:i:s');
 
         return ($dataDeAbertura >= date(now())) ? true : false;
     }
