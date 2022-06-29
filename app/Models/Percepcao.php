@@ -10,7 +10,6 @@ use Glorand\Model\Settings\Traits\HasSettingsField;
 class Percepcao extends Model
 {
     use HasFactory;
-
     use HasSettingsField;
 
     protected $guarded = ['id'];
@@ -31,11 +30,12 @@ class Percepcao extends Model
 
     // a ser usado ainda
     public $settingsDefaults = [
-        'textoAgradecimentoEnvioAvaliacao' => '',
+        'textoAgradecimentoEnvioAvaliacao' => 'Obrigado pela sua participação no processo de avaliação de disciplinas deste semestre.',
         'textoApresentacao' => '',
         'textoFormularioAvaliacao' => '',
     ];
 
+    // glorand/laravel-model-settings
     public $settingsFieldName = 'questao_settings';
 
 
