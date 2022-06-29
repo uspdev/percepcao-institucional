@@ -24,10 +24,11 @@ class PercepcaoAvaliacaoShow extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
 
+            // vamos verificar se já enviou alguma resposta
             $this->percepcaoEnvio = Resposta::where('percepcao_id', $this->percepcao->id)->where('user_id', Auth::id())->first();
         }
         else {
-            $this->statusPercepcao = "Nenhuma existe nenhuma Percepção Institucional cadastrada no momento!";
+            $this->statusPercepcao = "Não existe nenhuma Percepção Institucional ativa no momento!";
         }
     }
 
