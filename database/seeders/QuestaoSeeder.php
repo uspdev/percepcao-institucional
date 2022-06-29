@@ -53,6 +53,7 @@ class QuestaoSeeder extends Seeder
                     'type' => 'radio',
                     'text' => $texto,
                     'options' => $options,
+                    'rules' => 'required|integer|min:1|max:5',
                 ],
                 'ativo' => 1,
             ]);
@@ -60,10 +61,22 @@ class QuestaoSeeder extends Seeder
         \App\Models\Questao::create([
             'campo' => [
                 'type' => 'textarea',
-                'text' => 'Comentários e sugestões',
-                'maxlength' => 500,
+                'text' => 'Comentários e sugestões do aluno na disciplina',
+                'maxlength' => 400,
                 'rows' => 3,
                 'options' => '',
+                'rules' => 'max:400',
+            ],
+            'ativo' => 1,
+        ]);
+        \App\Models\Questao::create([
+            'campo' => [
+                'type' => 'textarea',
+                'text' => 'Comentários e sugestões gerais',
+                'maxlength' => 400,
+                'rows' => 3,
+                'options' => '',
+                'rules' => 'max:400',
             ],
             'ativo' => 1,
         ]);
