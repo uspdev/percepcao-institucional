@@ -6,7 +6,7 @@
         @switch($this->getDetalheQuestao($idQuestao)['campo']['type'])
             @case('radio')
                 <x-form.wire-radio
-                    :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $grupo['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
+                    :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $this->getDetalheGrupo($grupo['id'])['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
                     :arrValue="$this->questaoClass->getCamposQuestao($idQuestao)['keys']"
                     :arrText="$this->questaoClass->getCamposQuestao($idQuestao)['values']"
                     style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;"
@@ -15,7 +15,7 @@
             @case('textarea')
                 @if (!empty($this->getDetalheQuestao($idQuestao)['campo']['maxlength']))
                     <x-form.wire-textarea
-                        :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $grupo['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
+                        :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $this->getDetalheGrupo($grupo['id'])['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
                         wireModifier=".defer"
                         xData='{
                                 content: "",
@@ -32,7 +32,7 @@
                         />
                 @else
                     <x-form.wire-textarea
-                        :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $grupo['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
+                        :model="'avaliacaoQuesitos.' . $grupo['id'] . '.' . $this->getDetalheGrupo($grupo['id'])['modelo_repeticao'] . '.' .$key.'.' . $idQuestao . '.value'"
                         wireModifier=".defer"
                         rows="{{ $this->getDetalheQuestao($idQuestao)['campo']['rows'] }}"
                         />
