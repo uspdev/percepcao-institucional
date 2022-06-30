@@ -32,8 +32,10 @@
 @section('javascripts_bottom')
     @parent
     @livewireScripts
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>    
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>    
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script>
         window.addEventListener('closeModal', event => {
             $('#percepcaoModal').modal('hide');
