@@ -34,10 +34,12 @@ class Percepcao extends Model
         'textoApresentacao' => '',
         'textoFormularioAvaliacao' => '',
         'comentario' => 'Nova percepção',
+        'totalDeDisciplinas' => 0,
     ];
 
     // glorand/laravel-model-settings
     public $settingsFieldName = 'questao_settings';
+    public $invokeSettingsBy = 'questaos';
     public $defaultSettings = [];
 
 
@@ -50,6 +52,13 @@ class Percepcao extends Model
     public function getSettingsAttribute($value)
     {
         return array_merge($this->settingsDefaults, json_decode($value ?? '{}', true));
+    }
+
+    /**
+     * Adiciona ou atualiza um valor de settings
+     */
+    public function addSettings(Array $value) {
+        $this->attributes['settings'] = json_encode(array_merge($this->settings, $value));
     }
 
     public static function simNao()
@@ -74,5 +83,13 @@ class Percepcao extends Model
     public function setDataDeFechamentoAttribute($dataDeFechamento)
     {
         $this->attributes['dataDeFechamento'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeFechamento)->toDateTimeString();
+    }
+
+    /**
+     * Relacionamento 1:N com disciplinas
+     */
+    public function disciplinas()
+    {
+        return $this->hasMany('App\Models\Disciplina');
     }
 }
