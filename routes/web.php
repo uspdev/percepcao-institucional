@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestao-sistema/percepcao/create-questao', QuestaoCreate::class);
 
         Route::get('/gestao-sistema/percepcao/{id}/alunos', [PercepcaoController::class, 'alunos'])->name('percepcao.alunos');
-        Route::get('/gestao-sistema/percepcao/{id_percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
+        Route::get('/gestao-sistema/percepcao/{id_percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.aluno.disciplinas');
+        Route::get('/gestao-sistema/percepcao/{id}/disciplinas', [PercepcaoController::class, 'disciplinas'])->name('percepcao.disciplinas');
+        Route::post('/gestao-sistema/percepcao/{id}/disciplinas', [PercepcaoController::class, 'disciplinasUpdate'])->name('percepcao.disciplinas.update');
     });
 });

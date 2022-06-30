@@ -34,7 +34,11 @@
                             <td>{{ $percepcao->semestre ?? '' }}</td>
                             <td>
                                 {{ $percepcao->totalDeAlunosMatriculados ?? '' }} 
-                                <a href="{{ route('percepcao.alunos', $percepcao->id) }}" title="ver lista de alunos"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('percepcao.alunos', $percepcao->id) }}" title="Ver lista de alunos"><i class="fas fa-eye"></i></a>
+                            </td>
+                            <td>
+                                {{ $percepcao->settings['totalDeDisciplinas'] }} 
+                                <a href="{{ route('percepcao.disciplinas', $percepcao->id) }}" title="Ver lista de disciplinas"><i class="fas fa-chalkboard-teacher"></i></a>
                             </td>
                             <td>
                                 @livewire('percepcao.toggle-button', [
@@ -66,7 +70,7 @@
                             <td width=''>
                                 <div>
                                     <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
-                                        <x-form.wire-button
+                                        <x-form.wire-button 
                                             class="btn btn-dark text-dark btn-icon"
                                             class-icon="w-6 h-6"
                                             action="question"

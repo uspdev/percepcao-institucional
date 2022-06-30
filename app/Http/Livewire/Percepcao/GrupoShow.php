@@ -62,7 +62,7 @@ class GrupoShow extends Component
         $canDelete = true;
 
         foreach ($percepcoes as $percepcao) {
-            if ($percepcao->settings()->has("grupos.$grupoId")) {
+            if ($percepcao->questaos()->has("grupos.$grupoId")) {
                 $canDelete = false;
                 break;
             } else {

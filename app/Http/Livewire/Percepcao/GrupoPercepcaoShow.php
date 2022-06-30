@@ -22,8 +22,8 @@ class GrupoPercepcaoShow extends Component
         } else {
             $percepcao = Percepcao::find($this->percepcaoId);
 
-            $ids = $percepcao->settings()->has('grupos')
-                ? array_keys($percepcao->settings()->get('grupos'))
+            $ids = $percepcao->questaos()->has('grupos')
+                ? array_keys($percepcao->questaos()->get('grupos'))
                 : [];
 
             $this->grupos = Grupo::whereNull('parent_id')
@@ -41,13 +41,13 @@ class GrupoPercepcaoShow extends Component
     {
         $percepcao = Percepcao::find($this->percepcaoId);
 
-        $grupos = $percepcao->settings()->get('grupos');
+        $grupos = $percepcao->questaos()->get('grupos');
 
-        $percepcao->settings()->delete('grupos');
+        $percepcao->questaos()->delete('grupos');
 
         foreach ($list as $key => $value) {
-            $percepcao->settings()->set("grupos.{$value['id']}", $grupos[$value['id']]);
-            $percepcao->settings()->set("grupos.{$value['id']}.ordem", $key + 1);
+            $percepcao->questaos()->set("grupos.{$value['id']}", $grupos[$value['id']]);
+            $percepcao->questaos()->set("grupos.{$value['id']}.ordem", $key + 1);
         }
 
         $this->mount();

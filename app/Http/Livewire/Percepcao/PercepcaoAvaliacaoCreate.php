@@ -53,7 +53,7 @@ class PercepcaoAvaliacaoCreate extends Component
                 $this->statusPercepcao = "A Percepção Institucional deste semestre foi finalizada em: " . $this->percepcao->dataDeFechamento->format('d/m/Y \à\s H:i:s') . ".<br />Obrigado pela sua colaboração.";
             }
 
-            if (!$this->percepcao->settings()->has('grupos')) {
+            if (!$this->percepcao->questaos()->has('grupos')) {
                 $this->statusPercepcao = "Nenhum grupo/questão foi criado ainda para esta percepção.";
             }
 
@@ -69,10 +69,10 @@ class PercepcaoAvaliacaoCreate extends Component
 
                 $this->coordenadores = config('percepcao.coordenadores_fake');
 
-                if ($this->percepcao->settings()->has('grupos')) {
+                if ($this->percepcao->questaos()->has('grupos')) {
                     $this->statusPercepcao = null;
 
-                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->settings()->get('grupos'));
+                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->questaos()->get('grupos'));
                 }
             } else {
                 $this->disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre(
@@ -89,7 +89,7 @@ class PercepcaoAvaliacaoCreate extends Component
                         $this->coordenadores = PessoaReplicado::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
                     }
 
-                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->settings()->get('grupos'));
+                    $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->questaos()->get('grupos'));
                 }
             }
         }

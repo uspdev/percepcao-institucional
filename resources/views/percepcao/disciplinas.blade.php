@@ -1,55 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-  <h2>
+  <h2 class="form-inline">
     <a href="gestao-sistema/percepcao">Percepções</a>
     <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
-    <i class="fas fa-angle-right"></i> Alunos 
-    <span class="badge badge-primary badge-pill">{{ count($alunos) }}</span>
+    <i class="fas fa-angle-right"></i> Disciplinas 
+    <span class="badge badge-primary badge-pill">{{ $percepcao->settings['totalDeDisciplinas'] }}</span>
+
+    <div class="ml-3">
+      <form method="POST" action="{{ route('percepcao.disciplinas.update', $percepcao->id) }}">
+        @csrf
+        <input type="hidden" name="acao" value="atualizar">
+        <button type="submit" class="btn btn-warning">Recarregar do replicado</button>
+      </form>
+    </div>
+
   </h2>
-  <table class="table table-sm table-bordered">
+
+  <table class="table table-sm table-bordered datatable">
     <thead>
       <tr>
-        <th>Unidade</th>
-        <th>Ingresso</th>
-        <th>Curso</th>
-        <th>No. USP</th>
+        <th>Código</th>
         <th>Nome</th>
-        <th>Disciplinas</th>
+        <th>Turma</th>
+        <th>Versão</th>
+        <th>Tipo</th>
+        <th>Professor</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($alunos as $aluno)
+      @foreach ($disciplinas as $disciplina)
         <tr>
-          <td>{{ $aluno['sglund'] }}</td>
-          <td class="text-center">
-            {{ \Carbon\Carbon::Create($aluno['dtainivin'])->format('Y') }}
-          </td>
-          <td>
-            {{ $aluno['nomcur'] }}
-          </td>
-          <td>
-            {{ $aluno['codpes'] }} <span
-              class="badge badge-pill badge-secondary">{{ count($aluno['disciplinas']) }}</span>
-          </td>
-          <td>
-            <a href="#" data-toggle="modal" data-target="#exampleModal" data-codpes="{{ $aluno['codpes'] }}"
-              data-nompes="{{ $aluno['nompes'] }}">
-              {{ $aluno['nompes'] }}
-            </a>
-          </td>
-          <td>
-            @foreach ($aluno['disciplinas'] as $disciplina)
-              {{ $disciplina['coddis'] }} - {{ $disciplina['codtur'] }} -
-              {{ $disciplina['nomdis'] }}<br>
-            @endforeach
-          </td>
+          <td>{{ $disciplina['coddis'] }}</td>
+          <td>{{ $disciplina['nomdis'] }}</td>
+          <td>{{ $disciplina['codtur'] }}</td>
+          <td>{{ $disciplina['verdis'] }}</td>
+          <td>{{ $disciplina['tiptur'] }}</td>
+          <td>{{ $disciplina['nompes'] }}</td>
         </tr>
       @endforeach
     </tbody>
   </table>
-
-
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

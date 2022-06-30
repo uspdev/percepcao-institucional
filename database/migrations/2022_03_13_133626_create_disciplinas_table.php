@@ -22,6 +22,7 @@ class CreateDisciplinasTable extends Migration
             $table->integer('verdis');
             $table->string('codtur');
             $table->string('tiptur');
+            $table->ForeignId('percepcao_id')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }

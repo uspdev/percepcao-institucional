@@ -28,8 +28,8 @@ class PercepcaoAddQuestao extends Component
             $this->percepcao = Percepcao::find($idPercepcao);
 
             if ($this->percepcao->count()) {
-                $ids = $this->percepcao->settings()->has('grupos') 
-                    ? array_keys($this->percepcao->settings()->get('grupos')) 
+                $ids = $this->percepcao->questaos()->has('grupos') 
+                    ? array_keys($this->percepcao->questaos()->get('grupos')) 
                     : [];
                     
                 $this->grupo = Grupo::whereNull('parent_id')
@@ -51,14 +51,14 @@ class PercepcaoAddQuestao extends Component
 
     public function saveSelectedGrupos($grupos)
     {
-        $ordem = $this->percepcao->settings()->has('grupos')
-            ? collect($this->percepcao->settings()->get('grupos'))->max('ordem') + 1
+        $ordem = $this->percepcao->questaos()->has('grupos')
+            ? collect($this->percepcao->questaos()->get('grupos'))->max('ordem') + 1
             : 1;
 
         foreach ($grupos as $key => $value) {
             $grupoDetalhe = Grupo::find($value['id']);
 
-            $this->percepcao->settings()->update("grupos.{$grupoDetalhe->id}", [
+            $this->percepcao->questaos()->update("grupos.{$grupoDetalhe->id}", [
                 'id' => $grupoDetalhe->id,
                 'ordem' => $ordem,
                 'texto' => $grupoDetalhe->texto,
@@ -68,7 +68,7 @@ class PercepcaoAddQuestao extends Component
 
             if ($grupoDetalhe->grupos->count()) {
                 foreach ($grupoDetalhe->grupos as $keyGrupoDetalhe => $grupo) {
-                    $this->percepcao->settings()->update("grupos.{$grupoDetalhe->id}.grupos.{$grupo->id}", [
+                    $this->percepcao->questaos()->update("grupos.{$grupoDetalhe->id}.grupos.{$grupo->id}", [
                         'id' => $grupo->id,
                         'ordem' => $keyGrupoDetalhe,
                         'texto' => $grupo->texto,
@@ -94,12 +94,12 @@ class PercepcaoAddQuestao extends Component
     {
         switch ($this->tipoModel) {
             case 'grupo':
-                $this->percepcao->settings()->delete("grupos.{$this->selectedId}");
+                $this->percepcao->questaos()->delete("grupos.{$this->selectedId}");
                 break;
             case 'questao':
                 !is_null($this->parentId)
-                    ? $this->percepcao->settings()->delete("grupos.{$this->parentId}.grupos.{$this->modelId}.questoes.{$this->selectedId}")
-                    : $this->percepcao->settings()->delete('grupos.' . $this->modelId . '.questoes.' . $this->selectedId);
+                    ? $this->percepcao->questaos()->delete("grupos.{$this->parentId}.grupos.{$this->modelId}.questoes.{$this->selectedId}")
+                    : $this->percepcao->questaos()->delete('grupos.' . $this->modelId . '.questoes.' . $this->selectedId);
                 break;
         }
 
