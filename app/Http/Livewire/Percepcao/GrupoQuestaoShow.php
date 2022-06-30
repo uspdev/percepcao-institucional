@@ -24,12 +24,12 @@ class GrupoQuestaoShow extends Component
         $this->percepcao = Percepcao::find($this->percepcaoId);
 
         if (isset($this->grupo->parent_id)) {
-            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes')
-            ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes'))
+            $ids = $this->percepcao->questaos()->has('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes')
+            ? array_keys($this->percepcao->questaos()->get('grupos.' . $this->grupo->parent_id . '.grupos.' . $this->grupo->id . '.questoes'))
             : [];
         } else {
-            $ids = $this->percepcao->settings()->has('grupos.' . $this->grupo->id . '.questoes')
-                ? array_keys($this->percepcao->settings()->get('grupos.' . $this->grupo->id . '.questoes'))
+            $ids = $this->percepcao->questaos()->has('grupos.' . $this->grupo->id . '.questoes')
+                ? array_keys($this->percepcao->questaos()->get('grupos.' . $this->grupo->id . '.questoes'))
                 : [];
         }
 
@@ -73,12 +73,12 @@ class GrupoQuestaoShow extends Component
 
             $questaoDetalhe = Questao::find($value['id']);
             if (!is_null($grupoDetalhe->parent_id)) {
-                $this->percepcao->settings()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
+                $this->percepcao->questaos()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
                     'id' => $questaoDetalhe->id,
                     'campo' => $questaoDetalhe['campo'],
                 ]);
             } else {
-                $this->percepcao->settings()->update("grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
+                $this->percepcao->questaos()->update("grupos.$grupoId.questoes.{$questaoDetalhe->id}", [
                     'id' => $questaoDetalhe->id,
                     'campo' => $questaoDetalhe['campo'],
                 ]);
@@ -93,8 +93,8 @@ class GrupoQuestaoShow extends Component
         $grupoDetalhe = Grupo::find($grupoId);
 
         !is_null($grupoDetalhe->parent_id)
-            ? $this->percepcao->settings()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes", '')
-            : $this->percepcao->settings()->update("grupos.$grupoId.questoes", '');
+            ? $this->percepcao->questaos()->update("grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes", '')
+            : $this->percepcao->questaos()->update("grupos.$grupoId.questoes", '');
 
         foreach ($list as $key => $value) {
             $questaoDetalhe = Questao::find($value['id']);
@@ -103,7 +103,7 @@ class GrupoQuestaoShow extends Component
                 ? "grupos.{$grupoDetalhe->parent_id}.grupos.$grupoId.questoes.{$value['id']}"
                 : "grupos.$grupoId.questoes.{$value['id']}";
 
-            $this->percepcao->settings()->update($caminhoGrupo, [
+            $this->percepcao->questaos()->update($caminhoGrupo, [
                 'id' => $questaoDetalhe->id,
                 'campo' => $questaoDetalhe['campo'],
             ]);

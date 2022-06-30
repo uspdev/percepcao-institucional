@@ -11,7 +11,7 @@
       </li>
     </ul>
     <p class="font-weight-bold text-center mt-3">
-      {!! nl2br($percepcao->settings()->get('msgInicial')) !!}
+      {!! nl2br($percepcao->questaos()->get('msgInicial')) !!}
     </p>
     <p class="font-weight-bold" style='text-align: center'>
       @if ($percepcaoEnvio)

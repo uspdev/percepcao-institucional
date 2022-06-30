@@ -68,6 +68,11 @@ class PercepcaoShow extends Component
                 'sortable' => false,
             ],
             [
+                'name' => 'totalDeDisciplinas',
+                'text' => 'Disciplinas',
+                'sortable' => false,
+            ],
+            [
                 'name' => 'liberaConsultaMembrosEspeciais',
                 'text' => 'Libera membros especiais?',
                 'sortable' => false,

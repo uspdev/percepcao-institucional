@@ -19,8 +19,8 @@
                     {{ $percepcao->settings['textoFormularioAvaliacao'] }}
                 </div>
             @endif
-            @if ($percepcao->settings()->has('grupos'))
-                @foreach ($percepcao->settings()->get('grupos') as $idGrupo => $grupo)
+            @if ($percepcao->questaos()->has('grupos'))
+                @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
                     <div class="text-center my-3 bold">
                         {{ $grupo['ordem'] }}. {{ $grupo['texto'] }}
                     </div>

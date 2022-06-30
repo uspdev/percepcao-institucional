@@ -32,8 +32,8 @@ class QuestaoShow extends Component
         $percepcoes = Percepcao::get();
 
         foreach ($percepcoes as $percepcao) {
-            if ($percepcao->settings()->has("grupos")) {
-                $canDelete = $this->verificaQuestaoSettings($percepcao->settings()->get("grupos"), $questaoId);
+            if ($percepcao->questaos()->has("grupos")) {
+                $canDelete = $this->verificaQuestaoSettings($percepcao->questaos()->get("grupos"), $questaoId);
                 if (!$canDelete) {
                     return false;
                 }
