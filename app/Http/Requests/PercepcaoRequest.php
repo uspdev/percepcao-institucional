@@ -36,12 +36,6 @@ class PercepcaoRequest extends FormRequest
             'liberaConsultaAluno'               => ['nullable'],
         ];
 
-        if($this->method() == 'PATCH' || $this->method() == 'PUT') {
-            $rules['liberaConsultaMembrosEspeciais'] = ['required', Rule::in(Percepcao::simNao())];
-            $rules['liberaConsultaDocente'] = ['required', Rule::in(Percepcao::simNao())];
-            $rules['liberaConsultaAluno'] = ['required', Rule::in(Percepcao::simNao())];
-        }
-
         return $rules;
     }
 
