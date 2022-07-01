@@ -1,6 +1,6 @@
 <div class="container">
     <h2 class="">
-        <a class="" href="gestao-sistema/percepcao">Percepções</a> 
+        <a class="" href="{{ route('percepcaos.index') }}"rcepcao>Percepções</a> 
         <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
         <i class="fas fa-angle-right"></i> Adicionar Questões
     </h2>
@@ -95,7 +95,7 @@
         </div>
     </div>
     <div>
-        <a href="gestao-sistema/percepcao">
+        <a href="{{ route('percepcaos.index') }}">
             <x-form.wire-button
                 class="btn btn-primary"
                 class-icon="w-8 h-8"

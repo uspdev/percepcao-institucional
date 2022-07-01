@@ -4,7 +4,7 @@
 
             @if($this->preview)
                 <h2 class="">
-                    <a class="" href="gestao-sistema/percepcao">Percepções</a> 
+                    <a class="" href="{{ route('percepcaos.index') }}">Percepções</a> 
                     <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
                     <i class="fas fa-angle-right"></i> Preview
                 </h2>
@@ -52,7 +52,7 @@
                 @endif
 
                 @if ($this->preview)
-                    <a href="gestao-sistema/percepcao" class="btn btn-primary">Voltar para percepções</a>
+                    <a href="{{ route('percepcaos.index') }}" class="btn btn-primary">Voltar para percepções</a>
                 @else
                     <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
                 @endif
