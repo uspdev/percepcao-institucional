@@ -9,10 +9,17 @@ use Illuminate\Http\Request;
 
 class percepcaoController extends Controller
 {
-    public function alunos($id)
+    /**
+     * Retorna lista de alunos matriculados em uma percepção
+     * 
+     * @param $id - id da Percepção
+     */
+    public function alunos(Int $id)
     {
         $percepcao = Percepcao::find($id);
         $alunos = Graduacao::listarAlunos($anoSemestre = $percepcao->ano . $percepcao->semestre);
+        $percepcao->addSettings(['totalDeAlunosMatriculados' => count($alunos)]);
+        $percepcao->save();
 
         return view('percepcao.alunos', compact('percepcao', 'alunos'));
     }

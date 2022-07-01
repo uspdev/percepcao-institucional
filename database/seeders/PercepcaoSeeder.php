@@ -24,12 +24,12 @@ class PercepcaoSeeder extends Seeder
             'dataDeFechamento' => now()->addDays(mt_rand(2, 10))->format('d/m/Y H:i:s'),
             'ano' => date('Y'),
             'semestre' => 1,
-            'totalDeAlunosMatriculados' => mt_rand(100, 1000),
             'questao_settings' => $questaoSettings,
             'settings' => [
                 'textoFormularioAvaliacao' => $textoFormularioAvaliacao,
                 'textoApresentacao' => $textoApresentacao,
                 'comentario' => 'Modelo de percepção da EEL',
+                'totalDeAlunosMatriculados' => mt_rand(100, 1000),
             ]
         ]);
 
@@ -42,12 +42,12 @@ class PercepcaoSeeder extends Seeder
             'dataDeFechamento' => now()->addDays(mt_rand(2, 10))->format('d/m/Y H:i:s'),
             'ano' => 2022,
             'semestre' => 1,
-            'totalDeAlunosMatriculados' => mt_rand(100, 1000),
             'questao_settings' => $questaoSettings,
             'settings' => [
                 'textoFormularioAvaliacao' => $textoFormularioAvaliacao,
                 'textoApresentacao' => $textoApresentacao,
                 'comentario' => 'Modelo de percepção da EESC',
+                'totalDeAlunosMatriculados' => mt_rand(100, 1000),
             ]
         ]);
     }

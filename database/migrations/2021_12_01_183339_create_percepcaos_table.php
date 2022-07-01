@@ -19,7 +19,6 @@ class CreatePercepcaosTable extends Migration
             $table->timestamp('dataDeFechamento')->nullable();
             $table->integer('ano');
             $table->integer('semestre');
-            $table->integer('totalDeAlunosMatriculados');
             $table->boolean('liberaConsultaMembrosEspeciais')->default(0);
             $table->boolean('liberaConsultaDocente')->default(0);
             $table->boolean('liberaConsultaAluno')->default(0);

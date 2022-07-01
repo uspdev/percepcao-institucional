@@ -14,7 +14,6 @@ class PercepcaoCreate extends Component
     public $semestre;
     public $dataDeAbertura;
     public $dataDeFechamento;
-    public $totalDeAlunosMatriculados;
     public $settings = [];
     public $liberaConsultaMembrosEspeciais;
     public $liberaConsultaDocente;
@@ -29,7 +28,6 @@ class PercepcaoCreate extends Component
     public function mount()
     {
         $this->semestre = '';
-        $this->totalDeAlunosMatriculados = count(Graduacao::listarAtivos());
         $this->settings = [];
     }
 
@@ -51,7 +49,6 @@ class PercepcaoCreate extends Component
             $this->semestre = $update->semestre;
             $this->dataDeAbertura = $update->dataDeAbertura->format('d/m/Y H:i:s');
             $this->dataDeFechamento = $update->dataDeFechamento->format('d/m/Y H:i:s');
-            // $this->totalDeAlunosMatriculados = $update->totalDeAlunosMatriculados;
             $this->liberaConsultaMembrosEspeciais = $update->liberaConsultaMembrosEspeciais;
             $this->liberaConsultaDocente = $update->liberaConsultaDocente;
             $this->liberaConsultaAluno = $update->liberaConsultaAluno;
@@ -66,7 +63,6 @@ class PercepcaoCreate extends Component
             'semestre'                          => 'required|integer',
             'dataDeAbertura'                    => 'required',
             'dataDeFechamento'                  => 'required',
-            'totalDeAlunosMatriculados'         => 'nullable',
             'settings'                          => 'nullable',
         ];
 

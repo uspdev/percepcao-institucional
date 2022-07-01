@@ -30,7 +30,6 @@ class PercepcaoRequest extends FormRequest
             'semestre'                          => ['required', 'integer'],
             'dataDeAbertura'                    => 'required',
             'dataDeFechamento'                  => 'required',
-            'totalDeAlunosMatriculados'         => 'nullable',
             'liberaConsultaMembrosEspeciais'    => ['nullable'],
             'liberaConsultaDocente'             => ['nullable'],
             'liberaConsultaAluno'               => ['nullable'],

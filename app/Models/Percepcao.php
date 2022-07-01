@@ -32,6 +32,7 @@ class Percepcao extends Model
         'textoFormularioAvaliacao' => '',
         'comentario' => 'Nova percepção',
         'totalDeDisciplinas' => 0,
+        'totalDeAlunosMatriculados' => 0,
     ];
 
     // glorand/laravel-model-settings

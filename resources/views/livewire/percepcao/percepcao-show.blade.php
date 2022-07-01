@@ -40,7 +40,7 @@
                             <td>{{ $percepcao->ano ?? '' }}</td>
                             <td>{{ $percepcao->semestre ?? '' }}</td>
                             <td>
-                                {{ $percepcao->totalDeAlunosMatriculados ?? '' }} 
+                                {{ $percepcao->settings['totalDeAlunosMatriculados'] }} 
                                 <a href="{{ route('percepcao.alunos', $percepcao->id) }}" title="Ver lista de alunos"><i class="fas fa-eye"></i></a>
                             </td>
                             <td>
