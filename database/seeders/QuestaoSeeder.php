@@ -21,7 +21,7 @@ class QuestaoSeeder extends Seeder
             ["key" => "5", "value" => "Muito bom"],
         ];
 
-        $optionsSImNao = [
+        $optionsSimNao = [
             ["key" => "1", "value" => "Sim"],
             ["key" => "2", "value" => "Não"],
         ];
@@ -71,6 +71,7 @@ class QuestaoSeeder extends Seeder
                     'options' => $options,
                     'rules' => 'required|integer|min:1|max:5',
                 ],
+                'estatistica' => 1,
                 'ativo' => 1,
             ]);
         }
@@ -186,6 +187,7 @@ class QuestaoSeeder extends Seeder
         foreach ($campos as $campo) {
             \App\Models\Questao::create([
                 'campo' => $campo,
+                'estatistica' => 1,
                 'ativo' => 1,
             ]);
         }
@@ -199,6 +201,7 @@ class QuestaoSeeder extends Seeder
                 'options' => '',
                 'rules' => 'max:400',
             ],
+            'estatistica' => 0,
             'ativo' => 1,
         ]);
 
@@ -211,6 +214,7 @@ class QuestaoSeeder extends Seeder
                 'options' => '',
                 'rules' => 'max:400',
             ],
+            'estatistica' => 0,
             'ativo' => 1,
         ]);
     }
