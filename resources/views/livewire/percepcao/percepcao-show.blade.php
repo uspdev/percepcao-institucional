@@ -6,7 +6,7 @@
 
     @if ($action === 'create' || $action === 'update' || $action === 'copy')
         <div>
-            @livewire('percepcao.percepcao-create', ['action' => $action], key(time()));
+            @livewire('percepcao.percepcao-create', ['action' => $action], key(time()))
         </div>
     @endif
 

@@ -15,6 +15,7 @@ class PercepcaoCreate extends Component
     public $dataDeAbertura;
     public $dataDeFechamento;
     public $settings = [];
+    public $questao_settings = [];
     public $liberaConsultaMembrosEspeciais;
     public $liberaConsultaDocente;
     public $liberaConsultaAluno;
@@ -69,6 +70,9 @@ class PercepcaoCreate extends Component
                 $this->liberaConsultaDocente = $update->liberaConsultaDocente;
                 $this->liberaConsultaAluno = $update->liberaConsultaAluno;
             }
+
+            $this->questao_settings = $update->questao_settings;
+
             $this->settings = $update->settings;
         }
     }
@@ -85,6 +89,7 @@ class PercepcaoCreate extends Component
             'semestre'                          => 'required|integer',
             'dataDeAbertura'                    => 'required',
             'dataDeFechamento'                  => 'required',
+            'questao_settings'                          => 'nullable',
             'settings'                          => 'nullable',
         ];
 
