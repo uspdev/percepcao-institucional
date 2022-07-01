@@ -12,14 +12,14 @@
             @endif
             
             <h3 class="text-center font-weight-bold">
-                Avaliação <span>{{ $percepcao->ano }}</span>/<span>{{ $percepcao->semestre }}</span>
+                Avaliação {{ $percepcao->ano }}/{{ $percepcao->semestre }}
             </h3>
             <hr>
-            @if (isset($percepcao->settings['textoFormularioAvaliacao']) && !empty($percepcao->settings['textoFormularioAvaliacao']))
-                <div class="text-danger font-weight-bold mb-3">
-                    {{ $percepcao->settings['textoFormularioAvaliacao'] }}
-                </div>
-            @endif
+
+            <div class="text-danger font-weight-bold mb-3">
+                {{ $percepcao->settings['textoFormularioAvaliacao'] }}
+            </div>
+
             @if ($percepcao->questaos()->has('grupos'))
                 @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
                     <div class="text-center my-3 bold">
