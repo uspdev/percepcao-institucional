@@ -331,6 +331,6 @@ class PercepcaoAvaliacaoCreate extends Component
 
     public function render()
     {
-        return view('livewire.percepcao.percepcao-avaliacao-create')->extends('layouts.app')->section('content');
+        return view('livewire.avaliacao.create')->extends('layouts.app')->section('content');
     }
 }
