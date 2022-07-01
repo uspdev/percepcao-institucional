@@ -27,7 +27,7 @@
         @endif
 
     </div>
-    <div id="collapse-{{ $disciplina['coddis'] }}-{{ $keyCoordenador }}" class="collapse form-group text-justify">
+    <div id="collapse-{{ $coordenador['codcur'] }}-{{ $coordenador['codhab'] }}-{{ $keyCoordenador }}" class="collapse form-group text-justify">
         Clique no título para exibir
     </div>
 </fieldset>
