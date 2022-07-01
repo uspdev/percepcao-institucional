@@ -31,6 +31,8 @@
                             <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
                                 {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }} 
                                 {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
+                                {!! !$percepcao->isFuturo() ? '<span class="badge badge-secondary">Finalizado</span>' : '' !!}
+                                {!! $percepcao->isFuturo() ? '<span class="badge badge-success">Em elaboração</span>' : '' !!}
                             </td>
                             <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
                                 {{ $percepcao->dataDeFechamento->format('d/m/Y H:i') ?? '' }}
