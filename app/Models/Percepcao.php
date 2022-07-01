@@ -18,14 +18,11 @@ class Percepcao extends Model
 
     protected $casts = [
         'questao_settings' => 'array',
-        'settings' => 'array'
-    ];
-
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'dataDeAbertura',
-        'dataDeFechamento'
+        'settings' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'dataDeAbertura' => 'datetime',
+        'dataDeFechamento' => 'datetime',
     ];
 
     // Valores default da coluna settings
@@ -45,6 +42,8 @@ class Percepcao extends Model
 
     /**
      * Retorna valor de settings com defaults
+     * 
+     * https://laravel.com/docs/8.x/eloquent-mutators#defining-an-accessor
      *
      * @param  String $value
      * @return Array
@@ -57,16 +56,9 @@ class Percepcao extends Model
     /**
      * Adiciona ou atualiza um valor de settings
      */
-    public function addSettings(Array $value) {
-        $this->attributes['settings'] = json_encode(array_merge($this->settings, $value));
-    }
-
-    public static function simNao()
+    public function addSettings(array $value)
     {
-        return [
-            'Sim',
-            'Não'
-        ];
+        $this->attributes['settings'] = json_encode(array_merge($this->settings, $value));
     }
 
     public static function obterAberto()
@@ -75,6 +67,14 @@ class Percepcao extends Model
         return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
     }
 
+    public function isAberto() {
+        $now = date('Y-m-d H:i:s');
+        return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->gt($now));
+    }
+
+    /**
+     * https://laravel.com/docs/8.x/eloquent-mutators#defining-a-mutator
+     */
     public function setDataDeAberturaAttribute($dataDeAbertura)
     {
         $this->attributes['dataDeAbertura'] = Carbon::createFromFormat('d/m/Y H:i:s', $dataDeAbertura)->toDateTimeString();

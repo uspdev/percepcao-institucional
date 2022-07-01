@@ -28,8 +28,13 @@
                     @foreach($percepcoes as $percepcao)
                         <tr>
                             <td>{{ $percepcao->id ?? '' }}</td>
-                            <td>{{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }}</td>
-                            <td>{{ $percepcao->dataDeFechamento->format('d/m/Y H:i') ?? '' }}</td>
+                            <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
+                                {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }} 
+                                {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
+                            </td>
+                            <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
+                                {{ $percepcao->dataDeFechamento->format('d/m/Y H:i') ?? '' }}
+                            </td>
                             <td>{{ $percepcao->ano ?? '' }}</td>
                             <td>{{ $percepcao->semestre ?? '' }}</td>
                             <td>
@@ -117,5 +122,5 @@
         <div class="content text-center font-weight-bold">Nenhuma percepção foi cadastrada ainda!</div>
         <br><br>
     @endif
-        @include('percepcao.partials.modal')
+        @include('livewire.percepcao.partials.modal')
 </div>

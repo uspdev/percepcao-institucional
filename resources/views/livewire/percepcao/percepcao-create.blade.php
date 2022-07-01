@@ -20,10 +20,6 @@
         labelEndDate="Data de fechamento:"
         dateTimeFormat="DD/MM/YYYY HH:mm:ss"
         />
-    {{-- <div class="form-group">
-        <label>Total de alunos matriculados:</label>
-        <div>{{ $totalDeAlunosMatriculados }}</div>
-    </div> --}}
 
     <x-form.wire-textarea
         model="settings.textoApresentacao"
