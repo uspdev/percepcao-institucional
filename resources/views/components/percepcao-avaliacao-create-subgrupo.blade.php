@@ -9,7 +9,7 @@
         @if (isset($subGrupos['questoes']))
             @foreach ($subGrupos['questoes'] as $idQuestao => $questao)
                 <div class="h6">
-                    {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}:
+                    {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}
                 </div>
                 @switch($this->getDetalheQuestao($idQuestao)['campo']['type'])
                         @case('radio')
