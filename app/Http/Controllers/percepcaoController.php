@@ -12,11 +12,10 @@ class percepcaoController extends Controller
     /**
      * Retorna lista de alunos matriculados em uma percepção
      * 
-     * @param $id - id da Percepção
+     * @param App\Models\Percepcao $percepcao
      */
-    public function alunos(Int $id)
+    public function alunos(Percepcao $percepcao)
     {
-        $percepcao = Percepcao::find($id);
         $alunos = Graduacao::listarAlunos($anoSemestre = $percepcao->ano . $percepcao->semestre);
         $percepcao->addSettings(['totalDeAlunosMatriculados' => count($alunos)]);
         $percepcao->save();
@@ -29,11 +28,13 @@ class percepcaoController extends Controller
      * 
      * No contexto de uma requisição ajax
      * 
+     * @param App\Models\Percepcao $percepcao
+     * @param Int $codpes
      * @return String lista formatada em HTML
      */
-    public function listarDisciplinasAluno(Int $percepcao_id, Int $codpes)
+    public function listarDisciplinasAluno(Percepcao $percepcao, Int $codpes)
     {
-        $percepcao = Percepcao::find($percepcao_id);
+        // $percepcao = Percepcao::find($percepcao_id);
 
         $anoSemestre = $percepcao->ano . $percepcao->semestre;
         $disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre($codpes, $anoSemestre);
@@ -44,9 +45,16 @@ class percepcaoController extends Controller
         return $html;
     }
 
-    public function disciplinas(Request $request, Int $percepcao_id)
+    /**
+     * Lista as disciplinas (turmas) da percepção.
+     * 
+     * Caso não tenha nada no BD, popula ele.
+     * 
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\Percepcao $percepcao
+     */
+    public function disciplinas(Request $request, Percepcao $percepcao)
     {
-        $percepcao = Percepcao::find($percepcao_id);
         if ($percepcao->disciplinas->isEmpty()) {
             Disciplina::importarDoReplicado($percepcao);
             $request->session()->flash('alert-info', 'Disciplinas importadas do replicado');
@@ -58,13 +66,18 @@ class percepcaoController extends Controller
         return view('percepcao.disciplinas', compact('percepcao', 'disciplinas'));
     }
 
-    public function disciplinasUpdate(Request $request, Int $percepcao_id)
+    /**
+     * Atualiza a lista de disciplinas de uma percepcao
+     * 
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\Percepcao $percepcao
+     */
+    public function disciplinasUpdate(Request $request, Percepcao $percepcao)
     {
         $request->validate([
             'acao' => 'in:atualizar',
         ]);
 
-        $percepcao = Percepcao::find($percepcao_id);
         Disciplina::where('percepcao_id', $percepcao->id)->delete();
         $count = Disciplina::importarDoReplicado($percepcao);
         $request->session()->flash('alert-info', 'Disciplinas recarregadas do replicado');
