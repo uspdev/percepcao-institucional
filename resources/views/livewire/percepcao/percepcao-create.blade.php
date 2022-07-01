@@ -1,6 +1,4 @@
-<div class="container" style="max-width: 450px">
-    <h2 class="text-center font-weight-bold">Cadastro de Percepção Institucional</h2>
-    <hr>
+<div class="container">
     <x-form.wire-input
         model="ano"
         label="Ano:"
@@ -22,10 +20,10 @@
         labelEndDate="Data de fechamento:"
         dateTimeFormat="DD/MM/YYYY HH:mm:ss"
         />
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label>Total de alunos matriculados:</label>
         <div>{{ $totalDeAlunosMatriculados }}</div>
-    </div>
+    </div> --}}
 
     <x-form.wire-textarea
         model="settings.textoApresentacao"
