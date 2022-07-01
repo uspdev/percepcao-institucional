@@ -9,6 +9,7 @@ use App\Models\Questao;
 class QuestaoCreate extends Component
 {
     public $campos = [];
+    public $estatistica;
     public $ativo;
     public $selectedField;
     public $updating = false;
@@ -23,6 +24,8 @@ class QuestaoCreate extends Component
         $this->campos = [];
         $this->campos['options'][] = '';
 
+        $this->estatistica = true;
+
         $this->ativo = true;
 
         $this->selectedField = '';
@@ -36,6 +39,7 @@ class QuestaoCreate extends Component
         $rules = [
             'campos.text' => 'required',
             'campos.type' => 'required',
+            'estatistica' => 'required|boolean',
             'ativo' => 'required|boolean',
         ];
 
@@ -87,6 +91,8 @@ class QuestaoCreate extends Component
                 $this->campos['options'][] = '';
             }
 
+            $this->estatistica = $questao->estatistica;
+
             $this->ativo = $questao->ativo;
 
             $this->selectedField = $questao->campo['type'];
@@ -119,6 +125,7 @@ class QuestaoCreate extends Component
         if ($this->updating) {
             Questao::find($this->updateId)->update([
                 'campo' => $this->campos,
+                'estatistica' => $this->estatistica,
                 'ativo' => $this->ativo,
             ]);
 
@@ -126,6 +133,7 @@ class QuestaoCreate extends Component
         } else {
             Questao::create([
                 'campo' => $this->campos,
+                'estatistica' => $this->estatistica,
                 'ativo' => $this->ativo,
             ]);
         }

@@ -16,6 +16,7 @@ class CreateQuestaosTable extends Migration
         Schema::create('questaos', function (Blueprint $table) {
             $table->id();
             $table->json('campo');
+            $table->boolean('estatistica')->default(false);
             $table->boolean('ativo')->default(false);
             $table->timestamps();
         });

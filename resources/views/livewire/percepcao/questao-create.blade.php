@@ -104,6 +104,13 @@
             wireModifier=".defer"
             />
         <div class="form-group">
+            <label>Estatística?</label>
+            <x-form.wire-switch
+                model="estatistica"
+                wireModifier=".defer"
+                />
+        </div>
+        <div class="form-group">
             <label>Ativo?</label>
             <x-form.wire-switch
                 model="ativo"

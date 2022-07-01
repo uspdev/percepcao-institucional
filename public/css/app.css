@@ -1,4 +1,7 @@
 /* css geral */
+h4 {
+  color: #FA681E;
+}
 .bold {
   font-weight: bold
 }
@@ -31,6 +34,10 @@
   padding-left: 2rem !important;
 }
 
+.pl-6 {
+  padding-left: 2.5rem !important;
+}
+
 .pl-8 {
   padding-left: 4rem !important;
 }
@@ -43,8 +50,8 @@
   opacity: 0.5;
 }
 
-[x-cloak] { 
-  display: none !important; 
+[x-cloak] {
+  display: none !important;
 }
 /* css para configurações da tabela */
 .div-rounded {
@@ -143,4 +150,18 @@ a.btn-acao:hover {
 
 .flex-actions {
   width: 24%;
+}
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 30vh;
+  width: 25vw;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 60vh;
+    width: 60vw;
+  }
 }
