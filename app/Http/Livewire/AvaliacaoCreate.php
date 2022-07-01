@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Percepcao;
+namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Coordenador;
@@ -15,7 +15,7 @@ use Uspdev\Replicado\Pessoa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
-class PercepcaoAvaliacaoCreate extends Component
+class AvaliacaoCreate extends Component
 {
     public $percepcao;
     public $disciplinas = [];

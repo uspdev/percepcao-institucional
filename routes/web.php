@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Percepcao\PercepcaoShow;
 use App\Http\Livewire\Percepcao\PercepcaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAddQuestao;
-use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoCreate;
+use App\Http\Livewire\AvaliacaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 use App\Http\Livewire\Percepcao\GrupoCreate;
 use App\Http\Livewire\Percepcao\QuestaoCreate;
@@ -26,10 +26,10 @@ use App\Http\Controllers\percepcaoController;
 Route::get('/', PercepcaoAvaliacaoShow::class);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/avaliar', PercepcaoAvaliacaoCreate::class);
+    Route::get('/avaliar', AvaliacaoCreate::class);
 
     Route::middleware('can:gerente')->group(function () {
-        Route::get('/avaliar/preview/{idPercepcao}', PercepcaoAvaliacaoCreate::class);
+        Route::get('/avaliar/preview/{idPercepcao}', AvaliacaoCreate::class);
 
         Route::get('/gestao-sistema/percepcao', PercepcaoShow::class);
         Route::get('/gestao-sistema/percepcao/{idPercepcao}/add-questao', PercepcaoAddQuestao::class);
@@ -45,6 +45,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestao-sistema/percepcao/{id}/disciplinas', [PercepcaoController::class, 'disciplinas'])->name('percepcao.disciplinas');
         Route::post('/gestao-sistema/percepcao/{id}/disciplinas', [PercepcaoController::class, 'disciplinasUpdate'])->name('percepcao.disciplinas.update');
         Route::get('/gestao-sistema/percepcao/{id_percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
-
     });
 });
