@@ -20,6 +20,7 @@ class PercepcaoCreate extends Component
     public $liberaConsultaAluno;
     public $updateId;
     public $action;
+    public $titulo;
 
     protected $listeners = [
         'getUpdateId'
@@ -28,7 +29,22 @@ class PercepcaoCreate extends Component
     public function mount()
     {
         $this->semestre = '';
+
         $this->settings = [];
+
+        $this->titulo = 'Cadastro';
+
+        if ($this->action === 'create') {
+            $this->titulo = 'Cadastro';
+        }
+
+        if ($this->action === 'update') {
+            $this->titulo = 'Alteração';
+        }
+
+        if ($this->action === 'copy') {
+            $this->titulo = 'Cópia';
+        }
     }
 
     public function getUpdateId($updateId, $action)
@@ -38,7 +54,7 @@ class PercepcaoCreate extends Component
         $this->updateId = $updateId;
         $this->action = $action;
 
-        if ($this->action == "create") {
+        if ($this->action == 'create') {
             $this->reset();
             $this->mount();
         } else {
@@ -48,9 +64,11 @@ class PercepcaoCreate extends Component
             $this->semestre = $update->semestre;
             $this->dataDeAbertura = $update->dataDeAbertura->format('d/m/Y H:i:s');
             $this->dataDeFechamento = $update->dataDeFechamento->format('d/m/Y H:i:s');
-            $this->liberaConsultaMembrosEspeciais = $update->liberaConsultaMembrosEspeciais;
-            $this->liberaConsultaDocente = $update->liberaConsultaDocente;
-            $this->liberaConsultaAluno = $update->liberaConsultaAluno;
+            if ($this->action != 'copy') {
+                $this->liberaConsultaMembrosEspeciais = $update->liberaConsultaMembrosEspeciais;
+                $this->liberaConsultaDocente = $update->liberaConsultaDocente;
+                $this->liberaConsultaAluno = $update->liberaConsultaAluno;
+            }
             $this->settings = $update->settings;
         }
     }

@@ -4,9 +4,9 @@
     </button>
     <br><br>
 
-    @if ($action === 'create')
+    @if ($action === 'create' || $action === 'update' || $action === 'copy')
         <div>
-            @livewire('percepcao.percepcao-create', key(time()));
+            @livewire('percepcao.percepcao-create', ['action' => $action], key(time()));
         </div>
     @endif
 
@@ -101,12 +101,14 @@
                                         class-icon="w-6 h-6"
                                         click="selectedId({{ $percepcao->id }}, 'update')"
                                         action="update"
-                                        data-toggle="modal"
-                                        data-target="#percepcaoModal"
                                      />
 
-                                      {{-- tem de colocar um botão no padrão rsrsrs e implementar a funcionalidade --}}
-                                    <button title="Fazer uma cópia" class="btn btn-outline-primary"><i class="far fa-clone"></i></button>
+                                     <x-form.wire-button
+                                        class="btn btn-info text-info btn-icon"
+                                        class-icon="w-6 h-6"
+                                        click="selectedId({{ $percepcao->id }}, 'copy')"
+                                        action="copy"
+                                        />
 
                                     <x-form.wire-button
                                         class="btn btn-danger text-danger btn-icon"

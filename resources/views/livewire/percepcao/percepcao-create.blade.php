@@ -1,5 +1,5 @@
 <div id="percepcao-create" class="container">
-    <h2 class="text-center font-weight-bold">Cadastro de percepção</h2>
+    <h2 class="text-center font-weight-bold">{{ $titulo }} de percepção</h2>
     <hr>
     <div class="row form-group">
         <x-form.wire-input
@@ -79,7 +79,7 @@
         </div>
     @endif
 
-    <div class="modal-footer">
+    <div class="">
         <x-form.wire-button
             class="btn btn-secondary"
             label="Cancelar"
