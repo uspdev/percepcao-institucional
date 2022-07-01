@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Livewire\Percepcao\PercepcaoShow;
 use App\Http\Livewire\Percepcao\PercepcaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAddQuestao;
-use App\Http\Livewire\AvaliacaoCreate;
 use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 use App\Http\Livewire\Percepcao\GrupoCreate;
-use App\Http\Livewire\Percepcao\QuestaoCreate;
 use App\Http\Livewire\Percepcao\RelatorioShow;
+
+use App\Http\Livewire\Questao\Create as QuestaoCreate;
+use App\Http\Livewire\AvaliacaoCreate;
 
 use App\Http\Controllers\percepcaoController;
 

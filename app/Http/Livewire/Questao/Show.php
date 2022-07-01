@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Percepcao;
+namespace App\Http\Livewire\Questao;
 
 use Livewire\Component;
 use App\Models\Questao;
 use App\Models\Percepcao;
 
-class QuestaoShow extends Component
+class Show extends Component
 {
     public $questao;
     public $questaos;
@@ -86,6 +86,6 @@ class QuestaoShow extends Component
 
     public function render()
     {
-        return view('livewire.percepcao.questao-show');
+        return view('livewire.questao.show');
     }
 }

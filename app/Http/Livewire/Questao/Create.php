@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Percepcao;
+namespace App\Http\Livewire\Questao;
 
 use Livewire\Component;
 use Illuminate\Validation\Validator;
 use App\Models\Questao;
 
-class QuestaoCreate extends Component
+class Create extends Component
 {
     public $campos = [];
     public $estatistica;
@@ -148,6 +148,7 @@ class QuestaoCreate extends Component
 
     public function render()
     {
-        return view('livewire.percepcao.questao-create')->extends('layouts.app')->section('content');
+        return view('livewire.questao.create')
+            ->extends('layouts.app')->section('content');
     }
 }
