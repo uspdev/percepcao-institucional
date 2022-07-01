@@ -40,28 +40,22 @@ class PercepcaoCreate extends Component
         $this->updateId = $updateId;
         $this->action = $action;
 
-        if($this->action == "create") {
+        if ($this->action == "create") {
             $this->reset();
             $this->mount();
             $this->dispatchBrowserEvent('openModal');
-        }
-        else {
+        } else {
             $update = Percepcao::find($this->updateId);
-
-            //dd($update->settings);
 
             $this->ano = $update->ano;
             $this->semestre = $update->semestre;
-            $this->dataDeAbertura = Carbon::parse($update->dataDeAbertura)->format('d/m/Y H:i:s');
-            $this->dataDeFechamento = Carbon::parse($update->dataDeFechamento)->format('d/m/Y H:i:s');
-            $this->totalDeAlunosMatriculados = $update->totalDeAlunosMatriculados;
+            $this->dataDeAbertura = $update->dataDeAbertura->format('d/m/Y H:i:s');
+            $this->dataDeFechamento = $update->dataDeFechamento->format('d/m/Y H:i:s');
+            // $this->totalDeAlunosMatriculados = $update->totalDeAlunosMatriculados;
             $this->liberaConsultaMembrosEspeciais = $update->liberaConsultaMembrosEspeciais;
             $this->liberaConsultaDocente = $update->liberaConsultaDocente;
             $this->liberaConsultaAluno = $update->liberaConsultaAluno;
-
-            foreach ($update->settings as $key => $value) {
-                $this->settings[$key] = $update->settings[$key];
-            }
+            $this->settings = $update->settings;
         }
     }
 
@@ -76,7 +70,7 @@ class PercepcaoCreate extends Component
             'settings'                          => 'nullable',
         ];
 
-        if($this->action == "update") {
+        if ($this->action == 'update') {
             $rules['liberaConsultaMembrosEspeciais'] = 'required|bool';
             $rules['liberaConsultaDocente'] = 'required|bool';
             $rules['liberaConsultaAluno'] = 'required|bool';
@@ -89,10 +83,9 @@ class PercepcaoCreate extends Component
     {
         $validated = $this->validate();
 
-        if($this->action == "update") {
+        if ($this->action == 'update') {
             Percepcao::find($this->updateId)->update($validated);
-        }
-        else {
+        } else {
             Percepcao::create($validated);
         }
 
@@ -105,11 +98,7 @@ class PercepcaoCreate extends Component
     public function render()
     {
         $percepcao = new Percepcao;
-        // $graduacao = Graduacao::listarAtivos();
-
-        return view('livewire.percepcao.percepcao-create', [
-          'percepcao' => $percepcao,
-        //   'graduacao' => $graduacao
-        ])->extends('layouts.app')->section('content');
+        return view('livewire.percepcao.percepcao-create', ['percepcao' => $percepcao,])
+            ->extends('layouts.app')->section('content');
     }
 }
