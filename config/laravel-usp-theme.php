@@ -3,7 +3,7 @@
 $admin = [
     [
         'text' => 'Percepções',
-        'url' => 'gestao-sistema/percepcao',
+        'url' => 'percepcoes',
         'can' => 'gerente',
     ],
     [

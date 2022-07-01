@@ -2,7 +2,7 @@
 
 @section('content')
   <h2 class="form-inline">
-    <a href="gestao-sistema/percepcao">Percepções</a>
+    <a href="{{ route('percepcaos.index') }}">Percepções</a>
     <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
     <i class="fas fa-angle-right"></i> Disciplinas 
     <span class="badge badge-primary badge-pill">{{ $percepcao->settings['totalDeDisciplinas'] }}</span>

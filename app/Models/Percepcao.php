@@ -91,6 +91,11 @@ class Percepcao extends Model
         return ($this->dataDeAbertura->gt($now) && $this->dataDeFechamento->gt($now));
     }
 
+    public function isFinalizado() {
+        $now = date('Y-m-d H:i:s');
+        return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->lt($now));
+    }
+
     /**
      * https://laravel.com/docs/8.x/eloquent-mutators#defining-a-mutator
      */
