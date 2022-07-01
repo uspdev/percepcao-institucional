@@ -4,6 +4,12 @@
     </button>
     <br><br>
 
+    @if ($action === 'create')
+        <div>
+            @livewire('percepcao.percepcao-create', key(time()));
+        </div>
+    @endif
+
     <h2 class="text-center font-weight-bold">Lista de percepções</h2>
     <hr>
     @if($percepcoes->first())
@@ -29,7 +35,7 @@
                         <tr>
                             <td>{{ $percepcao->id ?? '' }}</td>
                             <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
-                                {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }} 
+                                {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }}
                                 {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
                                 {!! !$percepcao->isFuturo() ? '<span class="badge badge-secondary">Finalizado</span>' : '' !!}
                                 {!! $percepcao->isFuturo() ? '<span class="badge badge-success">Em elaboração</span>' : '' !!}
@@ -40,11 +46,11 @@
                             <td>{{ $percepcao->ano ?? '' }}</td>
                             <td>{{ $percepcao->semestre ?? '' }}</td>
                             <td>
-                                {{ $percepcao->settings['totalDeAlunosMatriculados'] }} 
+                                {{ $percepcao->settings['totalDeAlunosMatriculados'] }}
                                 <a href="{{ route('percepcao.alunos', $percepcao->id) }}" title="Ver lista de alunos"><i class="fas fa-eye"></i></a>
                             </td>
                             <td>
-                                {{ $percepcao->settings['totalDeDisciplinas'] }} 
+                                {{ $percepcao->settings['totalDeDisciplinas'] }}
                                 <a href="{{ route('percepcao.disciplinas', $percepcao->id) }}" title="Ver lista de disciplinas"><i class="fas fa-chalkboard-teacher"></i></a>
                             </td>
                             <td>
@@ -77,7 +83,7 @@
                             <td width=''>
                                 <div>
                                     <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
-                                        <x-form.wire-button 
+                                        <x-form.wire-button
                                             class="btn btn-dark text-dark btn-icon"
                                             class-icon="w-6 h-6"
                                             action="question"
@@ -101,7 +107,7 @@
 
                                       {{-- tem de colocar um botão no padrão rsrsrs e implementar a funcionalidade --}}
                                     <button title="Fazer uma cópia" class="btn btn-outline-primary"><i class="far fa-clone"></i></button>
-                                    
+
                                     <x-form.wire-button
                                         class="btn btn-danger text-danger btn-icon"
                                         class-icon="w-6 h-6"
@@ -124,5 +130,4 @@
         <div class="content text-center font-weight-bold">Nenhuma percepção foi cadastrada ainda!</div>
         <br><br>
     @endif
-        @include('livewire.percepcao.partials.modal')
 </div>

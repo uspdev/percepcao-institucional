@@ -41,7 +41,6 @@ class PercepcaoCreate extends Component
         if ($this->action == "create") {
             $this->reset();
             $this->mount();
-            $this->dispatchBrowserEvent('openModal');
         } else {
             $update = Percepcao::find($this->updateId);
 
@@ -54,6 +53,11 @@ class PercepcaoCreate extends Component
             $this->liberaConsultaAluno = $update->liberaConsultaAluno;
             $this->settings = $update->settings;
         }
+    }
+
+    public function cancelAction()
+    {
+        $this->emit('cancelAction');
     }
 
     protected function rules()
@@ -87,7 +91,7 @@ class PercepcaoCreate extends Component
 
         $this->emit('refreshParent');
         $this->emit('refreshToggle');
-        $this->dispatchBrowserEvent('closeModal');
+        $this->emit('cancelAction');
         $this->reset();
     }
 

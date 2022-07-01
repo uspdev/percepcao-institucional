@@ -14,7 +14,8 @@ class PercepcaoShow extends Component
     public $sortDirection = 'asc';
 
     protected $listeners = [
-      'refreshParent' => '$refresh'
+      'refreshParent' => '$refresh',
+      'cancelAction'
     ];
 
     public function mount()
@@ -32,6 +33,11 @@ class PercepcaoShow extends Component
         }
 
         $this->emit('getUpdateId', $this->selectedId, $this->action);
+    }
+
+    public function cancelAction()
+    {
+        $this->action = '';
     }
 
     public function setColumns()
