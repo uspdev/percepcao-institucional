@@ -9,6 +9,9 @@ use App\Models\Percepcao;
 class GrupoPercepcaoShow extends Component
 {
     public $grupos;
+
+    // Adicionado em 1/7/2022 para acomodar isFuturo()
+    public $percepcao;
     public $percepcaoId = null;
 
     protected $listeners = [
@@ -21,6 +24,7 @@ class GrupoPercepcaoShow extends Component
             $this->grupos = $grupos;
         } else {
             $percepcao = Percepcao::find($this->percepcaoId);
+            $this->percepcao = $percepcao;
 
             $ids = $percepcao->questaos()->has('grupos')
                 ? array_keys($percepcao->questaos()->get('grupos'))
@@ -31,7 +35,7 @@ class GrupoPercepcaoShow extends Component
                 ->with('childGrupos')
                 ->get()
                 ->keyBy('id');
-            $this->grupos = $this->grupos->sortKeysUsing(function($key1, $key2) use ($ids) {
+            $this->grupos = $this->grupos->sortKeysUsing(function ($key1, $key2) use ($ids) {
                 return ((array_search($key1, $ids) > array_search($key2, $ids)) ? 1 : -1);
             });
         }
@@ -40,6 +44,7 @@ class GrupoPercepcaoShow extends Component
     public function updateOrdem($list)
     {
         $percepcao = Percepcao::find($this->percepcaoId);
+        $this->percepcao = $percepcao;
 
         $grupos = $percepcao->questaos()->get('grupos');
 
@@ -58,16 +63,9 @@ class GrupoPercepcaoShow extends Component
         $this->emit('getSelectedId', $id, $tipoModel);
     }
 
-    public function canDelete() {
-        $dataDeAbertura = Percepcao::find($this->percepcaoId)->dataDeAbertura->format('Y-m-d H:i:s');
-
-        return ($dataDeAbertura >= date(now())) ? true : false;
-    }
-
     public function render()
     {
-        return view('livewire.percepcao.grupo-percepcao-show', [
-            'grupos' => $this->grupos,
-        ])->extends('layouts.app')->section('content');
+        return view('livewire.percepcao.grupo-percepcao-show', ['grupos' => $this->grupos,])
+            ->extends('layouts.app')->section('content');
     }
 }

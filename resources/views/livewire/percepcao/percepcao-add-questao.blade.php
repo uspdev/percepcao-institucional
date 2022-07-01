@@ -1,33 +1,39 @@
 <div class="container">
     <h2 class="">
         <a class="" href="gestao-sistema/percepcao">Percepções</a> 
-        <i class="fas fa-angle-right"></i> Percepção Institucional - Adicionar Questões
+        <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+        <i class="fas fa-angle-right"></i> Adicionar Questões
     </h2>
+    <hr>
+
     @can('admin')
-        <hr>
         <div class="badge badge-danger"><i class="fas fa-lock"></i> Admin</div>
         <div>Campo questao_settings</div>
         <pre>{!! $percepcao->questao_settings !!}</pre>
+        <hr>
     @endcan
-
-    @if ($percepcao->isAberto())
-        <div class="alert alert-info" role="alert">
-            A percepção está aberta. Não é possivel alterar as questões! 
-        </div>
-    @endif
-    <hr>
 
     <div class="d-flex justify-content-center align-items-center flex-column">
         <div>
-            <label class="bold">Percepção Ano/Semestre:</label><span> {{ $percepcao->ano }}/{{ $percepcao->semestre }}</span>
+            <label class="bold">Percepção Ano/Semestre:</label>
+            <span>{{ $percepcao->ano }}/{{ $percepcao->semestre }}</span>
         </div>
         <div>
-            <label class="bold">Data de Abertura: </label><span> {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') }}</span>
+            <label class="bold">Data de Abertura: </label>
+            <span>{{ $percepcao->dataDeAbertura->format('d/m/Y H:i') }}</span>
         </div>
         <div>
-            <label class="bold">Data de Fechamento: </label><span> {{ $percepcao->dataDeFechamento->format('d/m/Y H:i') }}</span>
+            <label class="bold">Data de Fechamento: </label>
+            <span>{{ $percepcao->dataDeFechamento->format('d/m/Y H:i') }}</span>
         </div>
     </div>
+
+    @if (!$percepcao->isFuturo())
+        <div class="alert alert-info" role="alert">
+            A percepção está aberta ou já foi finalizada. Não é possivel alterar as questões! 
+        </div>
+    @endif
+    
     @if ($grupoPercepcao->count())
         <div>
             @livewire('percepcao.grupo-percepcao-show', ['grupos' => $grupoPercepcao, 'percepcaoId' => $percepcao->id], key(time()))

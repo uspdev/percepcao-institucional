@@ -112,13 +112,6 @@ class GrupoQuestaoShow extends Component
         $this->mount();
     }
 
-    public function canDelete()
-    {
-        $dataDeAbertura = Percepcao::find($this->percepcaoId)->dataDeAbertura->format('Y-m-d H:i:s');
-
-        return ($dataDeAbertura >= date(now())) ? true : false;
-    }
-
     public function render()
     {
         return view('livewire.percepcao.grupo-questao-show');

@@ -67,9 +67,27 @@ class Percepcao extends Model
         return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
     }
 
+    /**
+     * Verifica se uma percepção está abertura
+     * 
+     * @return Bool
+     */
     public function isAberto() {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->gt($now));
+    }
+
+    /**
+     * Verifica se uma percepção ainda vai ocorrer.
+     * 
+     * Nessa situação as questões e outros atributos podem ser modificados.
+     * Se estiver aberta ou se já passou, não pode.
+     * 
+     * @return Bool
+     */
+    public function isFuturo() {
+        $now = date('Y-m-d H:i:s');
+        return ($this->dataDeAbertura->gt($now) && $this->dataDeFechamento->gt($now));
     }
 
     /**

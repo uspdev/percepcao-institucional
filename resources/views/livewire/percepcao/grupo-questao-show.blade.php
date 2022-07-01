@@ -37,7 +37,7 @@
                                 <div class="h6">
                                     {{ $questao->campo['text'] }}
                                 </div>
-                                @if ($this->canDelete())
+                                @if ($percepcao->isFuturo())
                                     <div class="justify-content-end">
                                         <x-form.wire-button
                                             class="btn btn-danger text-danger btn-icon"
@@ -128,15 +128,19 @@
                 </div>
             </section>
         </div>
-        <div>
-            <x-form.wire-button
-                class="btn btn-dark text-dark btn-icon"
-                class-icon="w-8 h-8"
-                click=""
-                label="Adicionar questão"
-                action="add"
-                @click="openAddQuestao = true"
-                />
-        </div>
+
+        @if($percepcao->isFuturo())
+            <div>
+                <x-form.wire-button
+                    class="btn btn-dark text-dark btn-icon"
+                    class-icon="w-8 h-8"
+                    click=""
+                    label="Adicionar questão"
+                    action="add"
+                    @click="openAddQuestao = true"
+                    />
+            </div>
+        @endif
+        
     </div>
 </div>
