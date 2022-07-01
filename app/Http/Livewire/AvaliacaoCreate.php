@@ -105,8 +105,12 @@ class AvaliacaoCreate extends Component
                     case 'disciplinas':
                         foreach ($this->disciplinas as $keyDisciplina => $disciplina) {
                             $this->dadosDisciplina[$keyDisciplina] = [
-                                'codpes' => (is_numeric($disciplina['codpes'])) ? $disciplina['codpes'] : 111111 . $keyDisciplina,
-                                'nompes' => (is_numeric($disciplina['codpes'])) ? $this->pessoa::obterNome($disciplina['codpes']) : $disciplina['codpes'],
+                                'codpes' => (is_numeric($disciplina['codpes']))
+                                    ? $disciplina['codpes']
+                                    : 111111 . $keyDisciplina,
+                                'nompes' => (is_numeric($disciplina['codpes']))
+                                    ? $this->pessoa::obterNome($disciplina['codpes']) ?: $disciplina['codpes']
+                                    : $disciplina['codpes'],
                                 'coddis' => $disciplina['coddis'],
                                 'nomdis' => $disciplina['nomdis'],
                                 'verdis' => $disciplina['verdis'],
@@ -135,8 +139,12 @@ class AvaliacaoCreate extends Component
                     case 'coordenadores':
                         foreach ($this->coordenadores as $keyCoordenador => $coordenador) {
                             $this->dadosCoordenador[$keyCoordenador] = [
-                                'codpes' => (is_numeric($coordenador['codpes'])) ? $coordenador['codpes'] : 111111 . $keyCoordenador,
-                                'nompes' => (is_numeric($coordenador['codpes'])) ? $this->pessoa::obterNome($coordenador['codpes']) : $coordenador['codpes'],
+                                'codpes' => (is_numeric($coordenador['codpes']))
+                                    ? $coordenador['codpes']
+                                    : 111111 . $keyCoordenador,
+                                'nompes' => (is_numeric($coordenador['codpes']))
+                                    ? $this->pessoa::obterNome($coordenador['codpes']) ?: $coordenador['nompes']
+                                    : $coordenador['codpes'],
                                 'codcur' => $coordenador['codcur'],
                                 'nomcur' => $coordenador['nomcur'],
                                 'codhab' => $coordenador['codhab'],
