@@ -4,17 +4,17 @@ $admin = [
     [
         'text' => 'Percepções',
         'url' => 'gestao-sistema/percepcao',
-        'can' => 'gerente',        
+        'can' => 'gerente',
     ],
     [
         'text' => 'Grupos',
         'url' => 'gestao-sistema/percepcao/create-grupo',
-        'can' => 'gerente',        
+        'can' => 'gerente',
     ],
     [
         'text' => 'Questões',
         'url' => 'gestao-sistema/percepcao/create-questao',
-        'can' => 'gerente',        
+        'can' => 'gerente',
     ],
 ];
 
@@ -22,7 +22,20 @@ $submenu2 = [
     [
         'text' => 'Avaliar',
         'url' => 'avaliar',
-    ],    
+    ],
+];
+
+$consultas = [
+    [
+        'text' => 'Disciplinas',
+        'url' => 'gestao-sistema/percepcao/consulta/disciplinas',
+        'can' => 'gerente',
+    ],
+    [
+        'text' => 'Coordenadores',
+        'url' => 'gestao-sistema/percepcao/consulta/coordenadores',
+        'can' => 'gerente',
+    ],
 ];
 
 $menu = [
@@ -42,6 +55,11 @@ $menu = [
     [
         'text' => 'Gestão do sistema',
         'submenu' => $admin,
+        'can' => 'gerente',
+    ],
+    [
+        'text' => 'Consultas',
+        'submenu' => $consultas,
         'can' => 'gerente',
     ],
 ];
