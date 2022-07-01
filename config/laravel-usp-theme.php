@@ -53,13 +53,13 @@ $menu = [
         'can' => '',
     ],
     [
-        'text' => 'Gestão do sistema',
-        'submenu' => $admin,
+        'text' => 'Consultas',
+        'submenu' => $consultas,
         'can' => 'gerente',
     ],
     [
-        'text' => 'Consultas',
-        'submenu' => $consultas,
+        'text' => 'Gestão do sistema',
+        'submenu' => $admin,
         'can' => 'gerente',
     ],
 ];
