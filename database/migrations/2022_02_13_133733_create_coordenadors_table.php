@@ -20,6 +20,7 @@ class CreateCoordenadorsTable extends Migration
             $table->integer('codcur');
             $table->string('nomcur');
             $table->integer('codhab');
+            $table->ForeignId('percepcao_id')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }
