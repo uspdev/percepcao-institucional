@@ -49,12 +49,12 @@ class RelatorioShow extends Component
 
         $this->percepcao = Percepcao::find($percepcaoId);
 
-        if ($this->percepcao->settings()->has('grupos')) {
+        if ($this->percepcao->questaos()->has('grupos')) {
             $temDisciplina = false;
 
             $temCoordenador = false;
 
-            foreach ($this->percepcao->settings()->get('grupos') as $grupo) {
+            foreach ($this->percepcao->questaos()->get('grupos') as $grupo) {
                 if (isset($grupo['modelo_repeticao']) && $grupo['modelo_repeticao'] === 'disciplinas') {
                     $temDisciplina = true;
                 }

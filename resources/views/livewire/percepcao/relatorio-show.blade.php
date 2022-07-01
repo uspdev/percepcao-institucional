@@ -15,7 +15,7 @@
                 placeholder="Selecione a disciplina..."
                 />
             @isset ($disciplina)
-                @foreach ($percepcao->settings()->get('grupos') as $idGrupo => $grupo)
+                @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
                     @if ($grupo['modelo_repeticao'] === 'disciplinas')
                         <div class="pb-5">
                             <h4 class="pt-3">
@@ -77,7 +77,7 @@
                 placeholder="Selecione o coordenador..."
                 />
             @isset ($coordenador)
-                @foreach ($percepcao->settings()->get('grupos') as $idGrupo => $grupo)
+                @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
                     @if ($grupo['modelo_repeticao'] === 'coordenadores')
                         <div>
                             <h4 class="pt-3">
