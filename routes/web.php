@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::get('percepcoes', PercepcaoShow::class)->name('percepcaos.index');
         // Route::get('/gestao-sistema/percepcao/{idPercepcao}/add-questao', PercepcaoAddQuestao::class);
         // Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class);
+        
         Route::get('/gestao-sistema/percepcao/create-grupo', GrupoCreate::class);
         Route::get('/gestao-sistema/percepcao/create-questao', QuestaoCreate::class);
 
