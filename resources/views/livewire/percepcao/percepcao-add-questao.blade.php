@@ -9,6 +9,12 @@
         <div>Campo questao_settings</div>
         <pre>{!! $percepcao->questao_settings !!}</pre>
     @endcan
+
+    @if ($percepcao->isAberto())
+        <div class="alert alert-info" role="alert">
+            A percepção está aberta. Não é possivel alterar as questões! 
+        </div>
+    @endif
     <hr>
 
     <div class="d-flex justify-content-center align-items-center flex-column">
