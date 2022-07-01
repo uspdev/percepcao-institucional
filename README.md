@@ -19,3 +19,10 @@ Instalação padrão do Laravel
 * Disciplinas tipo Estagio TCC não serão avaliadas.
 
 * A edição das perguntas de uma percepção só é possivel antes do período de respostas.
+
+## Permissões
+
+* A pessoa do serviço de graduação que irá operar deverá ser gerente
+* Deverão ser cadastrados os membros especiais
+* A liberação de docentes é por meio da senha única ???
+* A liberação de alunos é por senha única ???  
