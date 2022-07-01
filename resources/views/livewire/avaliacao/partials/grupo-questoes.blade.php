@@ -8,7 +8,7 @@
             :model="'avaliacaoQuesitos.' . $idGrupo . '.' . $idQuestao . '.value'"
             :arrValue="$this->questaoClass->getCamposQuestao($idQuestao)['keys']"
             :arrText="$this->questaoClass->getCamposQuestao($idQuestao)['values']"
-            style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;"
+            {{-- style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;" --}}
             />
         @break
     @case('textarea')
