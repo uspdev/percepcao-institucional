@@ -69,7 +69,7 @@ class GrupoSeeder extends Seeder
 
         \App\Models\Grupo::create([
             'id' => 7,
-            'texto' => 'DISCIPLINA',
+            'texto' => 'PERCEPÇÃO EM CADA DISCIPLINA',
             'ativo' => 1,
             'repeticao' => 1,
             'modelo_repeticao' => 'disciplinas',
@@ -78,7 +78,7 @@ class GrupoSeeder extends Seeder
         ]);
         \App\Models\Grupo::create([
             'id' => 8,
-            'texto' => 'Avaliação do professor',
+            'texto' => 'Professor',
             'ativo' => 1,
             'repeticao' => 1,
             'modelo_repeticao' => 'disciplinas',
@@ -88,7 +88,7 @@ class GrupoSeeder extends Seeder
         ]);
         \App\Models\Grupo::create([
             'id' => 9,
-            'texto' => 'Avaliação da disciplina',
+            'texto' => 'Disciplina',
             'ativo' => 1,
             'repeticao' => 1,
             'modelo_repeticao' => 'disciplinas',
@@ -98,7 +98,7 @@ class GrupoSeeder extends Seeder
         ]);
         \App\Models\Grupo::create([
             'id' => 10,
-            'texto' => 'Auto avaliação',
+            'texto' => 'Auto avaliação do aluno',
             'ativo' => 1,
             'repeticao' => 1,
             'modelo_repeticao' => 'disciplinas',

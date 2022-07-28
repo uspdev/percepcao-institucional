@@ -85,37 +85,50 @@ class QuestaoSeeder extends Seeder
             ],
             [
                 'type' => 'radio',
-                'text' => 'O professor apresentou um plano de ensino?',
-                'options' => [["key" => "1", "value" => "Sim"], ["key" => "2", "value" => "Não"]],
+                'text' => 'O professor apresentou um plano de ensino (cronograma/método avaliativo)?',
+                'options' => [
+                    ["key" => "1", "value" => "Sim"], 
+                    ["key" => "2", "value" => "Não"]
+                ],
                 'rules' => 'required|integer|min:1|max:2',
             ],
             [
                 'type' => 'radio',
                 'text' => 'O plano de ensino foi cumprido?',
-                'options' => [["key" => "1", "value" => "Sim"], ["key" => "2", "value" => "Não"]],
-                'rules' => 'required|integer|min:1|max:2',
+                'options' => [
+                    ["key" => "1", "value" => "Não Cumprido"], 
+                    ["key" => "2", "value" => "Regular"], 
+                    ["key" => "3", "value" => "Cumprido integralmente"]
+                ],
+                'rules' => 'required|integer|min:1|max:3',
             ],
             [
                 'type' => 'radio',
-                'text' => 'Como avalia o domínio do professor na disciplina?',
+                'text' => 'Como avalia o domínio (técnico/teórico) do professor na disciplina?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
             [
                 'type' => 'radio',
-                'text' => 'Os recursos disponibilizados (PDF\'s, vídeo aulas, listas de exercícios, exemplos em aula, vídeos, imagens, áudios, softwares, etc) são suficientes e adequados para o aprendizado e a realização das avaliações?',
-                'options' => $options, // precisa ajustar
+                'text' => 'Os recursos disponibilizados (material de apoio, videoaulas, listas de exercícios, exemplos em aula, vídeos, imagens, áudios, softwares, etc) são suficientes e adequados para o aprendizado e a realização das avaliações?',
+                'options' => [
+                    ["key" => "1", "value" => "Muito pouco"], 
+                    ["key" => "2", "value" => "Pouco"], 
+                    ["key" => "3", "value" => "Regular"],
+                    ["key" => "4", "value" => "Bom"],
+                    ["key" => "5", "value" => "Muito bom"],
+                ],
                 'rules' => 'required|integer|min:1|max:5',
             ],
             [
                 'type' => 'radio',
-                'text' => 'Como avalia a didática (dinamismo, clareza e organização na exposição de temas) nas aulas ministradas?',
+                'text' => 'Como você avalia a didática (dinamismo, clareza e organização na exposição de temas) nas aulas ministradas?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
             [
                 'type' => 'radio',
-                'text' => 'Como você avalia a coerência entre conteúdo ministrado e avaliações aplicadas?',
+                'text' => 'Como você avalia a coerência entre conteúdo ministrado e as avaliações aplicadas?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
@@ -134,7 +147,7 @@ class QuestaoSeeder extends Seeder
 
             [
                 'type' => 'radio',
-                'text' => 'Quão atualizada é o conteúdo da  disciplina?',
+                'text' => 'Quão atualizado é o conteúdo da  disciplina?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
@@ -152,15 +165,29 @@ class QuestaoSeeder extends Seeder
             ],
             [
                 'type' => 'radio',
-                'text' => 'Você  tem entendimento do papel formativo da disciplina na estrutura do seu curso?',
-                'options' => [["key" => "1", "value" => "Pouco"], ["key" => "2", "value" => "Parcial"], ["key" => "3", "value" => "Muito"]],
-                'rules' => 'required|integer|min:1|max:5',
+                'text' => 'Você tem entendimento do papel formativo da disciplina na estrutura do seu curso?',
+                'options' => [
+                    ["key" => "1", "value" => "Pouco"], 
+                    ["key" => "2", "value" => "Parcial"], 
+                    ["key" => "3", "value" => "Muito"]
+                ],
+                'rules' => 'required|integer|min:1|max:3',
+            ],
+            [
+                'type' => 'radio',
+                'text' => 'Como você avalia o  tempo requerido para cumprir as atividades relacionadas à disciplina com relação ao seu número de créditos?',
+                'options' => [
+                    ["key" => "1", "value" => "Incoerente"], 
+                    ["key" => "2", "value" => "Parcialmente coerente"], 
+                    ["key" => "3", "value" => "Coerente"]
+                ],
+                'rules' => 'required|integer|min:1|max:3',
             ],
 
             // aluno na disciplina
             [
                 'type' => 'radio',
-                'text' => 'Como você avalia a sua pontualidade e assiduidade? ',
+                'text' => 'Como você avalia a sua pontualidade e assiduidade?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
@@ -178,7 +205,13 @@ class QuestaoSeeder extends Seeder
             ],
             [
                 'type' => 'radio',
-                'text' => 'Como avalia a sua colaboração com colegas no desenvolvimento de atividades propostas durante as aulas (empatia com os colegas)?',
+                'text' => 'Como avalia a sua colaboração com os colegas no desenvolvimento de atividades realizadas durante as aulas (empatia com os colegas, tirar dúvidas, auxiliar em atividades)?',
+                'options' => $options,
+                'rules' => 'required|integer|min:1|max:5',
+            ],
+            [
+                'type' => 'radio',
+                'text' => 'Como foi o seu relacionamento com os colegas e professores?',
                 'options' => $options,
                 'rules' => 'required|integer|min:1|max:5',
             ],
@@ -195,7 +228,7 @@ class QuestaoSeeder extends Seeder
         \App\Models\Questao::create([
             'campo' => [
                 'type' => 'textarea',
-                'text' => 'Comentários e sugestões do aluno na disciplina',
+                'text' => 'Espaço para comentários sobre o(a) professor(a)',
                 'maxlength' => 400,
                 'rows' => 3,
                 'options' => '',
@@ -208,7 +241,33 @@ class QuestaoSeeder extends Seeder
         \App\Models\Questao::create([
             'campo' => [
                 'type' => 'textarea',
-                'text' => 'Comentários e sugestões gerais',
+                'text' => 'Espaço para comentários sobre a disciplina',
+                'maxlength' => 400,
+                'rows' => 3,
+                'options' => '',
+                'rules' => 'max:400',
+            ],
+            'estatistica' => 0,
+            'ativo' => 1,
+        ]);
+
+        \App\Models\Questao::create([
+            'campo' => [
+                'type' => 'textarea',
+                'text' => 'Espaço para comentários sobre a sua autoavaliação',
+                'maxlength' => 400,
+                'rows' => 3,
+                'options' => '',
+                'rules' => 'max:400',
+            ],
+            'estatistica' => 0,
+            'ativo' => 1,
+        ]);
+
+        \App\Models\Questao::create([
+            'campo' => [
+                'type' => 'textarea',
+                'text' => 'Comentários e sugestões gerais (Neste espaço pode incluir comentários acerca da infraestrutura da EESC. Por exemplo, sobre as instalações prediais, laboratoriais, livros na biblioteca, apoio técnico.)',
                 'maxlength' => 400,
                 'rows' => 3,
                 'options' => '',
