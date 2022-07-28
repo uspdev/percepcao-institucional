@@ -21,8 +21,7 @@
         <div>
             <label class="bold">Data de Abertura: </label>
             <span>{{ $percepcao->dataDeAbertura->format('d/m/Y H:i') }}</span>
-        </div>
-        <div>
+            <i class="fas fa-angle-right"></i>
             <label class="bold">Data de Fechamento: </label>
             <span>{{ $percepcao->dataDeFechamento->format('d/m/Y H:i') }}</span>
         </div>
