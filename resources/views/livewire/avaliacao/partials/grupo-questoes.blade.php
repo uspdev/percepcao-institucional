@@ -3,6 +3,7 @@
     {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}
 </div>
 @switch($this->getDetalheQuestao($idQuestao)['campo']['type'])
+
     @case('radio')
         <x-form.wire-radio
             :model="'avaliacaoQuesitos.' . $idGrupo . '.' . $idQuestao . '.value'"
@@ -11,6 +12,7 @@
             {{-- style="margin-left: 40px; margin-top: 15px; margin-bottom: 15px;" --}}
             />
         @break
+
     @case('textarea')
         @if (!empty($this->getDetalheQuestao($idQuestao)['campo']['maxlength']))
             <x-form.wire-textarea
@@ -37,5 +39,6 @@
                 />
         @endif
         @break
+        
 @endswitch
 @endforeach
