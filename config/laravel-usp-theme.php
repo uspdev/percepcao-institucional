@@ -2,11 +2,6 @@
 
 $admin = [
     [
-        'text' => 'Percepções',
-        'url' => 'percepcoes',
-        'can' => 'gerente',
-    ],
-    [
         'text' => 'Grupos',
         'url' => 'gestao-sistema/percepcao/create-grupo',
         'can' => 'gerente',
@@ -55,6 +50,11 @@ $menu = [
     [
         'text' => 'Consultas',
         'submenu' => $consultas,
+        'can' => 'gerente',
+    ],
+    [
+        'text' => 'Percepções',
+        'url' => 'percepcoes',
         'can' => 'gerente',
     ],
     [
