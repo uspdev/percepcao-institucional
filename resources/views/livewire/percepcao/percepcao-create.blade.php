@@ -31,14 +31,25 @@
     </div>
 
     <div class="row form-group">
+        <x-form.wire-input
+        model="settings.comentario"
+        label="Comentário:"
+        type="text"
+        wireModifier=".defer"
+        class="col-sm"
+        />
+    </div>
+
+    <div class="row form-group">
         <x-form.wire-textarea
             model="settings.textoApresentacao"
-            label="Texto da tela de apresentação da Percepção:"
+            label="Texto da tela de apresentação:"
             wireModifier=".defer"
             rows="4"
             class="col-sm"
-            />
-
+        />
+    </div>
+    <div class="row form-group">
         <x-form.wire-textarea
             model="settings.textoFormularioAvaliacao"
             label="Texto do formulário de avaliação:"
