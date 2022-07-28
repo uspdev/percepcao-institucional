@@ -83,6 +83,7 @@
                 </div>
             </section>
         </div>
+        @if ($percepcao->isFuturo())
         <div>
             <x-form.wire-button
                 class="btn btn-dark text-dark btn-icon"
@@ -93,6 +94,7 @@
                 @click="openAddGrupo = true"
                 />
         </div>
+        @endif
     </div>
     <div>
         <a href="{{ route('percepcaos.index') }}">
