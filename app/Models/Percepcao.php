@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Glorand\Model\Settings\Traits\HasSettingsField;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Percepcao extends Model
 {
-    use HasFactory;
-    use HasSettingsField;
+    use HasFactory, HasSettingsField, SoftDeletes;
 
     protected $guarded = ['id'];
 
@@ -33,6 +33,7 @@ class Percepcao extends Model
         'comentario' => 'Nova percepção',
         'totalDeDisciplinas' => 0,
         'totalDeAlunosMatriculados' => 0,
+        'membrosEspeciais' => [],
     ];
 
     // glorand/laravel-model-settings
@@ -73,7 +74,8 @@ class Percepcao extends Model
      * 
      * @return Bool
      */
-    public function isAberto() {
+    public function isAberto()
+    {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->gt($now));
     }
@@ -86,12 +88,14 @@ class Percepcao extends Model
      * 
      * @return Bool
      */
-    public function isFuturo() {
+    public function isFuturo()
+    {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->gt($now) && $this->dataDeFechamento->gt($now));
     }
 
-    public function isFinalizado() {
+    public function isFinalizado()
+    {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->lt($now));
     }

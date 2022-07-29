@@ -25,6 +25,7 @@ class CreatePercepcaosTable extends Migration
             $table->json('questao_settings')->nullable();
             $table->json('settings')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
