@@ -28,7 +28,7 @@ class PercepcaoSeeder extends Seeder
             'settings' => [
                 'textoFormularioAvaliacao' => $textoFormularioAvaliacao,
                 'textoApresentacao' => $textoApresentacao,
-                'comentario' => 'Modelo de percepção da EEL',
+                'nome' => 'Modelo da EEL',
                 'totalDeAlunosMatriculados' => mt_rand(100, 1000),
             ]
         ]);
@@ -48,8 +48,9 @@ class PercepcaoSeeder extends Seeder
             'settings' => [
                 'textoFormularioAvaliacao' => $textoFormularioAvaliacao,
                 'textoApresentacao' => $textoApresentacao,
-                'comentario' => 'Modelo de percepção da EESC',
+                'nome' => 'Modelo da EESC',
                 'totalDeAlunosMatriculados' => mt_rand(100, 1000),
+                'membrosEspeciais' => [1575309, 12345],
             ]
         ]);
     }

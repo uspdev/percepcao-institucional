@@ -32,8 +32,8 @@
 
     <div class="row form-group">
         <x-form.wire-input
-        model="settings.comentario"
-        label="Comentário:"
+        model="settings.nome"
+        label="Nome:"
         type="text"
         wireModifier=".defer"
         class="col-sm"

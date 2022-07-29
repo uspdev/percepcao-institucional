@@ -30,7 +30,7 @@ class Percepcao extends Model
         'textoAgradecimentoEnvioAvaliacao' => 'Obrigado pela sua participação no processo de avaliação de disciplinas deste semestre.',
         'textoApresentacao' => '',
         'textoFormularioAvaliacao' => '',
-        'comentario' => 'Nova percepção',
+        'nome' => 'Nova percepção',
         'totalDeDisciplinas' => 0,
         'totalDeAlunosMatriculados' => 0,
         'membrosEspeciais' => [],

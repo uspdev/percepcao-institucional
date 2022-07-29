@@ -44,8 +44,8 @@ class PercepcaoShow extends Component
     {
         return [
             [
-                'name' => 'id',
-                'text' => 'No.',
+                'name' => 'nome',
+                'text' => 'Nome',
                 'sortable' => true,
             ],
             [
@@ -58,16 +58,16 @@ class PercepcaoShow extends Component
                 'text' => 'Fechamento',
                 'sortable' => false,
             ],
-            [
-                'name' => 'ano',
-                'text' => 'Ano',
-                'sortable' => false,
-            ],
-            [
-                'name' => 'semestre',
-                'text' => 'Semestre',
-                'sortable' => false,
-            ],
+            // [
+            //     'name' => 'ano',
+            //     'text' => 'Ano',
+            //     'sortable' => false,
+            // ],
+            // [
+            //     'name' => 'semestre',
+            //     'text' => 'Semestre',
+            //     'sortable' => false,
+            // ],
             [
                 'name' => 'totalDeAlunosMatriculados',
                 'text' => 'Alunos matriculados',
@@ -80,7 +80,7 @@ class PercepcaoShow extends Component
             ],
             [
                 'name' => 'liberaConsultaMembrosEspeciais',
-                'text' => 'Libera membros especiais?',
+                'text' => 'Membros especiais',
                 'sortable' => false,
             ],
             [
@@ -94,8 +94,8 @@ class PercepcaoShow extends Component
                 'sortable' => false,
             ],
             [
-                'name' => 'comentario',
-                'text' => 'Comentário',
+                'name' => 'nome',
+                'text' => 'Nome',
                 'sortable' => false,
             ],
         ];

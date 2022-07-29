@@ -2,8 +2,9 @@
 
 @section('content')
   <h2>
-    <a href="{{ route('percepcaos.index') }}">Percepções</a>
-    <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+    <a class="" href="{{ route('percepcao.show', $percepcao) }}">
+      {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
+  </a>
     <i class="fas fa-angle-right"></i> Alunos 
     <span class="badge badge-primary badge-pill">{{ count($alunos) }}</span>
   </h2>

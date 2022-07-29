@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-  <h2 class="form-inline">
-    <a href="{{ route('percepcaos.index') }}">Percepções</a>
-    <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+  <h2 class="">
+    <a class="" href="{{ route('percepcao.show', $percepcao) }}">
+      {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
+  </a>
     <i class="fas fa-angle-right"></i> Disciplinas 
     <span class="badge badge-primary badge-pill">{{ $percepcao->settings['totalDeDisciplinas'] }}</span>
 

@@ -33,33 +33,41 @@
                 <tbody>
                     @foreach($percepcoes as $percepcao)
                         <tr>
-                            <td>{{ $percepcao->id ?? '' }}</td>
+                            <td>
+                                <a class="" href="{{ route('percepcao.show', $percepcao) }}">
+                                    {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano ?? '' }}/{{ $percepcao->semestre ?? '' }})
+                                    <span class="ml-3">
+                                        {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
+                                        {!! $percepcao->isFinalizado() ? '<span class="badge badge-secondary">Finalizado</span>' : '' !!}
+                                        {!! $percepcao->isFuturo() ? '<span class="badge badge-success">Em elaboração</span>' : '' !!}
+                                </span>
+                            </a>
+                            </td>
                             <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
                                 {{ $percepcao->dataDeAbertura->format('d/m/Y H:i') ?? '' }}
-                                {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
-                                {!! $percepcao->isFinalizado() ? '<span class="badge badge-secondary">Finalizado</span>' : '' !!}
-                                {!! $percepcao->isFuturo() ? '<span class="badge badge-success">Em elaboração</span>' : '' !!}
                             </td>
                             <td class="{{ $percepcao->isAberto() ? 'font-weight-bold' : '' }}">
                                 {{ $percepcao->dataDeFechamento->format('d/m/Y H:i') ?? '' }}
                             </td>
-                            <td>{{ $percepcao->ano ?? '' }}</td>
-                            <td>{{ $percepcao->semestre ?? '' }}</td>
+                            {{-- <td>{{ $percepcao->ano ?? '' }}</td>
+                            <td>{{ $percepcao->semestre ?? '' }}</td> --}}
                             <td>
                                 {{ $percepcao->settings['totalDeAlunosMatriculados'] }}
-                                <a href="{{ route('percepcao.alunos', $percepcao->id) }}" title="Ver lista de alunos"><i class="fas fa-eye"></i></a>
                             </td>
                             <td>
                                 {{ $percepcao->settings['totalDeDisciplinas'] }}
-                                <a href="{{ route('percepcao.disciplinas', $percepcao->id) }}" title="Ver lista de disciplinas"><i class="fas fa-chalkboard-teacher"></i></a>
                             </td>
                             <td>
-                                @livewire('percepcao.toggle-button', [
-                                    'model' => $percepcao,
-                                    'field' => 'liberaConsultaMembrosEspeciais',
-                                ],
-                                key('liberaConsultaMembrosEspeciais-' . $percepcao->id)
-                                )
+                                <div class="form-inline">
+                                    <span class="mt-2">{{ count($percepcao->settings['membrosEspeciais']) }}</span>
+                                    @livewire('percepcao.toggle-button', [
+                                        'model' => $percepcao,
+                                        'field' => 'liberaConsultaMembrosEspeciais',
+                                    ],
+                                    key('liberaConsultaMembrosEspeciais-' . $percepcao->id)
+                                    )
+
+                                </div>
                             </td>
                             <td>
                                 @livewire('percepcao.toggle-button', [
@@ -78,11 +86,11 @@
                                 )
                             </td>
                             <td>
-                                {{ $percepcao->settings['comentario'] }}
+                                {{ $percepcao->settings['nome'] }}
                             </td>
                             <td width=''>
                                 <div>
-                                    <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
+                                    {{-- <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
                                         <x-form.wire-button
                                             class="btn btn-dark text-dark btn-icon"
                                             class-icon="w-6 h-6"
@@ -95,7 +103,7 @@
                                             class-icon="w-6 h-6"
                                             action="preview"
                                           />
-                                    </a>
+                                    </a> --}}
                                     <x-form.wire-button
                                         class="btn btn-primary text-primary btn-icon"
                                         class-icon="w-6 h-6"

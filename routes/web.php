@@ -31,10 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/avaliar', AvaliacaoCreate::class);
 
     Route::middleware('can:gerente')->group(function () {
-        Route::get('/avaliar/preview/{idPercepcao}', AvaliacaoCreate::class);
+        Route::get('/avaliar/preview/{idPercepcao}', AvaliacaoCreate::class)->name('avaliar.preview');
 
-        Route::get('percepcoes', PercepcaoShow::class)->name('percepcaos.index');
-        Route::get('/gestao-sistema/percepcao/{idPercepcao}/add-questao', PercepcaoAddQuestao::class);
+        Route::get('/gestao-sistema/percepcao/{idPercepcao}/add-questao', PercepcaoAddQuestao::class)->name('percepcao.questoes');
         // Route::get('/gestao-sistema/percepcao/create-livewire', PercepcaoCreate::class);
         
         Route::get('/gestao-sistema/percepcao/create-grupo', GrupoCreate::class);
@@ -48,5 +47,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/gestao-sistema/percepcao/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinas'])->name('percepcao.disciplinas');
         Route::post('/gestao-sistema/percepcao/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinasUpdate'])->name('percepcao.disciplinas.update');
+    
+        Route::get('/percepcoes/{percepcao}', [PercepcaoController::class, 'show'])->name('percepcao.show');
+        Route::put('/percepcoes/{percepcao}/especiais', [PercepcaoController::class, 'updateEspeciais'])->name('percepcao.updateEspeciais');
+        Route::delete('/percepcoes/{percepcao}/especiais', [PercepcaoController::class, 'destroyEspeciais'])->name('percepcao.destroyEspeciais');
+    
+        Route::get('percepcoes', PercepcaoShow::class)->name('percepcaos.index');
+
     });
 });

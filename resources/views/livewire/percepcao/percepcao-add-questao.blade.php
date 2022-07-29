@@ -1,7 +1,8 @@
 <div class="container">
     <h2 class="">
-        <a class="" href="{{ route('percepcaos.index') }}"rcepcao>Percepções</a> 
-        <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+        <a class="" href="{{ route('percepcao.show', $percepcao) }}">
+            {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
+        </a>
         <i class="fas fa-angle-right"></i> Adicionar Questões
     </h2>
     <hr>

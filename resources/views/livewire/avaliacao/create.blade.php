@@ -4,8 +4,9 @@
 
             @if($this->preview)
                 <h2 class="">
-                    <a class="" href="{{ route('percepcaos.index') }}">Percepções</a> 
-                    <i class="fas fa-angle-right"></i> {{ $percepcao->ano }}/{{ $percepcao->semestre }}
+                    <a class="" href="{{ route('percepcao.show', $percepcao) }}">
+                        {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
+                    </a>
                     <i class="fas fa-angle-right"></i> Preview
                 </h2>
                 <hr />

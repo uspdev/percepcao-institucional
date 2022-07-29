@@ -9,6 +9,48 @@ use Illuminate\Http\Request;
 
 class percepcaoController extends Controller
 {
+
+    public function show(Percepcao $percepcao)
+    {
+        $membrosEspeciais = $percepcao->settings['membrosEspeciais'];
+
+        return view('percepcao.show', compact('percepcao', 'membrosEspeciais'));
+    }
+
+    /**
+     * Update membros especiais de uma percepção
+     * 
+     * @param App\Models\Percepcao $percepcao
+     */
+    public function updateEspeciais(Percepcao $percepcao, Request $request)
+    {
+        $request->validate([
+            'codpes' => ['required', 'numeric'],
+        ]);
+
+        $membrosEspeciais = array_merge($percepcao->settings['membrosEspeciais'], [$request['codpes']]);
+        $percepcao->addSettings(['membrosEspeciais' => $membrosEspeciais]);
+        $percepcao->save();
+        return back();
+    }
+
+    /**
+     * Destroy membros especiais de uma percepção
+     * 
+     * @param App\Models\Percepcao $percepcao
+     */
+    public function destroyEspeciais(Percepcao $percepcao, Request $request)
+    {
+        $request->validate([
+            'codpes' => ['nullable', 'numeric'],
+        ]);
+
+        $membrosEspeciais = array_diff($percepcao->settings['membrosEspeciais'], [$request['codpes']]);
+        $percepcao->addSettings(['membrosEspeciais' => $membrosEspeciais]);
+        $percepcao->save();
+        return back();
+    }
+
     /**
      * Retorna lista de alunos matriculados em uma percepção
      * 
