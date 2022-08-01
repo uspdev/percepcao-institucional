@@ -6,13 +6,14 @@ use App\Models\Percepcao;
 use App\Models\Disciplina;
 use App\Replicado\Graduacao;
 use Illuminate\Http\Request;
+use Uspdev\Replicado\Pessoa;
 
 class percepcaoController extends Controller
 {
 
     public function show(Percepcao $percepcao)
     {
-        $membrosEspeciais = $percepcao->settings['membrosEspeciais'];
+        $membrosEspeciais = Pessoa::obterNome($percepcao->settings['membrosEspeciais']);
 
         return view('percepcao.show', compact('percepcao', 'membrosEspeciais'));
     }

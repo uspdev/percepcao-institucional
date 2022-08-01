@@ -5,7 +5,7 @@
       <span class="badge badge-primary badge-pill">{{ count($membrosEspeciais) }}</span>
     </h5>
     <span class="text-secondary ml-2">
-      Membros especiais poderão visualizar todos os resutados da percepção.
+      Membros especiais poderão visualizar todos os relatórios da percepção.
     </span>
   </div>
   <div class="card-body">
@@ -21,13 +21,13 @@
           </div>
         </div>
       </form>
-      @foreach ($membrosEspeciais as $membro)
+      @foreach ($membrosEspeciais as $codpes=>$nome)
         <div class="form-inline delete-form-confirm">
-          {{ $membro }} {{ json_encode(\Uspdev\Replicado\Pessoa::obterNome($membro) ?? '') }}
+          {{ $codpes }} - {{ $nome }}
           <form method="POST" action="{{ route('percepcao.destroyEspeciais', $percepcao) }}">
             @method('delete')
             @csrf
-            <input type="hidden" name="codpes" value="{{ $membro }}" />
+            <input type="hidden" name="codpes" value="{{ $codpes }}" />
             <button class="btn btn-sm text-danger" title="Remover"><i class="fas fa-trash"></i></button>
           </form>
         </div>
