@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Livewire\Percepcao\PercepcaoShow;
-use App\Http\Livewire\Percepcao\PercepcaoCreate;
-use App\Http\Livewire\Percepcao\PercepcaoAddQuestao;
-use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
+use App\Http\Livewire\AvaliacaoCreate;
 use App\Http\Livewire\Percepcao\GrupoCreate;
+use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\percepcaoController;
+use App\Http\Livewire\Percepcao\PercepcaoShow;
 use App\Http\Livewire\Percepcao\RelatorioShow;
 
-use App\Http\Livewire\Questao\Create as QuestaoCreate;
-use App\Http\Livewire\AvaliacaoCreate;
+use App\Http\Livewire\Percepcao\PercepcaoAddQuestao;
 
-use App\Http\Controllers\percepcaoController;
+use App\Http\Livewire\Questao\Create as QuestaoCreate;
+use App\Http\Livewire\Percepcao\PercepcaoAvaliacaoShow;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ use App\Http\Controllers\percepcaoController;
 |
 */
 
-Route::get('/', PercepcaoAvaliacaoShow::class);
+Route::get('/', [AvaliacaoController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/avaliar', AvaliacaoCreate::class);

@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Glorand\Model\Settings\Traits\HasSettingsField;
+use App\Models\User;
+use App\Models\Resposta;
+use Uspdev\Replicado\Graduacao;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Glorand\Model\Settings\Traits\HasSettingsField;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Percepcao extends Model
 {
@@ -98,6 +102,34 @@ class Percepcao extends Model
     {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->lt($now));
+    }
+
+    /**
+     * Verifica se o aluno já respondeu ao questionário
+     * 
+     * @param $codpes - Nro USP do aluno (opcional)
+     * @return array lista de respostas
+     */
+    public function isRespondido($codpes = null)
+    {
+        if (is_null($codpes)) {
+            $user = Auth::user();
+        } else {
+            $user = User::where('codpes', $codpes)->first();
+        }
+        return Resposta::where('percepcao_id', $this->id)->where('user_id', $user->id)->first();
+    }
+
+    /**
+     * Lista as disciplinas da percepção para um dado $codpes
+     * 
+     * @param Int $codpes - Nro USP do aluno (opcional)
+     * @return Array
+     */
+    public function listarDisciplinasAluno($codpes = null)
+    {
+        $codpes = is_null($codpes) ? Auth::user()->codpes : $codpes;
+        return Graduacao::listarDisciplinasAlunoAnoSemestre($codpes, $this->ano . $this->semestre);
     }
 
     /**

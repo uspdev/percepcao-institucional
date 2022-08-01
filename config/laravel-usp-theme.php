@@ -42,11 +42,11 @@ $menu = [
         # este item de menu será substituido no momento da renderização
         'key' => 'menu_dinamico',
     ],
-    [
-        'text' => 'Percepção Institucional',
-        'submenu' => $submenu2,
-        'can' => '',
-    ],
+    // [
+    //     'text' => 'Percepção Institucional',
+    //     'submenu' => $submenu2,
+    //     'can' => '',
+    // ],
     [
         'text' => 'Consultas',
         'submenu' => $consultas,
