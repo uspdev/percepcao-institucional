@@ -2,10 +2,10 @@
   Avaliação <b>{{ $percepcao->ano }}/{{ $percepcao->semestre }}</b>
 </p>
 <p class="text-center">
-  Período: de <b>{{ $percepcao->dataDeAbertura->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}</b>
-  à <b>{{ $percepcao->dataDeFechamento->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}</b>
+  Período: de {{ $percepcao->dataDeAbertura->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}
+  à {{ $percepcao->dataDeFechamento->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}
 </p>
-<p class="text-center">
+<p class="alert alert-info">
   {!! nl2br($percepcao->settings['textoApresentacao']) !!}
 </p>
 
