@@ -50,10 +50,13 @@
 
   <div class="row mt-3">
     <div class="col-md-6">
-      @include('percepcao.partials.show-especiais')
+      @include('percepcao.partials.show-textos')
     </div>
 
     <div class="col-md-6">
+      <div class="mb-3">
+        @include('percepcao.partials.show-especiais')
+      </div>
       @include('percepcao.partials.show-relatorios')
     </div>
   </div>

@@ -4,7 +4,9 @@
       Membros Especiais
       <span class="badge badge-primary badge-pill">{{ count($membrosEspeciais) }}</span>
     </h5>
-    Membros especiais poderão visualizar todos os resutados da percepção.
+    <span class="text-secondary ml-2">
+      Membros especiais poderão visualizar todos os resutados da percepção.
+    </span>
   </div>
   <div class="card-body">
     <div>

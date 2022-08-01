@@ -3,6 +3,13 @@
     <hr>
     <div class="row form-group">
         <x-form.wire-input
+        model="settings.nome"
+        label="Nome:"
+        type="text"
+        wireModifier=".defer"
+        class="col-sm"
+        />
+        <x-form.wire-input
             model="ano"
             label="Ano:"
             type="text"
@@ -31,16 +38,6 @@
     </div>
 
     <div class="row form-group">
-        <x-form.wire-input
-        model="settings.nome"
-        label="Nome:"
-        type="text"
-        wireModifier=".defer"
-        class="col-sm"
-        />
-    </div>
-
-    <div class="row form-group">
         <x-form.wire-textarea
             model="settings.textoApresentacao"
             label="Texto da tela de apresentação:"
@@ -66,7 +63,7 @@
         rows="4"
         />
 
-    @if($updateId)
+    {{-- @if($updateId)
         <div class="form-group">
             <label>Libera consulta para membros especiais?</label>
             <x-form.wire-switch
@@ -88,7 +85,7 @@
                 wireModifier=".defer"
                 />
         </div>
-    @endif
+    @endif --}}
 
     <div class="">
         <x-form.wire-button
