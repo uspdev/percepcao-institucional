@@ -133,6 +133,15 @@ class Percepcao extends Model
     }
 
     /**
+     * Conta o número de alunos que responderam a determinada Percepção
+     * 
+     * @return Int
+     */
+    public function contarRespostas() {
+        return $this->respostas()->distinct('codpes')->count();
+    }
+
+    /**
      * https://laravel.com/docs/8.x/eloquent-mutators#defining-a-mutator
      */
     public function setDataDeAberturaAttribute($dataDeAbertura)
@@ -151,5 +160,12 @@ class Percepcao extends Model
     public function disciplinas()
     {
         return $this->hasMany('App\Models\Disciplina');
+    }
+
+    /**
+     * Relacionamento com respostas
+     */
+    public function respostas() {
+        return $this->hasMany('App\Models\Resposta');
     }
 }

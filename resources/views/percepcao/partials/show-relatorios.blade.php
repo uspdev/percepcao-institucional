@@ -6,6 +6,7 @@
   </div>
   <div class="card-body">
     <div>
+      Respostas contabilizadas: <span class="badge badge-pill badge-primary">{{ $percepcao->contarRespostas() }}</span><br>
       @if (!$percepcao->isFinalizado())
         Os relatórios estarão disponíveis depois que a Percepção estiver finalizada.
       @else
