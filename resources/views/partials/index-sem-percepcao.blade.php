@@ -1,3 +1,3 @@
-<p class="text-center">
+<p class="alert alert-info text-center">
   Não existe Percepção Institucional ativa no momento!
 </p>
