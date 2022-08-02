@@ -77,8 +77,6 @@ class percepcaoController extends Controller
      */
     public function listarDisciplinasAluno(Percepcao $percepcao, Int $codpes)
     {
-        // $percepcao = Percepcao::find($percepcao_id);
-
         $anoSemestre = $percepcao->ano . $percepcao->semestre;
         $disciplinas = Graduacao::listarDisciplinasAlunoAnoSemestre($codpes, $anoSemestre);
         $html = '';
@@ -117,6 +115,11 @@ class percepcaoController extends Controller
      */
     public function disciplinasUpdate(Request $request, Percepcao $percepcao)
     {
+        if(!$percepcao->isFuturo()) {
+            $request->session()->flash('alert-danger', 'Impossível atualizar se não estiver em elaboração');
+            return back();
+        }
+
         $request->validate([
             'acao' => 'in:atualizar',
         ]);

@@ -5,10 +5,7 @@
     <a href="{{ route('percepcaos.index') }}">Percepções</a>
     <i class="fas fa-angle-right"></i> {{ $percepcao->settings['nome'] }}
     ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
-
-    {!! $percepcao->isAberto() ? '<span class="badge badge-primary">Aberto</span>' : '' !!}
-    {!! $percepcao->isFinalizado() ? '<span class="badge badge-secondary">Finalizado</span>' : '' !!}
-    {!! $percepcao->isFuturo() ? '<span class="badge badge-success">Em elaboração</span>' : '' !!}
+    @include('percepcao.partials.badge-situacao')
   </h2>
 
   <div class="card">

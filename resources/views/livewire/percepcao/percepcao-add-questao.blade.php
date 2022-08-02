@@ -3,7 +3,8 @@
         <a class="" href="{{ route('percepcao.show', $percepcao) }}">
             {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
         </a>
-        <i class="fas fa-angle-right"></i> Adicionar Questões
+        @include('percepcao.partials.badge-situacao')
+    <i class="fas fa-angle-right"></i> Adicionar Questões
     </h2>
     <hr>
 

@@ -7,6 +7,7 @@
                     <a class="" href="{{ route('percepcao.show', $percepcao) }}">
                         {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
                     </a>
+                    @include('percepcao.partials.badge-situacao')
                     <i class="fas fa-angle-right"></i> Preview
                 </h2>
                 <hr />

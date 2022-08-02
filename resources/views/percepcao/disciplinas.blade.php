@@ -4,17 +4,21 @@
   <h2 class="">
     <a class="" href="{{ route('percepcao.show', $percepcao) }}">
       {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
-  </a>
-    <i class="fas fa-angle-right"></i> Disciplinas 
+    </a>
+    @include('percepcao.partials.badge-situacao')
+
+    <i class="fas fa-angle-right"></i> Disciplinas
     <span class="badge badge-primary badge-pill">{{ $percepcao->settings['totalDeDisciplinas'] }}</span>
 
-    <div class="ml-3">
-      <form method="POST" action="{{ route('percepcao.disciplinas.update', $percepcao->id) }}">
-        @csrf
-        <input type="hidden" name="acao" value="atualizar">
-        <button type="submit" class="btn btn-warning">Recarregar do replicado</button>
-      </form>
-    </div>
+    @if ($percepcao->isFuturo())
+      <div class="ml-3">
+        <form method="POST" action="{{ route('percepcao.disciplinas.update', $percepcao->id) }}">
+          @csrf
+          <input type="hidden" name="acao" value="atualizar">
+          <button type="submit" class="btn btn-warning">Recarregar do replicado</button>
+        </form>
+      </div>
+    @endif
 
   </h2>
 
