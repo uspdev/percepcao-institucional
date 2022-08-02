@@ -6,7 +6,7 @@ use App\Models\Percepcao;
 use App\Models\Disciplina;
 use App\Replicado\Graduacao;
 use Illuminate\Http\Request;
-use Uspdev\Replicado\Pessoa;
+use App\Replicado\Pessoa;
 
 class percepcaoController extends Controller
 {

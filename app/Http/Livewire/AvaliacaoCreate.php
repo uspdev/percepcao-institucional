@@ -9,9 +9,8 @@ use App\Models\Grupo;
 use App\Models\Percepcao;
 use App\Models\Questao;
 use App\Models\Resposta;
-use App\Replicado\PessoaReplicado;
 use Uspdev\Replicado\Graduacao;
-use Uspdev\Replicado\Pessoa;
+use App\Replicado\Pessoa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
@@ -84,7 +83,7 @@ class AvaliacaoCreate extends Component
                     $curso = Graduacao::curso(Auth::user()->codpes, env('REPLICADO_CODUNDCLG'));
 
                     if ($curso) {
-                        $this->coordenadores = PessoaReplicado::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
+                        $this->coordenadores = Pessoa::listarCoordenadoresDeCurso($curso['codcur'], $curso['codhab']);
                     }
 
                     $this->montaAvaliacaoQuesitoSubgrupo($this->percepcao->questaos()->get('grupos'));
