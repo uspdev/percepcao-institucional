@@ -20,8 +20,8 @@ class Disciplina extends Model
      */
     public static function importarDoReplicado($percepcao)
     {
-        $disciplinas = Graduacao::listarDisciplinasUnidade($percepcao->ano . $percepcao->semestre);
-
+        $disciplinas = Graduacao::listarTurmasUnidade($percepcao->ano . $percepcao->semestre);
+        
         // adicionando coluna percepcao_id não presente no replicado
         $disciplinas = array_map(function ($disciplina) use ($percepcao) {
             $disciplina['percepcao_id'] = $percepcao->id;

@@ -30,8 +30,7 @@ Class PessoaReplicado extends Pessoa
             $params['codhab'] = $codhab;
         }
 
-        $query = "
-            SELECT
+        $query = "SELECT
                 P.codpes, P.nompes, CGR.nomcur, CGR.codcur, C.dtafimcdn, C.codhab
             FROM
                 PESSOA P

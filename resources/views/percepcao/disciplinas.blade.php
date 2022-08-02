@@ -27,6 +27,7 @@
         <th>Versão</th>
         <th>Tipo</th>
         <th>Professor</th>
+        <th>Setor</th>
       </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
           <td>{{ $disciplina['verdis'] }}</td>
           <td>{{ $disciplina['tiptur'] }}</td>
           <td>{{ $disciplina['nompes'] }}</td>
+          <td>{{ $disciplina['nomabvset'] }}/{{ $disciplina['sglund'] }}</td>
         </tr>
       @endforeach
     </tbody>

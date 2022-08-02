@@ -16,7 +16,9 @@ class CreateDisciplinasTable extends Migration
         Schema::create('disciplinas', function (Blueprint $table) {
             $table->id();
             $table->integer('codpes');
-            $table->string('nompes');
+            $table->string('nompes', 120);
+            $table->string('nomabvset', 15);
+            $table->string('sglund', 7);
             $table->string('coddis');
             $table->string('nomdis');
             $table->integer('verdis');
