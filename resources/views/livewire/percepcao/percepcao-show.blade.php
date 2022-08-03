@@ -90,42 +90,30 @@
                             </td>
                             <td width=''>
                                 <div>
-                                    {{-- <a href="gestao-sistema/percepcao/{{ $percepcao->id }}/add-questao" class="btn-acao" title="Gerenciar questões">
-                                        <x-form.wire-button
-                                            class="btn btn-dark text-dark btn-icon"
-                                            class-icon="w-6 h-6"
-                                            action="question"
-                                          />
-                                    </a>
-                                    <a href="avaliar/preview/{{ $percepcao->id }}" class="btn-acao" title="Visualização prévia">
-                                        <x-form.wire-button
-                                            class="btn btn-dark text-dark btn-icon"
-                                            class-icon="w-6 h-6"
-                                            action="preview"
-                                          />
-                                    </a> --}}
                                     <x-form.wire-button
                                         class="btn btn-primary text-primary btn-icon"
                                         class-icon="w-6 h-6"
                                         click="selectedId({{ $percepcao->id }}, 'update')"
                                         action="update"
-                                     />
+                                    />
 
-                                     <x-form.wire-button
+                                    <x-form.wire-button
                                         class="btn btn-info text-info btn-icon"
                                         class-icon="w-6 h-6"
                                         click="selectedId({{ $percepcao->id }}, 'copy')"
                                         action="copy"
-                                        />
+                                    />
 
-                                    <x-form.wire-button
-                                        class="btn btn-danger text-danger btn-icon"
-                                        class-icon="w-6 h-6"
-                                        click="selectedId({{ $percepcao->id }}, 'delete')"
-                                        action="delete"
-                                        data-toggle="modal"
-                                        data-target="#excluirModal"
-                                      />
+                                    @if ($percepcao->isFuturo())
+                                        <x-form.wire-button
+                                            class="btn btn-danger text-danger btn-icon"
+                                            class-icon="w-6 h-6"
+                                            click="selectedId({{ $percepcao->id }}, 'delete')"
+                                            action="delete"
+                                            data-toggle="modal"
+                                            data-target="#excluirModal"
+                                        />
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -133,8 +121,10 @@
                 </tbody>
             </table>
         </div>
-        <!-- Modal para exclusão -->
-        <x-modal.delete />
+        @if ($percepcao->isFuturo())
+            <!-- Modal para exclusão -->
+            <x-modal.delete />
+        @endif
     @else
         <br><br>
         <div class="content text-center font-weight-bold">Nenhuma percepção foi cadastrada ainda!</div>
