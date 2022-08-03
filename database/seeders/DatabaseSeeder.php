@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             GrupoSeeder::class,
             QuestaoSeeder::class,
             PercepcaoSeeder::class,
+            RespostaSeeder::class,
         ]);
     }
 }
