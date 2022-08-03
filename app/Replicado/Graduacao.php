@@ -22,7 +22,7 @@ class Graduacao extends GraduacaoReplicado
             H.coddis, H.codtur, D.nomdis --, O.diasmnocp -- dados disciplina
             FROM HISTESCOLARGR H
                 INNER JOIN VINCULOPESSOAUSP V -- pega o ano de ingresso (desnecessário talvez)
-                    ON (H.codpes = V.codpes) --AND V.codclg IN ($codundclg)
+                    ON (H.codpes = V.codpes) AND V.codclg IN ($codundclg)
                 INNER JOIN UNIDADE U on U.codund = V.codfusclgund -- pega a sigla da unidade
                 INNER JOIN CURSOGR C -- pega nome do curso
                     ON (V.codcurgrd = C.codcur) 
@@ -92,8 +92,8 @@ class Graduacao extends GraduacaoReplicado
             }
 
             return 1;
-            
         });
+        
         return $alunos;
     }
 
@@ -103,9 +103,9 @@ class Graduacao extends GraduacaoReplicado
      * 
      * @param $anoSemestre - ex 20221, 20222, etc
      */
-    public static function listarDisciplinasUnidade($anoSemestre)
+    public static function listarTurmasUnidade($anoSemestre)
     {
-        $query = "SELECT D.coddis, D.nomdis, T.codtur, D.verdis, T.tiptur, P.nompes, P.codpes
+        $query = "SELECT D.coddis, D.nomdis, T.codtur, D.verdis, T.tiptur, P.nompes, P.codpes, S.nomabvset, U.sglund
             FROM ALUNOGR A
                 INNER JOIN PROGRAMAGR PR ON A.codpes=PR.codpes
                 INNER JOIN HISTESCOLARGR H ON PR.codpes=H.codpes AND PR.codpgm=H.codpgm
@@ -113,9 +113,12 @@ class Graduacao extends GraduacaoReplicado
                 INNER JOIN DISCIPLINAGR D ON T.coddis=D.coddis AND T.verdis=D.verdis
                 INNER JOIN MINISTRANTE M ON D.coddis=M.coddis AND D.verdis=M.verdis AND T.codtur=M.codtur
                 LEFT JOIN PESSOA P ON M.codpes = P.codpes
+                LEFT JOIN VINCULOPESSOAUSP V on V.codpes = P.codpes and V.sitatl = 'A'
+                LEFT JOIN SETOR S on V.codset = S.codset
+                LEFT JOIN UNIDADE U on S.codund = U.codund
             WHERE H.stamtr = 'M' AND T.codtur like :anoSemestre
-            GROUP BY D.coddis, D.nomdis, T.codtur, D.verdis, T.tiptur, P.nompes, P.codpes
-            ORDER BY D.coddis, P.nompes;";
+            GROUP BY D.coddis, D.nomdis, T.codtur, D.verdis, T.tiptur, P.nompes, P.codpes, S.nomabvset, U.sglund
+            ORDER BY D.coddis, P.nompes";
 
         $params = [
             'anoSemestre' => $anoSemestre . '%',
