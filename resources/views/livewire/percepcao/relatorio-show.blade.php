@@ -7,7 +7,7 @@
         <hr>
     </div>
     <div class="d-flex flex-column justify-content-center align-items-center">
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <x-form.wire-select
                 model="percepcaoSelected"
                 label="<span class='bold'>Selecione a percepção:</span>"
