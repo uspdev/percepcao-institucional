@@ -11,7 +11,7 @@ class AvaliacaoController extends Controller
 {
     public function index()
     {
-        $percepcao = Percepcao::obterAberto();
+        $percepcao = Percepcao::obterAberto($proximo = true);
         return view('index', compact('percepcao'));
     }
 }

@@ -1,14 +1,3 @@
-<p class="font-weight-bold text-center h3">
-  Avaliação <b>{{ $percepcao->ano }}/{{ $percepcao->semestre }}</b>
-</p>
-<p class="text-center">
-  Período: de {{ $percepcao->dataDeAbertura->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}
-  à {{ $percepcao->dataDeFechamento->translatedFormat('d/m/Y \à\s H:i:s \(l\)') }}
-</p>
-<p class="alert alert-info">
-  {!! nl2br($percepcao->settings['textoApresentacao']) !!}
-</p>
-
 @if (Gate::check('user'))
   @if ($percepcao->isRespondido())
     @if (!(Session::has('alert-info') && Session::get('alert-info') == $percepcao->settings['textoAgradecimentoEnvioAvaliacao']

@@ -1,6 +1,13 @@
 <?php
 
 return [
+
+    # Número de dias antes da abertura que vai mostrar a percepção na tela inicial do sistema
+    'preview' => env('PREVIEW', 10),
+
+    # Número de dias depois do fechamento que vai mostrar a percepção na tela inicial do sistema
+    'posview' => env('POSVIEW', 30),
+
     'disciplinas_fake' => [
         0 => [
             'codpes' => 'Nelson Aoki',

@@ -7,7 +7,7 @@
         @if (empty($percepcao))
           @include('partials.index-sem-percepcao')
         @else
-          @include('partials.index-aberto')
+          @include('partials.index-percepcao')
         @endif
       </div>
     </div>

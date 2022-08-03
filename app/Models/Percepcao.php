@@ -67,10 +67,25 @@ class Percepcao extends Model
         $this->attributes['settings'] = json_encode(array_merge($this->settings, $value));
     }
 
-    public static function obterAberto()
+    /**
+     * Retorna uma percepção que esteja no período de avaliação
+     * 
+     * Caso $proximo = true, retorna também se estiver no período entre preview e posview.
+     * 
+     * @param Bool $proximo
+     * @return \App\Models\Percepcao 
+     */
+    public static function obterAberto($proximo = false)
     {
-        $now = date('Y-m-d H:i:s');
-        return Percepcao::where('dataDeAbertura', '<=', $now)->where('dataDeFechamento', '>=', $now)->first();
+        if ($proximo == true) {
+            $percepcao = Percepcao::where('dataDeAbertura', '<=', now()->addDays(config('percepcao.preview')))
+                ->where('dataDeFechamento', '>=', now()->subDays(config('percepcao.posview')))
+                ->first();
+        } else {
+            $percepcao = Percepcao::where('dataDeAbertura', '<=', now())->where('dataDeFechamento', '>=', now())->first();
+        }
+
+        return $percepcao;
     }
 
     /**
@@ -82,6 +97,30 @@ class Percepcao extends Model
     {
         $now = date('Y-m-d H:i:s');
         return ($this->dataDeAbertura->lt($now) && $this->dataDeFechamento->gt($now));
+    }
+
+    /**
+     * Verifica se uma percepção está nos dias que antecedem a abertura
+     * 
+     * @return Bool
+     */
+    public function isPreview()
+    {
+        return ($this->dataDeAbertura->gt(now()) &&
+            $this->dataDeAbertura->lt(now()->addDays(config('percepcao.preview')))
+        );
+    }
+
+    /**
+     * Verifica se uma percepção está nos dias após o fechamento mostrando mensagem
+     * 
+     * @return Bool
+     */
+    public function isPosview()
+    {
+        return ($this->dataDeFechamento->lt(now()) &&
+            $this->dataDeFechamento->gt(now()->subDays(config('percepcao.posview')))
+        );
     }
 
     /**
@@ -107,8 +146,8 @@ class Percepcao extends Model
     /**
      * Verifica se o aluno já respondeu ao questionário
      * 
-     * @param $codpes - Nro USP do aluno (opcional)
-     * @return array lista de respostas
+     * @param Int $codpes - Nro USP do aluno (opcional). Se não informado pega do usuário logado.
+     * @return Array lista de respostas
      */
     public function isRespondido($codpes = null)
     {
@@ -123,7 +162,7 @@ class Percepcao extends Model
     /**
      * Lista as disciplinas da percepção para um dado $codpes
      * 
-     * @param Int $codpes - Nro USP do aluno (opcional)
+     * @param Int $codpes - Nro USP do aluno (opcional). Se não informado pega do usuário logado.
      * @return Array
      */
     public function listarDisciplinasAluno($codpes = null)
@@ -137,7 +176,8 @@ class Percepcao extends Model
      * 
      * @return Int
      */
-    public function contarRespostas() {
+    public function contarRespostas()
+    {
         return $this->respostas()->distinct('codpes')->count();
     }
 
@@ -165,7 +205,8 @@ class Percepcao extends Model
     /**
      * Relacionamento com respostas
      */
-    public function respostas() {
+    public function respostas()
+    {
         return $this->hasMany('App\Models\Resposta');
     }
 }
