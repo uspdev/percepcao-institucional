@@ -18,7 +18,7 @@
             </h3>
             <hr>
 
-            <div class="text-danger font-weight-bold mb-3">
+            <div class="alert alert-info text-center">
                 {{ $percepcao->settings['textoFormularioAvaliacao'] }}
             </div>
 
@@ -54,7 +54,9 @@
                 @endif
 
                 @if ($this->preview)
-                    <a href="{{ route('percepcaos.index') }}" class="btn btn-primary">Voltar para percepções</a>
+                    <a class="btn btn-primary" href="{{ route('percepcao.show', $percepcao) }}">
+                        Voltar para {{ $percepcao->settings['nome'] }} ({{ $percepcao->ano }}/{{ $percepcao->semestre }})
+                    </a>
                 @else
                     <button wire:click.prevent='save' class="btn btn-primary">Enviar</button>
                 @endif
