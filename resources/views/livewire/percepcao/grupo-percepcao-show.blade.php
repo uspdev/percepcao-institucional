@@ -2,12 +2,13 @@
     @foreach ($grupos as $grupo)
         <div data-sortable-id="{{ $grupo->id }}" id="grupo-{{ $grupo->id }}" class="list-group-item nested-1">
             <span>
-                <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />
+                @if ($percepcao && $percepcao->isFuturo())
+                    <x-icon.menu class="w-4 h-4 opacity-50 cursor-move icon-sortable handler" />
+                @endif
             </span>
             <span class="texto-sortable">
                 {{ $grupo->texto }}
             </span>
-            {{-- nao sei proque aqui a percepcao pode vir null --}}
             @if ($percepcao && $percepcao->isFuturo())
                 <span class="acoes-sortable">
                     <x-form.wire-button

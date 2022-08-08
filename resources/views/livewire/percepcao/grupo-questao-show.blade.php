@@ -32,7 +32,9 @@
                         <div class="card-body">
                             <div class="d-flex flex-row justify-content-between align-items-center">
                                 <div>
-                                    <x-icon.menu class="w-4 h-4 opacity-50 cursor-move handler-questao" />
+                                    @if ($percepcao->isFuturo())
+                                        <x-icon.menu class="w-4 h-4 opacity-50 cursor-move handler-questao" />
+                                    @endif
                                 </div>
                                 <div class="h6">
                                     {{ $questao->campo['text'] }}
@@ -141,6 +143,6 @@
                     />
             </div>
         @endif
-        
+
     </div>
 </div>
