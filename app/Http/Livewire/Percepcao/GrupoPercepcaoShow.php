@@ -20,12 +20,12 @@ class GrupoPercepcaoShow extends Component
 
     public function mount($grupos = null)
     {
+        $percepcao = Percepcao::find($this->percepcaoId);
+        $this->percepcao = $percepcao;
+
         if ($grupos !== null) {
             $this->grupos = $grupos;
         } else {
-            $percepcao = Percepcao::find($this->percepcaoId);
-            $this->percepcao = $percepcao;
-
             $ids = $percepcao->questaos()->has('grupos')
                 ? array_keys($percepcao->questaos()->get('grupos'))
                 : [];
