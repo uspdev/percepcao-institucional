@@ -19,7 +19,8 @@
             </span>
         </div>
 
-        <x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyCoordenador" />
+        @include('livewire.avaliacao.partials.questoes', ['key' => $keyCoordenador])
+        {{--<x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyCoordenador" /> --}}
 
         <br />
         @if (isset($grupo['grupos']))

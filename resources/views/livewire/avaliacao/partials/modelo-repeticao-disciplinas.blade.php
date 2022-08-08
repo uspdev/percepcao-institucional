@@ -22,7 +22,7 @@
         </div>
 
         @if (isset($grupo['questoes']))
-            @include('livewire.avaliacao.partials.questoes')
+            @include('livewire.avaliacao.partials.questoes', ['key' => $keyDisciplina])
             {{-- <x-percepcao-avaliacao-create-questoes-repeticao :grupo="$grupo" :key="$keyDisciplina" /> --}}
         @endif
 
