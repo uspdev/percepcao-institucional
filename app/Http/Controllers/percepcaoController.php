@@ -13,14 +13,14 @@ class percepcaoController extends Controller
 
     public function show(Percepcao $percepcao)
     {
-        $membrosEspeciais = Pessoa::obterNome($percepcao->settings['membrosEspeciais']);
+        $membrosEspeciais = empty($percepcao->settings['membrosEspeciais']) ? [] : Pessoa::obterNome($percepcao->settings['membrosEspeciais']);
 
         return view('percepcao.show', compact('percepcao', 'membrosEspeciais'));
     }
 
     /**
      * Update membros especiais de uma percepção
-     * 
+     *
      * @param App\Models\Percepcao $percepcao
      */
     public function updateEspeciais(Percepcao $percepcao, Request $request)
@@ -37,7 +37,7 @@ class percepcaoController extends Controller
 
     /**
      * Destroy membros especiais de uma percepção
-     * 
+     *
      * @param App\Models\Percepcao $percepcao
      */
     public function destroyEspeciais(Percepcao $percepcao, Request $request)
@@ -54,7 +54,7 @@ class percepcaoController extends Controller
 
     /**
      * Retorna lista de alunos matriculados em uma percepção
-     * 
+     *
      * @param App\Models\Percepcao $percepcao
      */
     public function alunos(Percepcao $percepcao)
@@ -68,9 +68,9 @@ class percepcaoController extends Controller
 
     /**
      * Retorna lista de disciplinas para um aluno
-     * 
+     *
      * No contexto de uma requisição ajax
-     * 
+     *
      * @param App\Models\Percepcao $percepcao
      * @param Int $codpes
      * @return String lista formatada em HTML
@@ -88,9 +88,9 @@ class percepcaoController extends Controller
 
     /**
      * Lista as disciplinas (turmas) da percepção.
-     * 
+     *
      * Caso não tenha nada no BD, popula ele.
-     * 
+     *
      * @param Illuminate\Http\Request $request
      * @param App\Models\Percepcao $percepcao
      */
@@ -109,7 +109,7 @@ class percepcaoController extends Controller
 
     /**
      * Atualiza a lista de disciplinas de uma percepcao
-     * 
+     *
      * @param Illuminate\Http\Request $request
      * @param App\Models\Percepcao $percepcao
      */
