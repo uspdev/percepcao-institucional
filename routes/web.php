@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/gestao-sistema/percepcao/consulta/disciplinas', RelatorioShow::class);
         Route::get('/gestao-sistema/percepcao/consulta/coordenadores', RelatorioShow::class);
-        Route::get('/gestao-sistema/percepcao/{percepcao}/disciplina/relatorio/export/{departamento}', [PercepcaoController::class, 'exportDisciplinaCsv']);
+        Route::get('/gestao-sistema/percepcao/{percepcao}/disciplina/relatorio/export/{departamento?}', [PercepcaoController::class, 'exportDisciplinaCsv'])->name('percepcao.disciplina.relatorio');
 
         Route::get('/gestao-sistema/percepcao/{percepcao}/alunos', [PercepcaoController::class, 'alunos'])->name('percepcao.alunos');
         Route::get('/gestao-sistema/percepcao/{percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
