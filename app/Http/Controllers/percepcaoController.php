@@ -6,7 +6,9 @@ use App\Models\Percepcao;
 use App\Models\Disciplina;
 use App\Replicado\Graduacao;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Replicado\Pessoa;
+use Uspdev\Replicado\Estrutura;
 
 class percepcaoController extends Controller
 {
@@ -15,7 +17,9 @@ class percepcaoController extends Controller
     {
         $membrosEspeciais = empty($percepcao->settings['membrosEspeciais']) ? [] : Pessoa::obterNome($percepcao->settings['membrosEspeciais']);
 
-        return view('percepcao.show', compact('percepcao', 'membrosEspeciais'));
+        $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
+
+        return view('percepcao.show', compact('percepcao', 'membrosEspeciais', 'departamentos'));
     }
 
     /**
@@ -129,5 +133,126 @@ class percepcaoController extends Controller
         $request->session()->flash('alert-info', 'Disciplinas recarregadas do replicado');
 
         return back();
+    }
+
+    /**
+     * Exporta o resultado das disciplinas para csv
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Models\Percepcao $percepcao
+     * @param String $nomabvset
+     */
+    public function exportDisciplinaCsv(Request $request, Percepcao $percepcao, $nomabvset) {
+        $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
+
+        $disciplinas = Disciplina::where('percepcao_id', $percepcao->id);
+        if ($nomabvset === 'all') {
+            foreach ($departamentos as $departamento) {
+                $disciplinas = $disciplinas->where('coddis', 'NOT LIKE', $departamento['nomabvset'] . '%');
+            }
+        } else {
+            $disciplinas = $disciplinas->where('coddis', 'LIKE', $nomabvset . '%');
+        }
+        $disciplinas = $disciplinas->orderBy('coddis')
+            ->get();
+
+        foreach ($disciplinas as $key => $disciplina) {
+            $respostasEstatistica = DB::table('respostas')->join('questaos', 'respostas.questao_id', '=', 'questaos.id')
+                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('AVG(resposta) as quantity'))
+                ->where('percepcao_id', $percepcao->id)
+                ->where('disciplina_id', $disciplina->id)
+                ->where('questaos.campo->type', 'radio')
+                ->groupBy('percepcao_id', 'disciplina_id', 'respostas.questao_id', 'questaos.campo')
+                ->get();
+
+            $respostasTexto = DB::table('respostas')->join('questaos', 'respostas.questao_id', '=', 'questaos.id')
+                ->select('questaos.campo->text as texto', 'questao_id', 'resposta')
+                ->where('percepcao_id', $percepcao->id)
+                ->where('disciplina_id', $disciplina->id)
+                ->where('questaos.campo->type', 'textarea')
+                ->get();
+
+            foreach ($respostasEstatistica as $keyResposta => $resposta) {
+                $respostasEstatisticaColumnName[$keyResposta] = $resposta->texto;
+                $respostasEstatisticaColumnValue[$key][$keyResposta] = $resposta->quantity;
+            }
+
+            foreach ($respostasTexto as $keyResposta => $resposta) {
+                $respostasTextoColumnName[$keyResposta] = $resposta->texto . ' - Aluno ' . ($keyResposta + 1);
+                $respostasTextoColumnValue[$key][$keyResposta] = $resposta->resposta;
+            }
+
+            if (isset($respostasEstatisticaColumnName) || isset($respostasTextoColumnName)) {
+                $columnsName = [
+                    'codigoDaDisciplina',
+                    'nomeDaDisciplina',
+                    'ministranteDaDisciplina',
+                    'versaoDaDisciplina',
+                    'codigoDaTurma',
+                    'tipoDaTurma',
+                ];
+                $columnsEstatisticaName = array_merge($columnsName, $respostasEstatisticaColumnName);
+                $columnsTextoName = array_merge($columnsName, $respostasTextoColumnName);
+
+                $columnsValue[$key] = [
+                    $disciplina->coddis,
+                    $disciplina->nomdis,
+                    $disciplina->nompes,
+                    $disciplina->verdis,
+                    $disciplina->codtur,
+                    $disciplina->tiptur
+                ];
+
+                if (isset($respostasEstatisticaColumnValue[$key])) {
+                    $columnsEstatisticaValue[$key] = array_merge($columnsValue[$key], $respostasEstatisticaColumnValue[$key]);
+                }
+
+                if (isset($respostasTextoColumnValue[$key])) {
+                    $columnsTextoValue[$key] = array_merge($columnsValue[$key], $respostasTextoColumnValue[$key]);
+                }
+            } else {
+                $request->session()->flash('alert-danger', "Nenhum resultado encontrado para este tipo de relatório!");
+
+                return back();
+            }
+        }
+
+        $nomabvset = ($nomabvset === 'all') ? 'demais_departamentos' : $nomabvset;
+
+        $fileName = 'resultado_media_percepcao_institucional_' . $percepcao->semestre . '_' . $percepcao->ano . '_' . $nomabvset . '.csv';
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $callback = function() use($columnsEstatisticaName, $columnsEstatisticaValue, $columnsTextoName, $columnsTextoValue) {
+            $file = fopen('php://output', 'w');
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            if (!empty($columnsEstatisticaName)) {
+                fputcsv($file, $columnsEstatisticaName);
+
+                foreach ($columnsEstatisticaValue as $value) {
+                    fputcsv($file, $value);
+                }
+            }
+
+            if (!empty($columnsTextoName)) {
+                fputcsv($file, ["\t"]);
+                fputcsv($file, ['RESPOSTAS TEXTUAIS']);
+                fputcsv($file, $columnsTextoName);
+
+                foreach ($columnsTextoValue as $value) {
+                    fputcsv($file, $value);
+                }
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }
