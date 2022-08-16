@@ -10,9 +10,21 @@
       @if (!$percepcao->isFinalizado())
         Os relatórios estarão disponíveis depois que a Percepção estiver finalizada.
       @else
-        por disciplina<br>
-        por docente<br>
-        por coordenador
+          <div>
+              <x-form.wire-select
+                  label="Por departamento:"
+                  onChange="if (this.value) { window.location='{{ route('percepcao.disciplina.relatorio', ['percepcao' => $percepcao->id]) }}/' + this.value; this.value = ''; } "
+                  >
+                  <option value=''>Selecione um departamento</option>
+              @foreach ($departamentos as $departamento)
+                  <option value="{{ $departamento['nomabvset'] }}">{{ $departamento['nomabvset'] }}</option>
+              @endforeach
+                  <option value='all'>Demais departamentos</option>
+              </x-form.wire-select>
+          </div>
+          por disciplina<br>
+          por docente<br>
+          por coordenador
     </div>
     @endif
   </div>
