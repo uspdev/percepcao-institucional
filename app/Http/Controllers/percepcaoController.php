@@ -158,7 +158,7 @@ class percepcaoController extends Controller
 
         foreach ($disciplinas as $key => $disciplina) {
             $respostasEstatistica = DB::table('respostas')->join('questaos', 'respostas.questao_id', '=', 'questaos.id')
-                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('AVG(resposta) as quantity'))
+                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('AVG(resposta) as quantity'), DB::raw('COUNT(*) as totalDeRespostasValidas'))
                 ->where('percepcao_id', $percepcao->id)
                 ->where('disciplina_id', $disciplina->id)
                 ->where('questaos.campo->type', 'radio')
@@ -170,19 +170,27 @@ class percepcaoController extends Controller
                 ->where('percepcao_id', $percepcao->id)
                 ->where('disciplina_id', $disciplina->id)
                 ->where('questaos.campo->type', 'textarea')
+                ->groupBy('percepcao_id', 'disciplina_id', 'respostas.questao_id', 'questaos.campo', 'resposta')
                 ->get();
 
             foreach ($respostasEstatistica as $keyResposta => $resposta) {
+                $totalDeRespostasValidasEstatistica[$key] = $resposta->totalDeRespostasValidas;
+
                 $respostasEstatisticaColumnName[$keyResposta] = $resposta->texto;
                 $respostasEstatisticaColumnValue[$key][$keyResposta] = $resposta->quantity;
             }
 
+            $totalDeRespostasValidasTexto[$key] = 0;
             foreach ($respostasTexto as $keyResposta => $resposta) {
+                $totalDeRespostasValidasTexto[$key] += 1;
+
                 $respostasTextoColumnName[$keyResposta] = $resposta->texto . ' - Aluno ' . ($keyResposta + 1);
                 $respostasTextoColumnValue[$key][$keyResposta] = $resposta->resposta;
             }
 
             if (isset($respostasEstatisticaColumnName) || isset($respostasTextoColumnName)) {
+                $totalDeAlunosMatriculados = Graduacao::listarTotalDeAlunosMatriculadosNaDisciplina($disciplina->coddis, $disciplina->codtur, $disciplina->verdis, $disciplina->tiptur);
+
                 $columnsName = [
                     'codigoDaDisciplina',
                     'nomeDaDisciplina',
@@ -190,9 +198,20 @@ class percepcaoController extends Controller
                     'versaoDaDisciplina',
                     'codigoDaTurma',
                     'tipoDaTurma',
+                    'totalDeAlunosMatriculados',
                 ];
-                $columnsEstatisticaName = array_merge($columnsName, $respostasEstatisticaColumnName);
-                $columnsTextoName = array_merge($columnsName, $respostasTextoColumnName);
+
+                $respostasEstatisticaColumnName[0] = array_merge([
+                    'totalDeRespostasValidas',
+                    'porcentagemDeRespostasValidas',
+                ], $respostasEstatisticaColumnName);
+                $columnsEstatisticaName = array_merge($columnsName, $respostasEstatisticaColumnName[0]);
+
+                $respostasTextoColumnName[0] = array_merge([
+                    'totalDeRespostasValidas',
+                    'porcentagemDeRespostasValidas',
+                ], $respostasTextoColumnName);
+                $columnsTextoName = array_merge($columnsName, $respostasTextoColumnName[0]);
 
                 $columnsValue[$key] = [
                     $disciplina->coddis,
@@ -200,14 +219,29 @@ class percepcaoController extends Controller
                     $disciplina->nompes,
                     $disciplina->verdis,
                     $disciplina->codtur,
-                    $disciplina->tiptur
+                    $disciplina->tiptur,
+                    $totalDeAlunosMatriculados['totalDeAlunosMatriculados'],
                 ];
 
                 if (isset($respostasEstatisticaColumnValue[$key])) {
+                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasEstatistica[$key] * 100) / $totalDeAlunosMatriculados['totalDeAlunosMatriculados'];
+
+                    $respostasEstatisticaColumnValue[$key] = array_merge([
+                        $totalDeRespostasValidasEstatistica[$key],
+                        round($porcentagemDeRespostasValidas, 2) . '%',
+                    ], $respostasEstatisticaColumnValue[$key]);
+
                     $columnsEstatisticaValue[$key] = array_merge($columnsValue[$key], $respostasEstatisticaColumnValue[$key]);
                 }
 
                 if (isset($respostasTextoColumnValue[$key])) {
+                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasTexto[$key] * 100) / $totalDeAlunosMatriculados['totalDeAlunosMatriculados'];
+
+                    $respostasTextoColumnValue[$key] = array_merge([
+                        $totalDeRespostasValidasTexto[$key],
+                        round($porcentagemDeRespostasValidas, 2) . '%',
+                    ], $respostasTextoColumnValue[$key]);
+
                     $columnsTextoValue[$key] = array_merge($columnsValue[$key], $respostasTextoColumnValue[$key]);
                 }
             } else {
