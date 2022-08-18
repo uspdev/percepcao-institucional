@@ -4,6 +4,7 @@ namespace App\Replicado;
 
 use Uspdev\Replicado\DB;
 use Uspdev\Replicado\Graduacao as GraduacaoReplicado;
+use Uspdev\Replicado\Uteis;
 
 class Graduacao extends GraduacaoReplicado
 {
@@ -11,7 +12,7 @@ class Graduacao extends GraduacaoReplicado
     /**
      * A ideia aqui é primeiro listar as disciplinas do histórico dos alunos
      * e depois agrupar as disciplinas por aluno
-     * 
+     *
      * @param $anoSemestre - ex. 20221, 20222
      */
     public static function listarAlunos($anoSemestre)
@@ -25,10 +26,10 @@ class Graduacao extends GraduacaoReplicado
                     ON (H.codpes = V.codpes) AND V.codclg IN ($codundclg)
                 INNER JOIN UNIDADE U on U.codund = V.codfusclgund -- pega a sigla da unidade
                 INNER JOIN CURSOGR C -- pega nome do curso
-                    ON (V.codcurgrd = C.codcur) 
+                    ON (V.codcurgrd = C.codcur)
                 INNER JOIN PESSOA P on P.codpes = H.codpes
                 INNER JOIN DISCIPLINAGR D on D.coddis = H.coddis and D.verdis = H.verdis
-                INNER JOIN TURMAGR T 
+                INNER JOIN TURMAGR T
                     ON T.coddis = H.coddis AND H.verdis = T.verdis AND H.codtur = T.codtur
                 INNER JOIN OCUPTURMA O -- pega somente as turmas que ocupam espaço físico. Remover para pegar tcc e estagio nao ocupam espaço na EESC
                     ON H.coddis = O.coddis AND T.verdis = O.verdis AND H.codtur = O.codtur
@@ -93,14 +94,14 @@ class Graduacao extends GraduacaoReplicado
 
             return 1;
         });
-        
+
         return $alunos;
     }
 
     /**
      * Retorna as disciplinas da Unidade
      * Query usada na EEL no sistema antigo
-     * 
+     *
      * @param $anoSemestre - ex 20221, 20222, etc
      */
     public static function listarTurmasUnidade($anoSemestre)
@@ -125,5 +126,35 @@ class Graduacao extends GraduacaoReplicado
         ];
 
         return DB::fetchAll($query, $params);
+    }
+
+    /**
+     * Retorna a quantidade de alunos matriculados em determinada disciplina
+     *
+     * @param string $coddis código da disciplina específica
+     * @param string $codtur código da turma específica
+     * @param int $verdis versão da disciplina específica
+     * @param string $tiptur tipo da turma específica
+     */
+    public static function listarTotalDeAlunosMatriculadosNaDisciplina($coddis, $codtur, $verdis, $tiptur)
+    {
+        $query = "SELECT count(*) as totalDeAlunosMatriculados
+            FROM PESSOA P INNER JOIN ALUNOGR A ON P.codpes=A.codpes
+                INNER JOIN PROGRAMAGR PR ON A.codpes=PR.codpes
+                INNER JOIN HISTESCOLARGR H ON PR.codpes=H.codpes AND PR.codpgm=H.codpgm
+                INNER JOIN TURMAGR T ON H.coddis=T.coddis AND H.verdis=T.verdis AND H.codtur=T.codtur
+                INNER JOIN DISCIPLINAGR D ON T.coddis=D.coddis AND T.verdis=D.verdis
+            WHERE H.stamtr = :stamtr AND T.coddis = :coddis AND T.codtur = :codtur AND T.verdis = :verdis AND T.tiptur = :tiptur
+            GROUP BY H.coddis, D.nomdis, T.codtur";
+
+        $params = [
+            'stamtr' => 'M',
+            'coddis' => $coddis,
+            'codtur' => $codtur,
+            'verdis' => $verdis,
+            'tiptur' => utf8_encode($tiptur),
+        ];
+
+        return DB::fetch($query, $params);
     }
 }
