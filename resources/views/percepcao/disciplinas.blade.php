@@ -31,11 +31,18 @@
         <th>Versão</th>
         <th>Tipo</th>
         <th>Professor</th>
+        <th>Matriculados</th>
+        <th>Respostas</th>
         <th>Setor</th>
       </tr>
     </thead>
     <tbody>
       @foreach ($disciplinas as $disciplina)
+        @php
+          if ($percepcao->isFinalizado() && $disciplina->contarRespostas() == 0) {
+              continue;
+          }
+        @endphp
         <tr>
           <td>{{ $disciplina['coddis'] }}</td>
           <td>{{ $disciplina['nomdis'] }}</td>
@@ -43,6 +50,8 @@
           <td>{{ $disciplina['verdis'] }}</td>
           <td>{{ $disciplina['tiptur'] }}</td>
           <td>{{ $disciplina['nompes'] }}</td>
+          <td>{{ $disciplina->contarMatriculados() }}</td>
+          <td>{{ $disciplina->contarRespostas() }}</td>
           <td>{{ $disciplina['nomabvset'] }}/{{ $disciplina['sglund'] }}</td>
         </tr>
       @endforeach

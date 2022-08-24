@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Replicado\Graduacao;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Disciplina extends Model
 {
@@ -14,14 +14,14 @@ class Disciplina extends Model
 
     /**
      * Importa do replicado as disciplinas a serem avaliadas no ano/semestre informado
-     * 
+     *
      * @param \App\Models\Percepcao $percepcao
      * @return Int - Total de disciplinas importadas
      */
     public static function importarDoReplicado($percepcao)
     {
         $disciplinas = Graduacao::listarTurmasUnidade($percepcao->ano . $percepcao->semestre);
-        
+
         // adicionando coluna percepcao_id não presente no replicado
         $disciplinas = array_map(function ($disciplina) use ($percepcao) {
             $disciplina['percepcao_id'] = $percepcao->id;
@@ -34,5 +34,29 @@ class Disciplina extends Model
         $percepcao->addSettings(['totalDeDisciplinas' => count($disciplinas)]);
         $percepcao->save();
         return count($disciplinas);
+    }
+
+    /**
+     * Conta o nro de respostas para uma dada disciplina já filtrada por percepcao
+     */
+    public function contarRespostas()
+    {
+        if ($this->respostas->count()) {
+            return $this->respostas->groupBy('questao_id')->first()->count();
+        } else {
+            return 0;
+        }
+    }
+
+    public function contarMatriculados() {
+        return Graduacao::contarAlunosMatriculadosTurma($this->coddis, $this->verdis, $this->codtur);
+    }
+
+    /**
+     * relacao com respostas
+     */
+    public function respostas()
+    {
+        return $this->hasMany('App\Models\Resposta');
     }
 }

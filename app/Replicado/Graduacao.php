@@ -4,7 +4,6 @@ namespace App\Replicado;
 
 use Uspdev\Replicado\DB;
 use Uspdev\Replicado\Graduacao as GraduacaoReplicado;
-use Uspdev\Replicado\Uteis;
 
 class Graduacao extends GraduacaoReplicado
 {
@@ -136,25 +135,56 @@ class Graduacao extends GraduacaoReplicado
      * @param int $verdis versão da disciplina específica
      * @param string $tiptur tipo da turma específica
      */
-    public static function listarTotalDeAlunosMatriculadosNaDisciplina($coddis, $codtur, $verdis, $tiptur)
+    public static function contarAlunosMatriculadosTurma($coddis, $verdis, $codtur)
     {
-        $query = "SELECT count(*) as totalDeAlunosMatriculados
-            FROM PESSOA P INNER JOIN ALUNOGR A ON P.codpes=A.codpes
-                INNER JOIN PROGRAMAGR PR ON A.codpes=PR.codpes
-                INNER JOIN HISTESCOLARGR H ON PR.codpes=H.codpes AND PR.codpgm=H.codpgm
-                INNER JOIN TURMAGR T ON H.coddis=T.coddis AND H.verdis=T.verdis AND H.codtur=T.codtur
-                INNER JOIN DISCIPLINAGR D ON T.coddis=D.coddis AND T.verdis=D.verdis
-            WHERE H.stamtr = :stamtr AND T.coddis = :coddis AND T.codtur = :codtur AND T.verdis = :verdis AND T.tiptur = :tiptur
-            GROUP BY H.coddis, D.nomdis, T.codtur";
-
+        // precisa filtrar por stamtr = M ??
+        $query = "SELECT count(*) AS total 
+            FROM HISTESCOLARGR
+            WHERE stamtr = 'M' AND coddis = :coddis AND verdis = :verdis AND codtur = :codtur";
         $params = [
-            'stamtr' => 'M',
             'coddis' => $coddis,
-            'codtur' => $codtur,
             'verdis' => $verdis,
-            'tiptur' => utf8_encode($tiptur),
+            'codtur' => $codtur,
         ];
-
-        return DB::fetch($query, $params);
+        if ($res = DB::fetch($query, $params)) {
+            return $res['total'];
+        } else {
+            return null;
+        }
     }
+
+    /**
+     * Retorna a quantidade de alunos matriculados em determinada disciplina
+     *
+     * @param string $coddis código da disciplina específica
+     * @param string $codtur código da turma específica
+     * @param int $verdis versão da disciplina específica
+     * @param string $tiptur tipo da turma específica
+     */
+    // public static function contarTotalDeAlunosMatriculadosNaDisciplina($coddis, $codtur, $verdis, $tiptur)
+    // {
+    //     $query = "SELECT count(*) as totalDeAlunosMatriculados
+    //         FROM PESSOA P INNER JOIN ALUNOGR A ON P.codpes=A.codpes
+    //             INNER JOIN PROGRAMAGR PR ON A.codpes=PR.codpes
+    //             INNER JOIN HISTESCOLARGR H ON PR.codpes=H.codpes AND PR.codpgm=H.codpgm
+    //             INNER JOIN TURMAGR T ON H.coddis=T.coddis AND H.verdis=T.verdis AND H.codtur=T.codtur
+    //             INNER JOIN DISCIPLINAGR D ON T.coddis=D.coddis AND T.verdis=D.verdis
+    //         WHERE H.stamtr = :stamtr AND T.coddis = :coddis AND T.codtur = :codtur AND T.verdis = :verdis AND T.tiptur = :tiptur
+    //         GROUP BY H.coddis, D.nomdis, T.codtur";
+
+    //     $params = [
+    //         'stamtr' => 'M',
+    //         'coddis' => $coddis,
+    //         'codtur' => $codtur,
+    //         'verdis' => $verdis,
+    //         'tiptur' => $tiptur,
+    //     ];
+
+    //     if ($res = DB::fetch($query, $params)) {
+    //         return $res['totalDeAlunosMatriculados'];
+    //     } else {
+    //         return null;
+    //     }
+
+    // }
 }

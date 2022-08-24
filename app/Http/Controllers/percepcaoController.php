@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Percepcao;
 use App\Models\Disciplina;
+use App\Models\Percepcao;
+use App\Replicado\Estrutura;
 use App\Replicado\Graduacao;
+use App\Replicado\Pessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Replicado\Pessoa;
-use Uspdev\Replicado\Estrutura;
 
 class percepcaoController extends Controller
 {
@@ -103,10 +103,8 @@ class percepcaoController extends Controller
         if ($percepcao->disciplinas->isEmpty()) {
             Disciplina::importarDoReplicado($percepcao);
             $request->session()->flash('alert-info', 'Disciplinas importadas do replicado');
-            $disciplinas = Disciplina::where('percepcao_id', $percepcao->id)->get();
-        } else {
-            $disciplinas = $percepcao->disciplinas;
-        }
+        } 
+        $disciplinas = Disciplina::where('percepcao_id', $percepcao->id)->get();
 
         return view('percepcao.disciplinas', compact('percepcao', 'disciplinas'));
     }
@@ -119,7 +117,7 @@ class percepcaoController extends Controller
      */
     public function disciplinasUpdate(Request $request, Percepcao $percepcao)
     {
-        if(!$percepcao->isFuturo()) {
+        if (!$percepcao->isFuturo()) {
             $request->session()->flash('alert-danger', 'Impossível atualizar se não estiver em elaboração');
             return back();
         }
@@ -142,7 +140,8 @@ class percepcaoController extends Controller
      * @param App\Models\Percepcao $percepcao
      * @param String $nomabvset
      */
-    public function exportDisciplinaCsv(Request $request, Percepcao $percepcao, $nomabvset) {
+    public function exportDisciplinaCsv(Request $request, Percepcao $percepcao, $nomabvset)
+    {
         $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
 
         $disciplinas = Disciplina::where('percepcao_id', $percepcao->id);
@@ -156,9 +155,22 @@ class percepcaoController extends Controller
         $disciplinas = $disciplinas->orderBy('coddis')
             ->get();
 
+        $columnsEstatisticaName = [];
+        $columnsEstatisticaValue = [];
+        $columnsTextoName = [];
+        $columnsTextoValue = [];
+
         foreach ($disciplinas as $key => $disciplina) {
+            // $totalDeAlunosMatriculados = Graduacao::contarTotalDeAlunosMatriculadosNaDisciplina($disciplina->coddis, $disciplina->codtur, $disciplina->verdis, $disciplina->tiptur);
+            $totalDeAlunosMatriculados = Graduacao::contarAlunosMatriculadosTurma($disciplina->coddis, $disciplina->verdis, $disciplina->codtur);
+
+            // para o caso de não ter alunos matriculados
+            if (!$totalDeAlunosMatriculados) {
+                continue;
+            }
+
             $respostasEstatistica = DB::table('respostas')->join('questaos', 'respostas.questao_id', '=', 'questaos.id')
-                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('AVG(resposta) as quantity'), DB::raw('COUNT(*) as totalDeRespostasValidas'))
+                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('ROUND(AVG(resposta),2) as quantity'), DB::raw('COUNT(*) as totalDeRespostasValidas'))
                 ->where('percepcao_id', $percepcao->id)
                 ->where('disciplina_id', $disciplina->id)
                 ->where('questaos.campo->type', 'radio')
@@ -189,7 +201,6 @@ class percepcaoController extends Controller
             }
 
             if (isset($respostasEstatisticaColumnName) || isset($respostasTextoColumnName)) {
-                $totalDeAlunosMatriculados = Graduacao::listarTotalDeAlunosMatriculadosNaDisciplina($disciplina->coddis, $disciplina->codtur, $disciplina->verdis, $disciplina->tiptur);
 
                 $columnsName = [
                     'codigoDaDisciplina',
@@ -199,19 +210,13 @@ class percepcaoController extends Controller
                     'codigoDaTurma',
                     'tipoDaTurma',
                     'totalDeAlunosMatriculados',
+                    'totalDeRespostasValidas',
+                    'porcentagemDeRespostasValidas',
                 ];
 
-                $respostasEstatisticaColumnName[0] = array_merge([
-                    'totalDeRespostasValidas',
-                    'porcentagemDeRespostasValidas',
-                ], $respostasEstatisticaColumnName);
-                $columnsEstatisticaName = array_merge($columnsName, $respostasEstatisticaColumnName[0]);
+                $columnsEstatisticaName = array_merge($columnsName, $respostasEstatisticaColumnName);
 
-                $respostasTextoColumnName[0] = array_merge([
-                    'totalDeRespostasValidas',
-                    'porcentagemDeRespostasValidas',
-                ], $respostasTextoColumnName);
-                $columnsTextoName = array_merge($columnsName, $respostasTextoColumnName[0]);
+                $columnsTextoName = array_merge($columnsName, $respostasTextoColumnName);
 
                 $columnsValue[$key] = [
                     $disciplina->coddis,
@@ -220,11 +225,11 @@ class percepcaoController extends Controller
                     $disciplina->verdis,
                     $disciplina->codtur,
                     $disciplina->tiptur,
-                    $totalDeAlunosMatriculados['totalDeAlunosMatriculados'],
+                    $totalDeAlunosMatriculados,
                 ];
 
                 if (isset($respostasEstatisticaColumnValue[$key])) {
-                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasEstatistica[$key] * 100) / $totalDeAlunosMatriculados['totalDeAlunosMatriculados'];
+                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasEstatistica[$key] * 100) / $totalDeAlunosMatriculados;
 
                     $respostasEstatisticaColumnValue[$key] = array_merge([
                         $totalDeRespostasValidasEstatistica[$key],
@@ -235,7 +240,7 @@ class percepcaoController extends Controller
                 }
 
                 if (isset($respostasTextoColumnValue[$key])) {
-                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasTexto[$key] * 100) / $totalDeAlunosMatriculados['totalDeAlunosMatriculados'];
+                    $porcentagemDeRespostasValidas = ($totalDeRespostasValidasTexto[$key] * 100) / $totalDeAlunosMatriculados;
 
                     $respostasTextoColumnValue[$key] = array_merge([
                         $totalDeRespostasValidasTexto[$key],
@@ -265,7 +270,7 @@ class percepcaoController extends Controller
 
         $callback = function() use($columnsEstatisticaName, $columnsEstatisticaValue, $columnsTextoName, $columnsTextoValue) {
             $file = fopen('php://output', 'w');
-            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
             if (!empty($columnsEstatisticaName)) {
                 fputcsv($file, $columnsEstatisticaName);
 
