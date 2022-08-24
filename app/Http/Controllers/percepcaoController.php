@@ -103,7 +103,7 @@ class percepcaoController extends Controller
         if ($percepcao->disciplinas->isEmpty()) {
             Disciplina::importarDoReplicado($percepcao);
             $request->session()->flash('alert-info', 'Disciplinas importadas do replicado');
-        } 
+        }
         $disciplinas = Disciplina::where('percepcao_id', $percepcao->id)->get();
 
         return view('percepcao.disciplinas', compact('percepcao', 'disciplinas'));
@@ -142,18 +142,18 @@ class percepcaoController extends Controller
      */
     public function exportDisciplinaCsv(Request $request, Percepcao $percepcao, $nomabvset)
     {
-        $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
 
         $disciplinas = Disciplina::where('percepcao_id', $percepcao->id);
         if ($nomabvset === 'all') {
+            // vamos listar todos que não são de departamentos da unidade
+            $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
             foreach ($departamentos as $departamento) {
-                $disciplinas = $disciplinas->where('coddis', 'NOT LIKE', $departamento['nomabvset'] . '%');
+                $disciplinas = $disciplinas->where('nomabvset', '!=', $departamento['nomabvset']);
             }
         } else {
-            $disciplinas = $disciplinas->where('coddis', 'LIKE', $nomabvset . '%');
+            $disciplinas = $disciplinas->where('nomabvset', $nomabvset);
         }
-        $disciplinas = $disciplinas->orderBy('coddis')
-            ->get();
+        $disciplinas = $disciplinas->orderBy('coddis')->get();
 
         $columnsEstatisticaName = [];
         $columnsEstatisticaValue = [];
@@ -250,6 +250,7 @@ class percepcaoController extends Controller
                     $columnsTextoValue[$key] = array_merge($columnsValue[$key], $respostasTextoColumnValue[$key]);
                 }
             } else {
+                continue;
                 $request->session()->flash('alert-danger', "Nenhum resultado encontrado para este tipo de relatório!");
 
                 return back();
@@ -261,14 +262,14 @@ class percepcaoController extends Controller
         $fileName = 'resultado_media_percepcao_institucional_' . $percepcao->semestre . '_' . $percepcao->ano . '_' . $nomabvset . '.csv';
 
         $headers = array(
-            "Content-type"        => "text/csv",
+            "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0",
         );
 
-        $callback = function() use($columnsEstatisticaName, $columnsEstatisticaValue, $columnsTextoName, $columnsTextoValue) {
+        $callback = function () use ($columnsEstatisticaName, $columnsEstatisticaValue, $columnsTextoName, $columnsTextoValue) {
             $file = fopen('php://output', 'w');
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
             if (!empty($columnsEstatisticaName)) {
