@@ -250,6 +250,7 @@ class percepcaoController extends Controller
                     $columnsTextoValue[$key] = array_merge($columnsValue[$key], $respostasTextoColumnValue[$key]);
                 }
             } else {
+                // se não tiver respostas vai para a proxima disciplina
                 continue;
                 $request->session()->flash('alert-danger', "Nenhum resultado encontrado para este tipo de relatório!");
 
