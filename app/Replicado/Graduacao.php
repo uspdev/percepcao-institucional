@@ -98,9 +98,12 @@ class Graduacao extends GraduacaoReplicado
     }
 
     /**
-     * Retorna as disciplinas da Unidade
+     * Retorna as turmas da Unidade, incluindo professores
+     * 
      * Query usada na EEL no sistema antigo
-     *
+     * TODO: Não traz professor da tabela ATIVIDADEDOCENTE. Caso de professor senior 
+     * que ministra aula, o responsável é o chefe.
+     * 
      * @param $anoSemestre - ex 20221, 20222, etc
      */
     public static function listarTurmasUnidade($anoSemestre)

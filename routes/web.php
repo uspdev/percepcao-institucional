@@ -46,8 +46,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestao-sistema/percepcao/{percepcao}/alunos', [PercepcaoController::class, 'alunos'])->name('percepcao.alunos');
         Route::get('/gestao-sistema/percepcao/{percepcao}/alunos/{codpes}', [PercepcaoController::class, 'listarDisciplinasAluno'])->name('percepcao.alunos.disciplinas');
 
-        Route::get('/gestao-sistema/percepcao/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinas'])->name('percepcao.disciplinas');
-        Route::post('/gestao-sistema/percepcao/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinasUpdate'])->name('percepcao.disciplinas.update');
+        Route::get('/percepcoes/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinas'])->name('percepcao.disciplinas');
+        Route::get('/percepcoes/{percepcao}/disciplinas/{disciplina}', [PercepcaoController::class, 'disciplina'])->name('percepcao.disciplina');
+        Route::post('/percepcoes/{percepcao}/disciplinas', [PercepcaoController::class, 'disciplinasUpdate'])->name('percepcao.disciplinas.update');
 
         Route::get('/percepcoes/{percepcao}', [PercepcaoController::class, 'show'])->name('percepcao.show');
         Route::put('/percepcoes/{percepcao}/especiais', [PercepcaoController::class, 'updateEspeciais'])->name('percepcao.updateEspeciais');

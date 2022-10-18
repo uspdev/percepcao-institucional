@@ -199,7 +199,7 @@ class Percepcao extends Model
      */
     public function disciplinas()
     {
-        return $this->hasMany('App\Models\Disciplina');
+        return $this->hasMany('App\Models\Disciplina')->orderBy('nomabvset');
     }
 
     /**

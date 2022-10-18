@@ -45,7 +45,15 @@
         @endphp
         <tr>
           <td>{{ $disciplina['coddis'] }}</td>
-          <td>{{ $disciplina['nomdis'] }}</td>
+          <td>
+            @if ($percepcao->isFinalizado())
+              <a href="{{ route('percepcao.disciplina', [$percepcao, $disciplina]) }}" target="_disciplina">
+                {{ $disciplina['nomdis'] }}
+              </a>
+            @else
+              {{ $disciplina['nomdis'] }}
+            @endif
+          </td>
           <td>{{ $disciplina['codtur'] }}</td>
           <td>{{ $disciplina['verdis'] }}</td>
           <td>{{ $disciplina['tiptur'] }}</td>

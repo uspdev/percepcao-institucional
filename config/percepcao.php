@@ -8,6 +8,8 @@ return [
     # Número de dias depois do fechamento que vai mostrar a percepção na tela inicial do sistema
     'posview' => env('POSVIEW', 30),
 
+    'siglaUnd' => env('SIGLA_UND'),
+
     'disciplinas_fake' => [
         0 => [
             'codpes' => 'Nelson Aoki',

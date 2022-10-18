@@ -42,6 +42,7 @@ class GraficoShow extends Component
         $questao = Questao::find($questaoId);
 
         if (isset($questao->campo['options']) && !empty($questao->campo['options'])) {
+            // verifica se a questao é do tipo radio (precisa ter options)
             if ($questao->estatistica) {
                 foreach ($questao->campo['options'] as $key => $value) {
                     if (!isset($valoresResposta[$value['key']])) {
@@ -53,7 +54,7 @@ class GraficoShow extends Component
                     $qtdAlunos = ' (' . $valoresResposta[$value['key']] . ' ' . Str::plural('aluno', $valoresResposta[$value['key']]) . ')';
 
                     $resultadosQuestao[$value['key']] = [
-                        // Exibe label no padrão "Muito ruim - 30.0% (5 alunos)"
+                        // Exibe label no padrão "Muito ruim - 30.0% (5 alunos), Label - x% (X alunos), etc"
                         'texto' => "'" . $value['value'] . " - " . $percentual . $qtdAlunos . "'",
                         'total' => substr($percentual, 0, -1),
                     ];

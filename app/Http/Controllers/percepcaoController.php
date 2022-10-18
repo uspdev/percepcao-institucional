@@ -9,6 +9,7 @@ use App\Replicado\Graduacao;
 use App\Replicado\Pessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class percepcaoController extends Controller
 {
@@ -18,6 +19,17 @@ class percepcaoController extends Controller
         $membrosEspeciais = empty($percepcao->settings['membrosEspeciais']) ? [] : Pessoa::obterNome($percepcao->settings['membrosEspeciais']);
 
         $departamentos = collect(Estrutura::listarSetores())->where('tipset', 'Departamento de Ensino');
+
+        // $grupos = $percepcao->questaos()->get('grupos');
+
+        // $disciplina = $percepcao->disciplinas[400];
+        // $questaos = $disciplina->obterRelatorio();
+        // dd($disciplina, $questaos);
+
+        // foreach ($percepcao->disciplinas as $disciplina) {
+        //     $questaos = $disciplina->obterRelatorio();
+        //     dd($disciplina, $questaos);
+        // }
 
         return view('percepcao.show', compact('percepcao', 'membrosEspeciais', 'departamentos'));
     }
@@ -110,6 +122,18 @@ class percepcaoController extends Controller
     }
 
     /**
+     * Relatoório de uma disciplina
+     *
+     * @param App\Models\Percepcao $percepcao
+     * @param App\Models\Disciplina $disciplina
+     */
+    public function disciplina(Percepcao $percepcao, Disciplina $disciplina)
+    {
+        $questoes = $disciplina->obterRelatorio();
+        return view('percepcao.disciplina', compact('disciplina', 'questoes'));
+    }
+
+    /**
      * Atualiza a lista de disciplinas de uma percepcao
      *
      * @param Illuminate\Http\Request $request
@@ -170,7 +194,7 @@ class percepcaoController extends Controller
             }
 
             $respostasEstatistica = DB::table('respostas')->join('questaos', 'respostas.questao_id', '=', 'questaos.id')
-                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('ROUND(AVG(resposta),2) as quantity'), DB::raw('COUNT(*) as totalDeRespostasValidas'))
+                ->select('questaos.campo->text as texto', 'questao_id', DB::raw('ROUND(AVG(resposta),2) as media'), DB::raw('COUNT(*) as totalDeRespostasValidas'))
                 ->where('percepcao_id', $percepcao->id)
                 ->where('disciplina_id', $disciplina->id)
                 ->where('questaos.campo->type', 'radio')
@@ -189,7 +213,7 @@ class percepcaoController extends Controller
                 $totalDeRespostasValidasEstatistica[$key] = $resposta->totalDeRespostasValidas;
 
                 $respostasEstatisticaColumnName[$keyResposta] = $resposta->texto;
-                $respostasEstatisticaColumnValue[$key][$keyResposta] = $resposta->quantity;
+                $respostasEstatisticaColumnValue[$key][$keyResposta] = $resposta->media;
             }
 
             $totalDeRespostasValidasTexto[$key] = 0;
