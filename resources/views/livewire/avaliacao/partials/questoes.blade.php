@@ -1,7 +1,7 @@
 @foreach ($grupo['questoes'] as $idQuestao => $questao)
     @if ($this->getDetalheQuestao($idQuestao)['campo']['type'] !== 'hidden')
         <div class="h6">
-            {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}
+            {!! $this->getDetalheQuestao($idQuestao)['campo']['text'] !!}
         </div>
 
         @switch($this->getDetalheQuestao($idQuestao)['campo']['type'])
