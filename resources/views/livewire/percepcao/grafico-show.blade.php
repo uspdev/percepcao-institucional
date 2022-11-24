@@ -1,6 +1,6 @@
 <div>
   <div class="pl-3 pt-3 h5">
-    {{ $questao['campo']['text'] }}
+    {!! $questao['campo']['text'] !!}
   </div>
   <div class="pl-6 pt-3">
     <div>

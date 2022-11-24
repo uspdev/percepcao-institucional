@@ -53,7 +53,7 @@
                                                     @else
                                                         <div class="pl-3 pt-3">
                                                             <h5>
-                                                                {{ $this->getDetalheQuestao($idQuestao)['campo']['text'] }}
+                                                                {!! $this->getDetalheQuestao($idQuestao)['campo']['text'] !!}
                                                             </h5>
                                                         </div>
                                                         @foreach ($this->getRespostas($subIdGrupo, $questao['id'], $percepcao->id, $disciplina->id) as $idResposta => $resposta)

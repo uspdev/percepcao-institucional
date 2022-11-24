@@ -37,7 +37,7 @@
                                     @endif
                                 </div>
                                 <div class="h6">
-                                    {{ $questao->campo['text'] }}
+                                    {!! $questao->campo['text'] !!}
                                 </div>
                                 @if ($percepcao->isFuturo())
                                     <div class="justify-content-end">

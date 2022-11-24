@@ -8,7 +8,7 @@
                 <div class="d-flex flex-row justify-content-between align-items-start">
                     <div class="h6 mt-2 flex-title">
                         <label for="" class="bold">Título:</label>
-                        {{ $questao->campo['text'] }}
+                        {!! $questao->campo['text'] !!}
                     </div>
                     <div class="justify-content-end flex-actions">
                         <x-form.wire-button
