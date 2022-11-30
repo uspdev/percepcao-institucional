@@ -23,58 +23,64 @@
                     placeholder="Selecione a disciplina..."
                     />
                 @isset ($disciplina)
-                    @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
-                        @if ($grupo['modelo_repeticao'] === 'disciplinas')
-                            <div class="pb-5">
-                                <h4 class="pt-3">
-                                    {{ $this->getDetalheGrupo($idGrupo)['texto'] }}
-                                </h4>
-                                @if (isset($grupo['questoes']))
-                                    @foreach ($grupo['questoes'] as $idQuestao => $questao)
-                                        @if ($this->getDetalheQuestao($idQuestao)['estatistica'])
-                                            <div>
-                                                @livewire('percepcao.grafico-show', ['percepcao' => $percepcao, 'disciplina' => $disciplina, 'grupo' => $grupo, 'questao' => $questao], key('disciplina-' . $percepcao->id . $grupo['id'] . $questao['id'] . time()))
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                                @if (isset($grupo['grupos']))
-                                    @foreach ($grupo['grupos'] as $subIdGrupo => $subGrupo)
-                                        <div>
-                                            <h4 class="pt-5">
-                                                {{ $this->getDetalheGrupo($subIdGrupo)['texto'] }}
-                                            </h4>
-                                            @if (isset($subGrupo['questoes']))
-                                                @foreach ($subGrupo['questoes'] as $idQuestao => $questao)
-                                                    @if ($this->getDetalheQuestao($idQuestao)['estatistica'])
-                                                        <div>
-                                                            @livewire('percepcao.grafico-show', ['percepcao' => $percepcao, 'disciplina' => $disciplina, 'grupo' => $subGrupo, 'questao' => $questao], key('disciplina-' . $percepcao->id . $grupo['id'] . $questao['id'] . time()))
-                                                        </div>
-                                                    @else
-                                                        <div class="pl-3 pt-3">
-                                                            <h5>
-                                                                {!! $this->getDetalheQuestao($idQuestao)['campo']['text'] !!}
-                                                            </h5>
-                                                        </div>
-                                                        @foreach ($this->getRespostas($subIdGrupo, $questao['id'], $percepcao->id, $disciplina->id) as $idResposta => $resposta)
-                                                            <div class="pl-6 pt-2">
-                                                                <span class="bold">Resposta aluno {{ $idResposta + 1 }}:</span><br />
-                                                                @if (!empty($resposta))
-                                                                    <span class="pl-3">{{ $resposta }}</span>
-                                                                @else
-                                                                    <span class="pl-3">Nenhuma resposta enviada!</span>
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
-                                                @endforeach
+                    @if ($temResposta)
+                        @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
+                            @if ($grupo['modelo_repeticao'] === 'disciplinas')
+                                <div class="pb-5">
+                                    <h4 class="pt-3">
+                                        {{ $this->getDetalheGrupo($idGrupo)['texto'] }}
+                                    </h4>
+                                    @if (isset($grupo['questoes']))
+                                        @foreach ($grupo['questoes'] as $idQuestao => $questao)
+                                            @if ($this->getDetalheQuestao($idQuestao)['estatistica'])
+                                                <div>
+                                                    @livewire('percepcao.grafico-show', ['percepcao' => $percepcao, 'disciplina' => $disciplina, 'grupo' => $grupo, 'questao' => $questao], key('disciplina-' . $percepcao->id . $grupo['id'] . $questao['id'] . time()))
+                                                </div>
                                             @endif
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        @endif
-                    @endforeach
+                                        @endforeach
+                                    @endif
+                                    @if (isset($grupo['grupos']))
+                                        @foreach ($grupo['grupos'] as $subIdGrupo => $subGrupo)
+                                            <div>
+                                                <h4 class="pt-5">
+                                                    {{ $this->getDetalheGrupo($subIdGrupo)['texto'] }}
+                                                </h4>
+                                                @if (isset($subGrupo['questoes']))
+                                                    @foreach ($subGrupo['questoes'] as $idQuestao => $questao)
+                                                        @if ($this->getDetalheQuestao($idQuestao)['estatistica'])
+                                                            <div>
+                                                                @livewire('percepcao.grafico-show', ['percepcao' => $percepcao, 'disciplina' => $disciplina, 'grupo' => $subGrupo, 'questao' => $questao], key('disciplina-' . $percepcao->id . $grupo['id'] . $questao['id'] . time()))
+                                                            </div>
+                                                        @else
+                                                            <div class="pl-3 pt-3">
+                                                                <h5>
+                                                                    {!! $this->getDetalheQuestao($idQuestao)['campo']['text'] !!}
+                                                                </h5>
+                                                            </div>
+                                                            @foreach ($this->getRespostas($subIdGrupo, $questao['id'], $percepcao->id, $disciplina->id) as $idResposta => $resposta)
+                                                                <div class="pl-6 pt-2">
+                                                                    <span class="bold">Resposta aluno {{ $idResposta + 1 }}:</span><br />
+                                                                    @if (!empty($resposta))
+                                                                        <span class="pl-3">{{ $resposta }}</span>
+                                                                    @else
+                                                                        <span class="pl-3">Nenhuma resposta enviada!</span>
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="pt-5 pb-5">
+                            <div class="text-center font-weight-bolder">Nenhuma resposta encontrada para esta disciplina!</div>
+                        </div>
+                    @endif
                 @endisset
             @endif
             @if (end($path) === 'coordenadores' && !empty($optionCoordenadores))

@@ -22,6 +22,7 @@ class RelatorioShow extends Component
     public $optionDisciplinas;
     public $optionCoordenadores;
     public $path;
+    public $temResposta;
 
     public function mount()
     {
@@ -44,6 +45,10 @@ class RelatorioShow extends Component
 
     public function updatedPercepcaoSelected($percepcaoId)
     {
+        if (isset($this->disciplina)) {
+            unset($this->disciplina);
+        }
+
         $this->optionDisciplinas = [];
 
         $this->optionCoordenadores = [];
@@ -115,6 +120,8 @@ class RelatorioShow extends Component
     public function updatedDisciplinaSelected($disciplinaId)
     {
         $this->disciplina = Disciplina::find($disciplinaId);
+
+        $this->temResposta = $this->disciplina->contarRespostas($this->percepcao->id) > 0 ? true : false;
     }
 
     public function updatedCoordenadorSelected($coordenadorId)
