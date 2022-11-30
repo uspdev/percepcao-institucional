@@ -39,7 +39,7 @@
     <tbody>
       @foreach ($disciplinas as $disciplina)
         @php
-          if ($percepcao->isFinalizado() && $disciplina->contarRespostas() == 0) {
+          if ($percepcao->isFinalizado() && $disciplina->contarRespostas($percepcao->id) == 0) {
               continue;
           }
         @endphp
@@ -59,7 +59,7 @@
           <td>{{ $disciplina['tiptur'] }}</td>
           <td>{{ $disciplina['nompes'] }}</td>
           <td>{{ $disciplina->contarMatriculados() }}</td>
-          <td>{{ $disciplina->contarRespostas() }}</td>
+          <td>{{ $disciplina->contarRespostas($percepcao->id) }}</td>
           <td>{{ $disciplina['nomabvset'] }}/{{ $disciplina['sglund'] }}</td>
         </tr>
       @endforeach

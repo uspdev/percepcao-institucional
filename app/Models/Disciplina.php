@@ -40,10 +40,10 @@ class Disciplina extends Model
     /**
      * Conta o nro de respostas para uma dada disciplina já filtrada por percepcao
      */
-    public function contarRespostas()
+    public function contarRespostas($percepcaoId)
     {
-        if ($this->respostas->count()) {
-            return $this->respostas->groupBy('questao_id')->first()->count();
+        if ($this->respostas->where('percepcao_id', $percepcaoId)->count()) {
+            return $this->respostas->where('percepcao_id', $percepcaoId)->groupBy('questao_id')->first()->count();
         } else {
             return 0;
         }
@@ -82,7 +82,7 @@ class Disciplina extends Model
     public function obterRelatorio()
     {
         $disciplina = $this;
-        
+
         // obtem as questoes independente do grupo
         $questaos = $disciplina->questaos();
 
