@@ -9,6 +9,7 @@ use App\Models\Grupo;
 use App\Models\Percepcao;
 use App\Models\Questao;
 use App\Models\Resposta;
+use Illuminate\Support\Facades\DB;
 
 class RelatorioShow extends Component
 {
@@ -65,10 +66,30 @@ class RelatorioShow extends Component
             }
 
             if ($temDisciplina) {
-                $disciplinas = Disciplina::where('percepcao_id', $this->percepcao->id)->get();
+                $disciplinas = DB::table('disciplinas')
+                    ->select('coddis', 'verdis', 'codtur', 'nomdis', 'tiptur', 'nompes')
+                    ->selectRaw('MIN(id) id,
+                        MIN(
+                            (
+                                SELECT
+                                    COUNT(R1.questao_id)
+                                FROM
+                                    respostas R1
+                                WHERE
+                                    R1.percepcao_id = disciplinas.percepcao_id and R1.disciplina_id = disciplinas.id
+                                GROUP BY
+                                    R1.questao_id
+                                LIMIT 0,1)
+                        ) AS total_de_respostas'
+                    )
+                    ->where('disciplinas.percepcao_id', $this->percepcao->id)
+                    ->groupBy('coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
+                    ->get();
 
                 foreach ($disciplinas as $disciplina) {
-                    $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes;
+                    $totalDeRespostas = is_null($disciplina->total_de_respostas) ? 0 : $disciplina->total_de_respostas;
+
+                    $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes . ' (' . $totalDeRespostas . ')';
                 }
 
                 $this->disciplinaSelected = isset($this->disciplina->id) ? $this->disciplina->id : '';
