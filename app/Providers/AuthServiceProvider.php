@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Models\Percepcao;
+use App\Replicado\Pessoa;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -45,6 +46,17 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('alunos', function(User $user, Percepcao $percepcao) {
             return $percepcao->liberaConsultaAluno;
+        });
+
+        Gate::define('verifica-docente', function(User $user) {
+            $pessoa = Pessoa::vinculos($user->codpes);
+            $verificaDocente = preg_grep('/^Docente\s.*/', $pessoa);
+
+            if (!empty($verificaDocente)) {
+                return true;
+            }
+
+            return false;
         });
     }
 }

@@ -12,21 +12,29 @@
                 model="percepcaoSelected"
                 label="<span class='bold'>Selecione a percepção:</span>"
                 :options="$this->options"
+                wire:loading.attr="disabled"
                 >
                 <option disabled value="">PERCEPÇÃO - SEMESTRE/ANO</option>
             </x-form.wire-select>
+            <div wire:loading wire:target="percepcaoSelected">
+                Aguarde, processando a informação...
+            </div>
             @if (end($path) === 'disciplinas' && !empty($optionDisciplinas))
                 <x-form.wire-select
                     model="disciplinaSelected"
                     label="<span class='bold'>Selecione a disciplina:</span>"
                     :options="$this->optionDisciplinas"
                     placeholder="Selecione a disciplina..."
+                    wire:loading.attr="disabled"
                     />
+                    <div wire:loading wire:target="disciplinaSelected">
+                        Aguarde, processando a informação...
+                    </div>
                 @isset ($disciplina)
                     @if ($temResposta)
                         @foreach ($percepcao->questaos()->get('grupos') as $idGrupo => $grupo)
                             @if ($grupo['modelo_repeticao'] === 'disciplinas')
-                                <div class="pb-5">
+                                <div class="pb-5" wire:loading.remove>
                                     <h4 class="pt-3">
                                         {{ $this->getDetalheGrupo($idGrupo)['texto'] }}
                                     </h4>

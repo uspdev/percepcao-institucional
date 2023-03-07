@@ -10,6 +10,8 @@ use App\Models\Percepcao;
 use App\Models\Questao;
 use App\Models\Resposta;
 use Illuminate\Support\Facades\DB;
+Use Illuminate\Support\Facades\Auth;
+Use Illuminate\Support\Facades\Gate;
 
 class RelatorioShow extends Component
 {
@@ -28,7 +30,13 @@ class RelatorioShow extends Component
     {
         $this->path = explode('/', request()->path());
 
-        $percepcaos = Percepcao::get(['id', 'ano', 'semestre']);
+        if (Auth::user()->can('admin') || Auth::user()->can('gerente')) {
+            $percepcaos = Percepcao::get(['id', 'ano', 'semestre']);
+        } elseif (Gate::allows('verifica-docente')) {
+            $percepcaos = Percepcao::where('liberaConsultaDocente', true)->get(['id', 'ano', 'semestre']);
+        } else {
+            $percepcaos = '';
+        }
 
         if ($percepcaos->count()) {
             foreach ($percepcaos as $percepcao) {
@@ -87,17 +95,28 @@ class RelatorioShow extends Component
                                 LIMIT 0,1)
                         ) AS total_de_respostas'
                     )
-                    ->where('disciplinas.percepcao_id', $this->percepcao->id)
+                    ->where('disciplinas.percepcao_id', $this->percepcao->id);
+                // Se for um docente que estiver consultando, restringe os resultados apenas às disciplinas dele próprio
+                if (Gate::allows('verifica-docente') && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
+                    $disciplinas = $disciplinas
+                        ->where('disciplinas.codpes', Auth::user()->codpes);
+                }
+                $disciplinas = $disciplinas
                     ->groupBy('coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
                     ->get();
 
-                foreach ($disciplinas as $disciplina) {
-                    $totalDeRespostas = is_null($disciplina->total_de_respostas) ? 0 : $disciplina->total_de_respostas;
+                if ($disciplinas->count()) {
+                    foreach ($disciplinas as $disciplina) {
+                        $totalDeRespostas = is_null($disciplina->total_de_respostas) ? 0 : $disciplina->total_de_respostas;
 
-                    $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes . ' (' . $totalDeRespostas . ')';
+                        $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes . ' (' . $totalDeRespostas . ')';
+                    }
+
+                    $this->disciplinaSelected = isset($this->disciplina->id) ? $this->disciplina->id : '';
+                } else {
+                    $this->disciplinaSelected = 0;
+                    $this->optionDisciplinas = ['Nenhuma disciplina sob sua responsabilidade foi encontrada'];
                 }
-
-                $this->disciplinaSelected = isset($this->disciplina->id) ? $this->disciplina->id : '';
             } else {
                 $this->disciplinaSelected = 0;
                 $this->optionDisciplinas = ['Nenhuma avaliação de disciplina foi enviada'];
@@ -120,6 +139,12 @@ class RelatorioShow extends Component
     public function updatedDisciplinaSelected($disciplinaId)
     {
         $this->disciplina = Disciplina::find($disciplinaId);
+
+        if (Gate::allows('verifica-docente') && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
+            if ($this->disciplina->codpes !== Auth::user()->codpes) {
+                abort(403);
+            }
+        }
 
         $this->temResposta = $this->disciplina->contarRespostas($this->percepcao->id) > 0 ? true : false;
     }

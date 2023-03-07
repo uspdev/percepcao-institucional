@@ -25,6 +25,7 @@ $consultas = [
         'text' => 'Disciplinas',
         'url' => 'gestao-sistema/percepcao/consulta/disciplinas',
         'can' => 'gerente',
+        'can' => 'verifica-docente',
     ],
     [
         'text' => 'Coordenadores',
@@ -51,6 +52,7 @@ $menu = [
         'text' => 'Consultas',
         'submenu' => $consultas,
         'can' => 'gerente',
+        'can' => 'verifica-docente',
     ],
     [
         'text' => 'Percepções',

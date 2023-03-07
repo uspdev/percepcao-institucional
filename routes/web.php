@@ -57,4 +57,9 @@ Route::middleware('auth')->group(function () {
         Route::get('percepcoes', PercepcaoShow::class)->name('percepcaos.index');
 
     });
+
+    Route::middleware('can:verifica-docente')->group(function () {
+        Route::get('/gestao-sistema/percepcao/consulta/disciplinas', RelatorioShow::class);
+    });
+
 });
