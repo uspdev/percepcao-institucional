@@ -66,7 +66,7 @@ class PercentualShow extends Component
                         ) AS total_de_respostas'
                     )
                 ->where('disciplinas.percepcao_id', $this->percepcao->id)
-                ->groupBy('id', 'coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
+                ->groupBy('coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
                 ->get();
 
             foreach ($disciplinas as $disciplina) {
