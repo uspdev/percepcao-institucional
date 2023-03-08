@@ -50,7 +50,7 @@ class PercentualShow extends Component
             $this->percepcao = Percepcao::find($percepcaoId);
 
             $disciplinas = DB::table('disciplinas')
-                ->select('id', 'coddis', 'verdis', 'codtur', 'nomdis', 'tiptur', 'nompes')
+                ->select('coddis', 'verdis', 'codtur', 'nomdis', 'tiptur', 'nompes')
                 ->selectRaw('MIN(id) id,
                         MIN(
                             (
