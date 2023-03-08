@@ -8,6 +8,7 @@ use App\Http\Controllers\AvaliacaoController;
 use App\Http\Controllers\percepcaoController;
 use App\Http\Livewire\Percepcao\PercepcaoShow;
 use App\Http\Livewire\Percepcao\RelatorioShow;
+use App\Http\Livewire\Percepcao\PercentualShow;
 
 use App\Http\Livewire\Percepcao\PercepcaoAddQuestao;
 
@@ -60,6 +61,10 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('can:verifica-docente')->group(function () {
         Route::get('/gestao-sistema/percepcao/consulta/disciplinas', RelatorioShow::class);
+    });
+
+    Route::middleware('can:verifica-aluno')->group(function () {
+        Route::get('/gestao-sistema/percepcao/consulta/percentual', PercentualShow::class);
     });
 
 });

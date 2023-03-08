@@ -32,6 +32,12 @@ $consultas = [
         'url' => 'gestao-sistema/percepcao/consulta/coordenadores',
         'can' => 'gerente',
     ],
+    [
+        'text' => 'Percentual',
+        'url' => 'gestao-sistema/percepcao/consulta/percentual',
+        'can' => 'gerente',
+        'can' => 'verifica-aluno',
+    ],
 ];
 
 $menu = [
@@ -53,6 +59,7 @@ $menu = [
         'submenu' => $consultas,
         'can' => 'gerente',
         'can' => 'verifica-docente',
+        'can' => 'verifica-aluno',
     ],
     [
         'text' => 'Percepções',

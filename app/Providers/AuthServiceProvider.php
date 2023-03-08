@@ -58,5 +58,16 @@ class AuthServiceProvider extends ServiceProvider
 
             return false;
         });
+
+        Gate::define('verifica-aluno', function(User $user) {
+            $pessoa = Pessoa::vinculos($user->codpes);
+            $verificaAluno = preg_grep('/^Aluno de Graduação\s.*/', $pessoa);
+
+            if (!empty($verificaAluno)) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }
