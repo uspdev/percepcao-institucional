@@ -57,14 +57,7 @@ $menu = [
     [
         'text' => 'Consultas',
         'submenu' => $consultas,
-        'can' => 'gerente',
-        'can' => 'verifica-docente',
-    ],
-    [
-        'text' => 'Consultas',
-        'submenu' => $consultas,
-        'can' => 'gerente',
-        'can' => 'verifica-aluno',
+        'can' => '',
     ],
     [
         'text' => 'Percepções',
