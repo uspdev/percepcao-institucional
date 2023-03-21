@@ -60,11 +60,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('can:verifica-docente')->group(function () {
-        Route::get('/gestao-sistema/percepcao/consulta/disciplinas', RelatorioShow::class);
+        Route::get('/gestao-sistema/percepcao/consulta/disciplinas', RelatorioShow::class)->name('percepcao.consulta.disciplinas');
     });
 
     Route::middleware('can:verifica-aluno')->group(function () {
-        Route::get('/gestao-sistema/percepcao/consulta/percentual', PercentualShow::class);
+        Route::get('/gestao-sistema/percepcao/consulta/percentual', PercentualShow::class)->name('percepcao.consulta.percentual');
     });
 
 });
