@@ -55,85 +55,87 @@ class RelatorioShow extends Component
 
     public function updatedPercepcaoSelected($percepcaoId)
     {
-        if (isset($this->disciplina)) {
-            unset($this->disciplina);
-        }
-
-        $this->optionDisciplinas = [];
-
-        $this->optionCoordenadores = [];
-
-        $this->percepcao = Percepcao::find($percepcaoId);
-
-        if ($this->percepcao->questaos()->has('grupos')) {
-            $temDisciplina = false;
-
-            $temCoordenador = false;
-
-            foreach ($this->percepcao->questaos()->get('grupos') as $grupo) {
-                if (isset($grupo['modelo_repeticao']) && $grupo['modelo_repeticao'] === 'disciplinas') {
-                    $temDisciplina = true;
-                }
-
-                if (isset($grupo['modelo_repeticao']) && $grupo['modelo_repeticao'] === 'coordenadores') {
-                    $temCoordenador = true;
-                }
+        if ($percepcaoId) {
+            if (isset($this->disciplina)) {
+                unset($this->disciplina);
             }
 
-            if ($temDisciplina) {
-                $disciplinas = DB::table('disciplinas')
-                    ->select('coddis', 'verdis', 'codtur', 'nomdis', 'tiptur', 'nompes')
-                    ->selectRaw('MIN(id) id,
-                        MIN(
-                            (
-                                SELECT
-                                    COUNT(R1.questao_id)
-                                FROM
-                                    respostas R1
-                                WHERE
-                                    R1.percepcao_id = disciplinas.percepcao_id and R1.disciplina_id = disciplinas.id
-                                GROUP BY
-                                    R1.questao_id
-                                LIMIT 0,1)
-                        ) AS total_de_respostas'
-                    )
-                    ->where('disciplinas.percepcao_id', $this->percepcao->id);
-                // Se for um docente que estiver consultando, restringe os resultados apenas às disciplinas dele próprio
-                if (Gate::allows('verifica-docente') && (!Gate::allows('verifica-membro-especial') || !Gate::allows('membrosEspeciais', $this->percepcao)) && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
-                    $disciplinas = $disciplinas
-                        ->where('disciplinas.codpes', Auth::user()->codpes);
-                }
-                $disciplinas = $disciplinas
-                    ->groupBy('coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
-                    ->get();
+            $this->optionDisciplinas = [];
 
-                if ($disciplinas->count()) {
-                    foreach ($disciplinas as $disciplina) {
-                        $totalDeRespostas = is_null($disciplina->total_de_respostas) ? 0 : $disciplina->total_de_respostas;
+            $this->optionCoordenadores = [];
 
-                        $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes . ' (' . $totalDeRespostas . ')';
+            $this->percepcao = Percepcao::find($percepcaoId);
+
+            if ($this->percepcao->questaos()->has('grupos')) {
+                $temDisciplina = false;
+
+                $temCoordenador = false;
+
+                foreach ($this->percepcao->questaos()->get('grupos') as $grupo) {
+                    if (isset($grupo['modelo_repeticao']) && $grupo['modelo_repeticao'] === 'disciplinas') {
+                        $temDisciplina = true;
                     }
 
-                    $this->disciplinaSelected = isset($this->disciplina->id) ? $this->disciplina->id : '';
+                    if (isset($grupo['modelo_repeticao']) && $grupo['modelo_repeticao'] === 'coordenadores') {
+                        $temCoordenador = true;
+                    }
+                }
+
+                if ($temDisciplina) {
+                    $disciplinas = DB::table('disciplinas')
+                        ->select('coddis', 'verdis', 'codtur', 'nomdis', 'tiptur', 'nompes')
+                        ->selectRaw('MIN(id) id,
+                            MIN(
+                                (
+                                    SELECT
+                                        COUNT(R1.questao_id)
+                                    FROM
+                                        respostas R1
+                                    WHERE
+                                        R1.percepcao_id = disciplinas.percepcao_id and R1.disciplina_id = disciplinas.id
+                                    GROUP BY
+                                        R1.questao_id
+                                    LIMIT 0,1)
+                            ) AS total_de_respostas'
+                        )
+                        ->where('disciplinas.percepcao_id', $this->percepcao->id);
+                    // Se for um docente que estiver consultando, restringe os resultados apenas às disciplinas dele próprio
+                    if (Gate::allows('verifica-docente') && (!Gate::allows('verifica-membro-especial') || !Gate::allows('membrosEspeciais', $this->percepcao)) && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
+                        $disciplinas = $disciplinas
+                            ->where('disciplinas.codpes', Auth::user()->codpes);
+                    }
+                    $disciplinas = $disciplinas
+                        ->groupBy('coddis', 'verdis', 'codtur', 'codpes', 'nomdis', 'tiptur', 'nompes')
+                        ->get();
+
+                    if ($disciplinas->count()) {
+                        foreach ($disciplinas as $disciplina) {
+                            $totalDeRespostas = is_null($disciplina->total_de_respostas) ? 0 : $disciplina->total_de_respostas;
+
+                            $this->optionDisciplinas[$disciplina->id] = $disciplina->coddis . ' - V' . $disciplina->verdis . ' - ' . $disciplina->nomdis . ' - ' . $disciplina->codtur . ' - ' . $disciplina->tiptur . ' - ' . $disciplina->nompes . ' (' . $totalDeRespostas . ')';
+                        }
+
+                        $this->disciplinaSelected = isset($this->disciplina->id) ? $this->disciplina->id : '';
+                    } else {
+                        $this->disciplinaSelected = 0;
+                        $this->optionDisciplinas = ['Nenhuma disciplina sob sua responsabilidade foi encontrada'];
+                    }
                 } else {
                     $this->disciplinaSelected = 0;
-                    $this->optionDisciplinas = ['Nenhuma disciplina sob sua responsabilidade foi encontrada'];
+                    $this->optionDisciplinas = ['Nenhuma avaliação de disciplina foi enviada'];
                 }
-            } else {
-                $this->disciplinaSelected = 0;
-                $this->optionDisciplinas = ['Nenhuma avaliação de disciplina foi enviada'];
-            }
 
-            if ($temCoordenador) {
-                $coordenadores = Coordenador::where('percepcao_id', $this->percepcao->id)->get();
+                if ($temCoordenador) {
+                    $coordenadores = Coordenador::where('percepcao_id', $this->percepcao->id)->get();
 
-                foreach ($coordenadores as $coordenador) {
-                    $this->optionCoordenadores[$coordenador->id] = $coordenador->codcur . ' - ' . $coordenador->codhab . ' - ' . $coordenador->nomcur . ' - ' . $coordenador->nompes;
+                    foreach ($coordenadores as $coordenador) {
+                        $this->optionCoordenadores[$coordenador->id] = $coordenador->codcur . ' - ' . $coordenador->codhab . ' - ' . $coordenador->nomcur . ' - ' . $coordenador->nompes;
+                    }
+                    $this->coordenadorSelected = isset($this->coordenador->id) ? $this->coordenador->id : '';
+                } else {
+                    $this->coordenadorSelected = 0;
+                    $this->optionCoordenadores = ['Nenhuma avaliação de coordenador foi enviada'];
                 }
-                $this->coordenadorSelected = isset($this->coordenador->id) ? $this->coordenador->id : '';
-            } else {
-                $this->coordenadorSelected = 0;
-                $this->optionCoordenadores = ['Nenhuma avaliação de coordenador foi enviada'];
             }
         }
     }
