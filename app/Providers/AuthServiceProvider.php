@@ -69,5 +69,15 @@ class AuthServiceProvider extends ServiceProvider
 
             return false;
         });
+
+        Gate::define('verifica-membro-especial', function(User $user) {
+            $pessoa = collect(Pessoa::listarDesignados(2))->whereIn('codpes', [$user->codpes])->whereIn('nomfnc', ['Diretor Uni Ensino', 'Vice Dir Un Ens', 'Ch Depart Ensino', 'Pres Comiss Grad', 'Pres Comiss Ceu', 'Pres Comiss Pesq', 'Pres Comiss In Per', 'Coord Cursos Grad']);
+
+            if ($pessoa->isNotEmpty()) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }

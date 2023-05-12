@@ -32,6 +32,8 @@ class RelatorioShow extends Component
 
         if (Auth::user()->can('admin') || Auth::user()->can('gerente')) {
             $percepcaos = Percepcao::get(['id', 'ano', 'semestre']);
+        } elseif (Gate::allows('verifica-membro-especial')) {
+            $percepcaos = Percepcao::where('liberaConsultaMembrosEspeciais', true)->orWhere('liberaConsultaDocente', true)->get(['id', 'ano', 'semestre']);
         } elseif (Gate::allows('verifica-docente')) {
             $percepcaos = Percepcao::where('liberaConsultaDocente', true)->get(['id', 'ano', 'semestre']);
         } else {
@@ -97,7 +99,7 @@ class RelatorioShow extends Component
                     )
                     ->where('disciplinas.percepcao_id', $this->percepcao->id);
                 // Se for um docente que estiver consultando, restringe os resultados apenas às disciplinas dele próprio
-                if (Gate::allows('verifica-docente') && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
+                if (Gate::allows('verifica-docente') && (!Gate::allows('verifica-membro-especial') || !Gate::allows('membrosEspeciais', $this->percepcao)) && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
                     $disciplinas = $disciplinas
                         ->where('disciplinas.codpes', Auth::user()->codpes);
                 }
@@ -140,7 +142,7 @@ class RelatorioShow extends Component
     {
         $this->disciplina = Disciplina::find($disciplinaId);
 
-        if (Gate::allows('verifica-docente') && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
+        if (Gate::allows('verifica-docente') && (!Gate::allows('verifica-membro-especial') || !Gate::allows('membrosEspeciais', $this->percepcao)) && (!Auth::user()->can('admin') || !Auth::user()->can('gerente'))) {
             if ($this->disciplina->codpes !== Auth::user()->codpes) {
                 abort(403);
             }
